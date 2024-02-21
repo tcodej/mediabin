@@ -7,6 +7,7 @@ import { ApplicationProvider } from './contexts/application';
 import Header from './components/header';
 import Home from './views/home';
 import './styles/main.scss';
+import './styles/carousel.scss';
 
 export default function App() {
 	return (

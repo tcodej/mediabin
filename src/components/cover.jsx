@@ -1,59 +1,56 @@
-import { useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { apiURL } from '../utils/api';
+import Carousel from './carousel';
 import square from '../assets/img/transparent-square.png';
 import discogsIcon from '../assets/img/icon-discogs.svg';
 import bookIcon from '../assets/img/icon-book.svg';
 import unknownIcon from '../assets/img/icon-unknown.svg';
 
 export default function Cover({ item, onClick }) {
-	const [ data, setData ] = useState({
+	const defaultData = {
 		image: '',
-		slideshow: false,
+		gallery: false,
 		alt: 'Loading...',
-		className: ' small'
-	});
+		className: ''
+	};
+
+	const [ data, setData ] = useState({...defaultData});
 
 	useEffect(() => {
-		let image = '';
-		let className = '';
-		let slides = false;
-
 		if (item) {
+			const newData = {...defaultData};
+
 			if (item.cover) {
-				image = `${apiURL}covers/${item.cover}`;
+				newData.image = `${apiURL}covers/${item.cover}`;
 
 			} else {
 				if (item.images) {
-					image = item.images[0].uri;
-					slides = item.images;
+					// newData.image = item.images[0].uri;
+					newData.gallery = {
+						images: item.images
+					};
 
 				} else {
-					className = ' small';
+					newData.className = ' small';
 					
 					switch (item.source) {
 						case 'discogs':
-							image = discogsIcon;
+							newData.image = discogsIcon;
 						break;
 
 						case 'book':
-							image = bookIcon;
+							newData.image = bookIcon;
 						break;
 
 						default:
-							image = unknownIcon;
+							newData.image = unknownIcon;
 						break;
 					}
 				}
 			}
 
-			const alt = item.album ? item.album : 'Media Cover';
-
-			setData({
-				image: image,
-				slideshow: slides,
-				alt: alt,
-				className: className
-			});
+			newData.alt = item.album ? item.album : 'Media Cover';
+			setData(newData);
 		}
 	}, [item]);
 
@@ -64,20 +61,20 @@ export default function Cover({ item, onClick }) {
 	};
 
 	return (
-		<div
-			className={`cover${data.className}`}
-			style={bgStyle()}
-			onClick={onClick}
-		>
-			{
-				data.slideshow ? data.slideshow.map((slide, i) => {
-					return <img key={i} src={slide.uri} alt="slide" />
-				})
+		<Fragment>
+				<div
+					className={`cover${data.className}`}
+					style={bgStyle()}
+					onClick={() => { !data.gallery && onClick() }}
+				>
+					{
+						data.gallery ? <Carousel gallery={data.gallery} />
 
-				:
+						:
 
-				<img src={square} alt={data.alt} draggable="false" />
-			}
-		</div>
+						<img src={square} alt={data.alt} draggable="false" />
+					}
+				</div>
+		</Fragment>
 	)
 }
