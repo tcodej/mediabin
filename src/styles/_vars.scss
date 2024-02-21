@@ -1,0 +1,150 @@
+@use 'sass:math';
+
+// scss vars
+$font-mono: 'Sono', sans-serif;
+$font-body: 'Poppins', sans-serif;
+$font-header: 'Poppins', sans-serif;
+
+$white: #fff;
+$white50: rgba(255, 255, 255, 0.5);
+$off-white: #f6f6f6;
+$l-gray: #e0e0e0;
+$m-gray: #494949;
+$gray: #999;
+$d-gray: #222;
+$black: #000;
+$black50: rgba(0, 0, 0, 0.5);
+$red: #d50000;
+$blue: #88fbff;
+$shadow: rgba(0, 0, 0, 0.14);
+
+$bp-xlarge: 1440px;
+$bp-large: 1280px;
+$bp-tablet: 960px;
+$bp-mobile: 700px;
+$bp-mobile-sm: 480px;
+
+$thin: 100;
+$ex-light: 200;
+$light: 300;
+$reg: 400;
+$med: 500;
+$bold: 600;
+
+$header-height: 50px;
+$box-margin: 20px;
+
+@mixin transform($transforms) {
+	-webkit-transform: $transforms;
+	-ms-transform: $transforms;
+	transform: $transforms;
+}
+
+@mixin boxWidth($percent) {
+  $margin: math.ceil($box-margin - ($box-margin * math.div($percent, 100)));
+  width: calc(#{$percent * 1%} - #{$margin});
+}
+
+// common extendable css definitions
+.group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.center-x {
+  position: absolute;
+  left: 50%;
+  @include transform(translateX(-50%));
+}
+
+.center-y {
+  position: absolute;
+  top: 50%;
+  @include transform(translateY(-50%));
+}
+
+.center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	@include transform(translate(-50%, -50%));
+}
+
+.no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.no-text {
+    overflow: hidden;
+    text-indent: -999em;
+}
+
+.full {
+  width: 100%;
+}
+
+.half {
+  @include boxWidth(50);
+
+  @media screen and (max-width: $bp-mobile) {
+    width: 100%;
+  }
+}
+
+.fifth {
+  @include boxWidth(20);
+
+  @media screen and (max-width: $bp-tablet) {
+    @include boxWidth(25);
+  }
+
+  @media screen and (max-width: $bp-mobile) {
+    @include boxWidth(33.33);
+  }
+
+  @media screen and (max-width: $bp-mobile-sm) {
+    @include boxWidth(50);
+  }
+}
+
+.quarter {
+  @include boxWidth(25);
+
+  @media screen and (max-width: $bp-tablet) {
+    @include boxWidth(33.33);
+  }
+
+  @media screen and (max-width: $bp-mobile) {
+    @include boxWidth(50);
+  }
+
+  @media screen and (max-width: $bp-mobile-sm) {
+    width: 100%;
+  }
+}
+
+.three-quarters {
+  @include boxWidth(75);
+}
+
+.third {
+  @include boxWidth(33.33);
+}
+
+.two-thirds {
+  @include boxWidth(66.66);
+}
+
+.three-quarters, .third, .two-thirds {
+  box-sizing: border-box;
+  position: relative;
+
+  @media screen and (max-width: $bp-mobile) {
+    width: 100% !important;
+  }
+}
