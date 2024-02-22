@@ -1,7 +1,26 @@
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import MediaItem from '../components/mediaItem';
 
 export default function ReleaseModal({ item, onClose }) {
+	const [scrollY, setScrollY] = useState(0);
+
+	useEffect(() => {
+		const root = document.getElementById('root');
+
+		if (item) {
+			setScrollY(window.scrollY);
+			root.style.top = `-${window.scrollY}px`;
+			root.classList.add('is-fixed');
+			window.scrollTo(0, 0);
+
+		} else {
+			root.classList.remove('is-fixed');
+			window.scrollTo(0, scrollY);
+		}
+	// including scrollY below makes the page scroll to 0 which is unwanted
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [item]);
+
 	const openInfoPage = () => {
 		let url = `https://www.discogs.com/release/${item.id}`;
 
@@ -46,7 +65,7 @@ export default function ReleaseModal({ item, onClose }) {
 					}
 
 				</div>
-				<div id="overlay" onClick={onClose} />
+				<div id="modal-overlay" onClick={onClose} />
 			</Fragment>
 		}
 		</Fragment>

@@ -41,16 +41,19 @@ export default function Home() {
 	];
 
 	const types = [
+		{ value: 'Autograph', label: 'Autographed' },
 		{ value: 'Unofficial', label: 'Bootleg' },
 		{ value: 'Box', label: 'Box' },
 		{ value: 'Color', label: 'Colored Vinyl' },
+		{ value: 'Enh', label: 'Enhanced' },
 		{ value: 'File', label: 'Digital' },
 		{ value: 'Gat', label: 'Gatefold' },
 		{ value: 'Mono', label: 'Mono' },
 		{ value: 'Pic', label: 'Picture Disc' },
 		{ value: 'Promo', label: 'Promo' },
 		{ value: 'Single', label: 'Single' },
-		{ value: 'Vinyl', label: 'Vinyl' },
+		{ value: 'Ltd', label: 'Limited Edition' },
+		{ value: 'Num', label: 'Numbered' },
 		{ value: 'Book', label: 'Book' },
 		{ value: 'Hardcover', label: 'Hardcover' },
 		{ value: 'Paperback', label: 'Paperback' }
@@ -206,7 +209,6 @@ export default function Home() {
 					if (match === q.length) {
 						return item;
 					}
-
 				}
 			});
 
@@ -231,6 +233,9 @@ export default function Home() {
 
 			if (results.length) {
 				resultText = `${results.length} matches`;
+
+			} else {
+				resultText = 'No matches';
 			}
 
 			if (qText) {
@@ -275,7 +280,6 @@ export default function Home() {
 	const loadCollection = (col) => {
 		clearQuery();
 		let results;
-		console.log(col.id);
 
 		if (col.id === 0) {
 			// show all
@@ -316,6 +320,17 @@ export default function Home() {
 					<button type="button" className="btn-clear" onClick={() => clearQuery(true)}>Clear</button>
 				</div>
 				<div id="filter-list">
+					<div className="heading">Collections</div>
+					{ collections.map(col => {
+						return (
+							<CollectionToggle
+								key={col.id}
+								collection={col}
+								onClick={() => loadCollection(col)}
+							/>
+						)
+					})}
+
 					<div className="heading">Media Formats</div>
 					{ formats.map(format => {
 						return (
@@ -339,18 +354,6 @@ export default function Home() {
 							/>
 						)
 					})}
-
-					<div className="heading">Collections</div>
-					{ collections.map(col => {
-						return (
-							<CollectionToggle
-								key={col.id}
-								collection={col}
-								onClick={() => loadCollection(col)}
-							/>
-						)
-					})}
-
 				</div>
 				<div id="buttons">
 					<button type="button" className="btn-import" onClick={openImport}>Import Release</button>
@@ -390,12 +393,11 @@ export default function Home() {
 				}
 			</div>
 
-			{currentMedia &&
-				<ReleaseModal
-					item={currentMedia}
-					onClose={closeRelease}
-				/>
-			}
+			<ReleaseModal
+				item={currentMedia}
+				onClose={closeRelease}
+			/>
+
 			{importOpen &&
 				<ImportModal
 					onClose={closeImport}
