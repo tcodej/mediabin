@@ -452,13 +452,17 @@ audio {
     }
   }
 
-
   .btn-import {
     background-image: url('../assets/img/icon-import.svg');
   }
 
   .btn-random-media {
     background-image: url('../assets/img/icon-random.svg');
+  }
+
+  .btn-clear-cache {
+    background-image: url('../assets/img/icon-refresh.svg');
+    background-position: 5px 7px;
   }
 }
 
@@ -591,6 +595,47 @@ audio {
 .button {
   @extend .no-select;
   cursor: pointer;
+}
+
+#success {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  pointer-events: none;
+
+  .icon {
+    opacity: 0;
+    width: 300px;
+    height: 300px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url('../assets/img/icon-success.svg');
+    background-position: center;
+    animation: zoom-in-zoom-out 750ms ease-out;
+  }
+}
+
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(0.25, 0.25);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2, 2);
+    opacity: 0;
+  }
 }
 
 /* ------ IMPORT MODAL ----- */

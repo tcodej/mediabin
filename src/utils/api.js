@@ -54,3 +54,7 @@ export const getCollections = async () => {
 export const getCollection = async (collection_id) => {
 	return getResult(`feed/collection/${collection_id}`);
 };
+
+export const clearCache = async () => {
+	return getResult('clearcache');
+};

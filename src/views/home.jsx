@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
-import { getMedia, getDiscogsRelease, getCollections /* ,getCollection */ } from '../utils/api';
-import { shuffle /* ,delay */ } from '../utils';
+import * as api from '../utils/api';
+import { shuffle, delay } from '../utils';
 import ErrorMessage from '../components/errorMessage';
 import Loading from '../components/loading';
+import Success from '../components/success';
 import MediaItem from '../components/mediaItem';
 import ReleaseModal from '../components/releaseModal';
 import ImportModal from '../components/importModal';
@@ -17,6 +18,7 @@ export default function Home() {
 	const timer = useRef(null);
 	const { appState, updateAppState, appAction } = useAppContext();
 	const [ loaded, setLoaded ] = useState(false);
+	const [ successOpen, setSuccessOpen ] = useState(false);
 	const [ media, setMedia ] = useState();
 	const [ list, setList ] = useState();
 	const [ currentMedia, setCurrentMedia ] = useState();
@@ -71,7 +73,7 @@ export default function Home() {
 
 	useEffect(() => {
 		if (!media) {
-			getMedia().then(response => {
+			api.getMedia().then(response => {
 				if (response && response.ok) {
 					setLoaded(true);
 					setMedia(response.result);
@@ -82,7 +84,7 @@ export default function Home() {
 						// setResultCount(response.result.length +' total');
 					}
 
-					getCollections().then(respCol => {
+					api.getCollections().then(respCol => {
 						// add a hard-coded 'everything' collection
 						setCollections([ { id: 0, name: 'All Media' }, ...respCol.result]);
 					});
@@ -94,7 +96,7 @@ export default function Home() {
 							count++;
 
 							if (!item.cover) {
-								getDiscogsRelease(item.release_id).then(response => {
+								api.getDiscogsRelease(item.release_id).then(response => {
 									console.log(`item ${count}: ${item.release_id}`);
 									item.cover = item.release_id +'.jpg';
 								});
@@ -132,7 +134,7 @@ export default function Home() {
 
 	const openRelease = (media) => {
 		if (media.source === 'discogs') {
-			getDiscogsRelease(media.release_id).then(response => {
+			api.getDiscogsRelease(media.release_id).then(response => {
 				// tack on any relevant info from the media object
 				response.notes = media.notes;
 				response.source = media.source;
@@ -167,6 +169,14 @@ export default function Home() {
 		clearQuery();
 		setList(random);
 		setResultCount(`${total} random items`);
+		triggerSuccess();
+	}
+
+	const clearCache = () => {
+		api.clearCache()
+			.then(response => {
+				triggerSuccess()
+			});
 	}
 
 	const runQuery = () => {
@@ -297,12 +307,18 @@ export default function Home() {
 		setResultCount(results.length +' items in '+ col.name);
 /*
 		// alternate back-end query
-		getCollection(col.id).then(response => {
+		api.getCollection(col.id).then(response => {
 			setList(response.result);
 			setResultCount(response.result.length +' items in '+ col.name);
 		});
 */
-	};
+	}
+
+	const triggerSuccess = async () => {
+		setSuccessOpen(true);
+		await delay(1000);
+		setSuccessOpen(false);
+	}
 
 	return (
 		<div id="page-home">
@@ -356,8 +372,9 @@ export default function Home() {
 					})}
 				</div>
 				<div id="buttons">
-					<button type="button" className="btn-import" onClick={openImport}>Import Release</button>
-					<button type="button" className="btn-random-media" onClick={randomMedia}>Random Media</button>
+					<button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
+					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
+					<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
 				</div>
 			</div>
 
@@ -401,9 +418,11 @@ export default function Home() {
 			{importOpen &&
 				<ImportModal
 					onClose={closeImport}
+					onSuccess={triggerSuccess}
 				/>
 			}
 			<ErrorMessage />
+			<Success open={successOpen} />
 		</div>
 	);
 }
