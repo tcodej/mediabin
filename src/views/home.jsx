@@ -117,7 +117,7 @@ export default function Home() {
 				}
 			});
 		}
-	}, []);
+	}, [media]);
 
 	useEffect(() => {
 		if (appState.menuOpen) {
@@ -175,6 +175,9 @@ export default function Home() {
 	const clearCache = () => {
 		api.clearCache()
 			.then(response => {
+				// trigger a media reload
+				setMedia();
+				runQuery();
 				triggerSuccess()
 			});
 	}
