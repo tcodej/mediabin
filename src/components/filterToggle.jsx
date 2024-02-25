@@ -1,7 +1,13 @@
-export default function FilterToggle({ filter, onClick, isActive }) {
+import { Fragment } from 'react'
+
+export default ({ filter, onClick, isActive }) => {
 	return (
-		<div className={'toggle'+ (isActive ? ' is-active' : '')} onClick={onClick}>
-			{isActive ? '+ ' : ''}{filter.label}
-		</div>
+		<Fragment>
+			{ filter &&
+				<div className={'toggle'+ (isActive ? ' is-active' : '')} onClick={onClick}>
+					{filter.label}
+				</div>
+			}
+		</Fragment>
 	);
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
+import { useSwipeable } from 'react-swipeable';
 import * as api from '../utils/api';
 import { shuffle, delay } from '../utils';
 import ErrorMessage from '../components/errorMessage';
@@ -10,7 +11,6 @@ import MediaItem from '../components/mediaItem';
 import ReleaseModal from '../components/releaseModal';
 import ImportModal from '../components/importModal';
 import FilterToggle from '../components/filterToggle';
-import CollectionToggle from '../components/collectionToggle';
 
 export default function Home() {
 	const params = useParams();
@@ -27,6 +27,10 @@ export default function Home() {
 	const [ resultCount, setResultCount ] = useState('');
 	const [ importOpen, setImportOpen ] = useState(false);
 	const [ collections, setCollections ] = useState([]);
+
+	// default collection of 'all media'
+	const allMedia = { id: 0, label: 'All Media' };
+	const [ currentCollection, setCurrentCollection ] = useState(allMedia);
 
 	const formats = [
 		{ value: 'LP', label: 'LP' },
@@ -85,8 +89,7 @@ export default function Home() {
 					}
 
 					api.getCollections().then(respCol => {
-						// add a hard-coded 'everything' collection
-						setCollections([ { id: 0, name: 'All Media' }, ...respCol.result]);
+						setCollections([ allMedia, ...respCol.result]);
 					});
 /*					
 					// use this async loop to populate data from each discogs api release call
@@ -130,6 +133,26 @@ export default function Home() {
 
 	const sideToggle = (bool) => {
 		appAction.toggleMenu(bool);
+	}
+
+	const swipeHandlers = useSwipeable({
+		delta: 100,
+		swipeDuration: 500,
+
+		onSwipedLeft: () => {
+			sideToggle(false);
+		},
+
+		onSwipedRight: () => {
+			sideToggle(true);
+		}
+	});
+
+	const checkSideBar = () => {
+		// below desktop breakpoint, close sidebar
+		if (window.innerWidth < 700) {
+			appAction.toggleMenu(false);
+		}
 	}
 
 	const openRelease = (media) => {
@@ -195,13 +218,21 @@ export default function Home() {
 
 			q = q.trim().toLowerCase().split(' ');
 
+			if (filters.length === 0 && q[0].length === 0) {
+				loadCollection(allMedia);
+				return;
+			}
+
 			if (q[0].length < 3) {
-				setList(media);
-				setResultCount('');
+				setList([]);
+				setResultCount('Searching...');
 
 				if (filters.length < 1) {
 					return;
 				}
+
+			} else {
+				setCurrentCollection(allMedia);
 			}
 
 			let results = media.filter(item => {
@@ -240,6 +271,8 @@ export default function Home() {
 						return item;
 					}
 				});
+
+				checkSideBar();
 			}
 
 			let resultText = '';
@@ -271,13 +304,18 @@ export default function Home() {
 
 		if (reset === true) {
 			queryField.current.focus();
-			setList(media);
+			// setList(media);
+			loadCollection(allMedia);
 		}
 	}
 
 	const toggleFilter = (filter) => {
 		let list = filters;
 		const index = list.indexOf(filter.value);
+
+		if (currentCollection && currentCollection.id !== 0) {
+			loadCollection(allMedia);
+		}
 
 		if (index > -1) {
 			list.splice(index, 1);
@@ -291,8 +329,8 @@ export default function Home() {
 	}
 
 	const loadCollection = (col) => {
-		clearQuery();
 		let results;
+		clearQuery();
 
 		if (col.id === 0) {
 			// show all
@@ -306,13 +344,15 @@ export default function Home() {
 			});
 		}
 
+		checkSideBar();
+		setCurrentCollection(col.id);
 		setList(results);
-		setResultCount(results.length +' items in '+ col.name);
+		setResultCount(results.length +' items in '+ col.label);
 /*
 		// alternate back-end query
 		api.getCollection(col.id).then(response => {
 			setList(response.result);
-			setResultCount(response.result.length +' items in '+ col.name);
+			setResultCount(response.result.length +' items in '+ col.label);
 		});
 */
 	}
@@ -324,7 +364,7 @@ export default function Home() {
 	}
 
 	return (
-		<div id="page-home">
+		<div id="page-home" {...swipeHandlers}>
 			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
 				<div id="media-filter">
 					<input
@@ -342,9 +382,10 @@ export default function Home() {
 					<div className="heading">Collections</div>
 					{ collections.map(col => {
 						return (
-							<CollectionToggle
+							<FilterToggle
 								key={col.id}
-								collection={col}
+								filter={col}
+								isActive={currentCollection === col.id}
 								onClick={() => loadCollection(col)}
 							/>
 						)
