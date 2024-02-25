@@ -1,3 +1,5 @@
+scripts/deploy.cjs
+
 # dependencies
 /node_modules
 /.pnp
