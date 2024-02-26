@@ -38,7 +38,12 @@ export default function MediaItem({ item, onClick, large }) {
 		<div className={'media'+ (large ? ' large' : '')}>
 			<Cover item={item} onClick={onClick} />
 			<div className="details">
-				<div className="title">{item.title}</div>
+				<div className="title">
+					{item.title}
+					{item.dupes &&
+						<span> ({item.dupes})</span>
+					}
+				</div>
 				<div className="artist">{getArtist()}</div>
 				<div className="year">{getReleaseDate()}</div>
 				{item.series && (item.series.length > 0) &&

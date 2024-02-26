@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="800px" height="800px"
+	 viewBox="0 0 800 800" enable-background="new 0 0 800 800" xml:space="preserve">
+<title>duplicate</title>
+<desc>Created with Sketch Beta.</desc>
+<g id="Page-1" sketch:type="MSPage">
+	<g id="Icon-Set" transform="translate(-204.000000, -931.000000)" sketch:type="MSLayerGroup">
+		<path id="duplicate" sketch:type="MSShapeGroup" fill="#FFFFFF" d="M954,1431c0,27.6-22.4,50-50,50H504c-27.6,0-50-22.4-50-50
+			v-400c0-27.6,22.4-50,50-50h400c27.6,0,50,22.4,50,50V1431L954,1431z M904,931H504c-55.225,0-100,44.775-100,100v400
+			c0,55.225,44.775,100,100,100h400c55.225,0,100-44.775,100-100v-400C1004,975.775,959.225,931,904,931L904,931z M754,1631
+			c0,27.6-22.4,50-50,50H304c-27.6,0-50-22.4-50-50v-400c0-27.6,22.4-50,50-50h50v-50h-50c-55.225,0-100,44.775-100,100v400
+			c0,55.225,44.775,100,100,100h400c55.225,0,100-44.775,100-100v-50h-50V1631L754,1631z"/>
+	</g>
+</g>
+</svg>

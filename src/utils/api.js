@@ -58,3 +58,7 @@ export const getCollection = async (collection_id) => {
 export const clearCache = async () => {
 	return getResult('clearcache');
 };
+
+export const getDupes = async () => {
+	return getResult('feed/dupes');
+}

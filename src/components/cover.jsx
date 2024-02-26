@@ -14,7 +14,7 @@ export default function Cover({ item, onClick }) {
 		className: ''
 	};
 
-	const [ data, setData ] = useState({...defaultData});
+	const [ data, setData ] = useState({ ...defaultData });
 
 	useEffect(() => {
 		if (item) {
@@ -63,6 +63,7 @@ export default function Cover({ item, onClick }) {
 	return (
 		<Fragment>
 				<div
+					title={item.id}
 					className={`cover${data.className}`}
 					style={bgStyle()}
 					onClick={() => { !data.gallery && onClick() }}

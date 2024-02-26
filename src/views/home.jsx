@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import * as api from '../utils/api';
-import { shuffle, delay } from '../utils';
+import { shuffle, delay, scrollTo } from '../utils';
 import ErrorMessage from '../components/errorMessage';
 import Loading from '../components/loading';
 import Success from '../components/success';
@@ -199,9 +199,19 @@ export default function Home() {
 		api.clearCache()
 			.then(response => {
 				// trigger a media reload
+				setList();
 				setMedia();
 				runQuery();
-				triggerSuccess()
+				triggerSuccess();
+			});
+	}
+
+	const getDupes = () => {
+		clearQuery();
+		api.getDupes()
+			.then(response => {
+				setList(response.result);
+				triggerSuccess();
 			});
 	}
 
@@ -294,6 +304,7 @@ export default function Home() {
 
 			setResultCount(resultText);
 			setList(results);
+			scrollTo();
 		}, 500);
 	}
 
@@ -348,6 +359,7 @@ export default function Home() {
 		setCurrentCollection(col.id);
 		setList(results);
 		setResultCount(results.length +' items in '+ col.label);
+		scrollTo();
 /*
 		// alternate back-end query
 		api.getCollection(col.id).then(response => {
@@ -419,6 +431,7 @@ export default function Home() {
 					<button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
 					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
 					<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
+					<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
 				</div>
 			</div>
 
