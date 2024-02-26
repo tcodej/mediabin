@@ -125,7 +125,7 @@ export default function Home() {
 	}, [media]);
 
 	useEffect(() => {
-		if (appState.menuOpen) {
+		if (appState.menuOpen && window.innerWidth >= 700) {
 			queryField.current.focus();
 
 		} else {
@@ -380,7 +380,7 @@ export default function Home() {
 	return (
 		<div id="page-home" {...swipeHandlers}>
 			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
-				<div id="media-filter">
+				<div id="query">
 					<input
 						type="text"
 						id="field-query"
