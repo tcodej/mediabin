@@ -12,7 +12,6 @@ export default function Carousel({ gallery }) {
 	const [ prevClasses, setPrevClasses ] = useState('btn-prev');
 	const [ nextClasses, setNextClasses ] = useState('btn-next');
 	const [ gridView, setGridView ] = useState(false);
-	const [ infoPanel, setInfoPanel ] = useState(false);
 	const [ showControls, setShowControls ] = useState(true);
 	const [ move, setMove ] = useState({
 		active: false,
@@ -87,11 +86,6 @@ export default function Carousel({ gallery }) {
 			setSliderClasses('slide-container is-active grid');
 			slideTo(0);
 		}
-	}
-
-	const onInfoButtonClick = () => {
-		// toggle info panel
-		setInfoPanel(!infoPanel);
 	}
 
 	const onPrevButtonClick = () => {
@@ -223,13 +217,6 @@ export default function Carousel({ gallery }) {
 							onClick={onCarouselButtonClick}
 						>
 							Carousel
-						</button>
-						<button
-							type="button"
-							className="btn-info"
-							onClick={onInfoButtonClick}
-						>
-							Info
 						</button>
 					</div>
 				)}

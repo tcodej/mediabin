@@ -1,12 +1,12 @@
 import { Fragment, useState } from 'react';
 import { importDiscogsRelease } from '../utils/api';
 
-export default function importModal({ onClose, onSuccess }) {
+export default function ImportModal({ onClose, onSuccess }) {
 	const [ releaseID, setReleaseID ] = useState('');
 
 	const importRelease = () => {
 		if (releaseID) {
-			importDiscogsRelease(releaseID).then(response => {
+			importDiscogsRelease(releaseID).then(() => {
 				onSuccess();
 				onClose();
 			});

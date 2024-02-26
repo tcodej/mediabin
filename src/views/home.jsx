@@ -73,6 +73,7 @@ export default function Home() {
 			updateAppState({ menuOpen: true });
 			runQuery();
 		}
+	// eslint-disable-next-line
 	}, [media]);
 
 	useEffect(() => {
@@ -120,6 +121,7 @@ export default function Home() {
 				}
 			});
 		}
+	// eslint-disable-next-line
 	}, [media]);
 
 	useEffect(() => {
@@ -197,7 +199,7 @@ export default function Home() {
 
 	const clearCache = () => {
 		api.clearCache()
-			.then(response => {
+			.then(() => {
 				// trigger a media reload
 				setList();
 				setMedia();

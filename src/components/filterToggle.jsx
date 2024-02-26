@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 
-export default ({ filter, onClick, isActive }) => {
+export default function FilterToggle({ filter, onClick, isActive }) {
 	return (
 		<Fragment>
 			{ filter &&
