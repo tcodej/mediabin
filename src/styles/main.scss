@@ -356,6 +356,18 @@ audio {
     background-image: url('../assets/img/icon-dupes.svg');
     background-size: 18px;
   }
+
+  .btn-filter-mode {
+    // background-size: 18px;
+
+    &.or {
+      background-image: url('../assets/img/icon-or.svg');
+    }
+
+    &.and {
+      background-image: url('../assets/img/icon-and.svg');
+    }
+  }
 }
 
 #filter-list {

@@ -24,6 +24,7 @@ export default function Home() {
 	const [ currentMedia, setCurrentMedia ] = useState();
 	const [ query, setQuery ] = useState('');
 	const [ filters, setFilters ] = useState([]);
+	const [ filterMode, setFilterMode ] = useState('or');
 	const [ resultCount, setResultCount ] = useState('');
 	const [ importOpen, setImportOpen ] = useState(false);
 	const [ collections, setCollections ] = useState([]);
@@ -132,6 +133,13 @@ export default function Home() {
 			queryField.current.blur();
 		}
 	}, [appState.menuOpen]);
+
+	// trigger query refresh if filter mode changes
+	useEffect(() => {
+		if (loaded) {
+			runQuery();
+		}
+	}, [filterMode]);
 
 	const sideToggle = (bool) => {
 		appAction.toggleMenu(bool);
@@ -270,17 +278,31 @@ export default function Home() {
 
 			if (filters.length > 0) {
 				results = results.filter(item => {
-					match = false;
+					match = 0;
 
-					for (var i=0; i<filters.length; i++) {
-						if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
-							match = true;
-							break;
+					if (filterMode === 'or') {
+						for (var i=0; i<filters.length; i++) {
+							if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
+								match = 1;
+								break;
+							}
 						}
-					}
 
-					if (match) {
-						return item;
+						if (match === 1) {
+							return item;
+						}
+
+					} else {
+						// and
+						for (var i=0; i<filters.length; i++) {
+							if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
+								match++;
+							}
+						}
+
+						if (match === filters.length) {
+							return item;
+						}
 					}
 				});
 
@@ -301,7 +323,7 @@ export default function Home() {
 			}
 
 			if (filters.length) {
-				resultText += ` with filters ${filters.join(' or ')}`;
+				resultText += ` with filters ${filters.join(' '+ filterMode +' ')}`;
 			}
 
 			setResultCount(resultText);
@@ -339,6 +361,15 @@ export default function Home() {
 
 		setFilters(list);
 		runQuery();
+	}
+
+	const toggleFilterMode = () => {
+		if (filterMode === 'or') {
+			setFilterMode('and');
+
+		} else {
+			setFilterMode('or');
+		}
 	}
 
 	const loadCollection = (col) => {
@@ -434,6 +465,7 @@ export default function Home() {
 					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
 					<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
 					<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
+					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
 				</div>
 			</div>
 
