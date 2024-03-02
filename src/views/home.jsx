@@ -244,7 +244,7 @@ export default function Home() {
 			}
 
 			if (q[0].length < 3) {
-				setList([]);
+				setList();
 				setResultCount('Searching...');
 
 				if (filters.length < 1) {
@@ -480,11 +480,7 @@ export default function Home() {
 					</div>
 				}
 
-				{ (loaded && !list) &&
-					<div className="logo home">MediaBin</div>
-				}
-
-				{ (list && list.length > 0) &&
+				{ (list && list.length > 0) ?
 					<div className="media-list">
 						{ list.map(item => {
 							return (
@@ -498,6 +494,10 @@ export default function Home() {
 							)
 						})}
 					</div>
+
+					:
+
+					<div className="logo home">MediaBin</div>
 				}
 			</div>
 
