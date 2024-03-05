@@ -402,10 +402,17 @@ export default function Home() {
 */
 	}
 
-	const triggerSuccess = async () => {
-		setSuccessOpen(true);
-		await delay(1000);
-		setSuccessOpen(false);
+	const triggerSuccess = async (resp) => {
+		if (resp) {
+			resp.source = 'discogs';
+			setCurrentMedia(resp);
+			clearCache();
+
+		} else {
+			setSuccessOpen(true);
+			await delay(1000);
+			setSuccessOpen(false);
+		}
 	}
 
 	return (

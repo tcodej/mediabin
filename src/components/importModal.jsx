@@ -6,8 +6,8 @@ export default function ImportModal({ onClose, onSuccess }) {
 
 	const importRelease = () => {
 		if (releaseID) {
-			importDiscogsRelease(releaseID).then(() => {
-				onSuccess();
+			importDiscogsRelease(releaseID).then((resp) => {
+				onSuccess(resp.response);
 				onClose();
 			});
 		}
