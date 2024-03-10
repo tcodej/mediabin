@@ -80,7 +80,6 @@ export default function Home() {
 		if (collections) {
 			if (id) {
 				const col = getItemByKey(collections, id);
-				console.log(col, collections);
 				loadCollection(col);
 			}
 		}

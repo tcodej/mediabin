@@ -23,6 +23,15 @@ export default function Carousel({ gallery }) {
 
 	let [current, setCurrent] = useState(0);
 
+	const [ moreImages, setMoreImages ] = useState(false);
+
+	// set max length to 5 until or if I decide to lazy load images
+	// all images can still be viewed directly on discogs
+	if (gallery.images.length > 5) {
+		setMoreImages(gallery.images.length);
+		gallery.images.length = 5;
+	}
+
 	const onKeyDown = (e) => {
 		if (gridView) {
 			return;
@@ -230,7 +239,7 @@ export default function Carousel({ gallery }) {
 						>
 							Previous
 						</button>
-						<div className="counter">{current+1} / {total}</div>
+						<div className="counter">{current+1} / {total}{moreImages ? '*' : ''}</div>
 						<button
 							type="button"
 							className={nextClasses}
