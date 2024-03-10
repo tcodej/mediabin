@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import * as api from '../utils/api';
-import { shuffle, delay, scrollTo } from '../utils';
+import { shuffle, delay, scrollTo, getItemByKey } from '../utils';
 import ErrorMessage from '../components/errorMessage';
 import Loading from '../components/loading';
 import Success from '../components/success';
@@ -13,7 +13,8 @@ import ImportModal from '../components/importModal';
 import FilterToggle from '../components/filterToggle';
 
 export default function Home() {
-	const params = useParams();
+	const { id, queryParam } = useParams();
+	const navigate = useNavigate();
 	const queryField = useRef(null);
 	const timer = useRef(null);
 	const { appState, updateAppState, appAction } = useAppContext();
@@ -27,7 +28,7 @@ export default function Home() {
 	const [ filterMode, setFilterMode ] = useState('or');
 	const [ resultCount, setResultCount ] = useState('');
 	const [ importOpen, setImportOpen ] = useState(false);
-	const [ collections, setCollections ] = useState([]);
+	const [ collections, setCollections ] = useState();
 
 	// default collection of 'all media'
 	const allMedia = { id: 0, label: 'All Media' };
@@ -66,16 +67,25 @@ export default function Home() {
 		{ value: 'Paperback', label: 'Paperback' }
 	];
 
-	const queryParam = params['*'];
-
 	useEffect(() => {
-		if (media && queryParam) {
-			queryField.current.value = queryParam;
-			updateAppState({ menuOpen: true });
-			runQuery();
+		if (media) {
+			if (queryParam) {
+				queryField.current.value = queryParam;
+				updateAppState({ menuOpen: true });
+				runQuery();
+			}
+		}
+
+			// collection id
+		if (collections) {
+			if (id) {
+				const col = getItemByKey(collections, id);
+				console.log(col, collections);
+				loadCollection(col);
+			}
 		}
 	// eslint-disable-next-line
-	}, [media]);
+	}, [media, collections]);
 
 	useEffect(() => {
 		if (!media) {
@@ -91,7 +101,7 @@ export default function Home() {
 					}
 
 					api.getCollections().then(respCol => {
-						setCollections([ allMedia, ...respCol.result]);
+						setCollections([ allMedia, ...respCol.result ]);
 					});
 /*					
 					// use this async loop to populate data from each discogs api release call
@@ -139,6 +149,7 @@ export default function Home() {
 		if (loaded) {
 			runQuery();
 		}
+	// eslint-disable-next-line
 	}, [filterMode]);
 
 	const sideToggle = (bool) => {
@@ -279,9 +290,10 @@ export default function Home() {
 			if (filters.length > 0) {
 				results = results.filter(item => {
 					match = 0;
+					let i=0;
 
 					if (filterMode === 'or') {
-						for (var i=0; i<filters.length; i++) {
+						for (i=0; i<filters.length; i++) {
 							if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
 								match = 1;
 								break;
@@ -294,7 +306,7 @@ export default function Home() {
 
 					} else {
 						// and
-						for (var i=0; i<filters.length; i++) {
+						for (i=0; i<filters.length; i++) {
 							if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
 								match++;
 							}
@@ -328,6 +340,7 @@ export default function Home() {
 
 			setResultCount(resultText);
 			setList(results);
+			navigate(`/${q.join(' ')}`);
 			scrollTo();
 		}, 500);
 	}
@@ -336,6 +349,7 @@ export default function Home() {
 		setQuery('');
 		setFilters([]);
 		setResultCount('');
+		navigate('/');
 
 		if (reset === true) {
 			queryField.current.focus();
@@ -392,6 +406,11 @@ export default function Home() {
 		setCurrentCollection(col.id);
 		setList(results);
 		setResultCount(results.length +' items in '+ col.label);
+
+		if (col.id) {
+			navigate(`/collection/${col.id}`);
+		}
+
 		scrollTo();
 /*
 		// alternate back-end query
@@ -432,7 +451,7 @@ export default function Home() {
 				</div>
 				<div id="filter-list">
 					<div className="heading">Collections</div>
-					{ collections.map(col => {
+					{ collections && collections.map(col => {
 						return (
 							<FilterToggle
 								key={col.id}

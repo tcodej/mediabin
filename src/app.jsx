@@ -17,7 +17,8 @@ export default function App() {
 				<div id="container">
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/*" element={<Home />} />
+						<Route path="/collection/:id" element={<Home />} />
+						<Route path="/:queryParam" element={<Home />} />
 					</Routes>
 				</div>
 			</BrowserRouter>
