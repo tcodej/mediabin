@@ -123,6 +123,35 @@ header {
   }
 }
 
+select {
+  appearance: none;
+  border: 1px solid $black;
+  padding: 5px;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: url('../assets/img/icon-down.svg');
+  background-position: right 5px center;
+  background-repeat: no-repeat;
+  background-size: 10px;
+
+  &:hover {
+    border: 1px solid $d-gray;
+  }
+}
+
+option {
+  color: $black;
+
+  &:hover {
+    background-color: $blue;
+  }
+}
+
 .btn-menu {
   position: relative;
   width: 50px;

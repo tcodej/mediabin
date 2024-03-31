@@ -1,7 +1,8 @@
 import { Fragment, useState, useEffect } from 'react';
 import MediaItem from '../components/mediaItem';
+import { updateReleaseCollection } from '../utils/api';
 
-export default function ReleaseModal({ item, onClose }) {
+export default function ReleaseModal({ item, collections, onClose }) {
 	const [scrollY, setScrollY] = useState(0);
 
 	useEffect(() => {
@@ -36,6 +37,10 @@ export default function ReleaseModal({ item, onClose }) {
 		window.open(url, '_mediainfo');
 	}
 
+	const saveItemCollection = (e) => {
+		updateReleaseCollection(item.id, e.target.value);
+	}
+
 	return (
 		<Fragment>
 		{ item &&
@@ -47,6 +52,21 @@ export default function ReleaseModal({ item, onClose }) {
 						onClick={openInfoPage}
 						large
 					/>
+
+					{ collections &&
+						<select
+							defaultValue={item.collection_id}
+							onChange={saveItemCollection}
+						>
+							{collections.map(col => {
+								return (
+									<option key={col.id} value={col.id}>
+										{col.label}
+									</option>
+								)
+							})}
+						</select>
+					}
 
 					{ (item.notes) &&
 						<p>{item.notes}</p>

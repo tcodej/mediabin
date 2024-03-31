@@ -183,6 +183,7 @@ export default function Home() {
 				response.source = media.source;
 				response.released = media.released;
 				response.format = media.format;
+				response.collection_id = media.collection_id;
 
 				setCurrentMedia(response);
 			});
@@ -386,6 +387,10 @@ export default function Home() {
 	}
 
 	const loadCollection = (col) => {
+		if (!media) {
+			return;
+		}
+
 		let results;
 		clearQuery();
 
@@ -528,6 +533,7 @@ export default function Home() {
 
 			<ReleaseModal
 				item={currentMedia}
+				collections={collections}
 				onClose={closeRelease}
 			/>
 

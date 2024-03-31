@@ -5,7 +5,7 @@
   "description": "A front end GUI for browsing my physical media collection served from the MediaBin server.",
   "type": "module",
   "scripts": {
-    "dev": "stmux -w always -e ERROR -m beep,system -- [ [ \"vite\" : \"cd ../library-server && npm run dev\" ] ]",
+    "dev": "stmux -w always -e ERROR -m beep,system -M -- [ [ \"vite\" : \"cd ../library-server && npm run dev\" ] ]",
     "dev-solo": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",

@@ -6,14 +6,11 @@ const getResult = async (endpoint, postData) => {
 	};
 
 	if (postData) {
-		let formData = new FormData();
 		data.method = 'POST';
-
-		for (const [key, value] of Object.entries(postData)) {
-			formData.append(key, value);
-		}
-
-		data.body = formData;
+		data.headers = {
+			'Content-Type': 'application/json'
+		};
+		data.body = JSON.stringify(postData);
 	}
 
 	try {
@@ -61,4 +58,8 @@ export const clearCache = async () => {
 
 export const getDupes = async () => {
 	return getResult('feed/dupes');
+}
+
+export const updateReleaseCollection = async (release_id, col_id) => {
+	return getResult(`updateReleaseCollection/${release_id}`, { collection_id: col_id });
 }
