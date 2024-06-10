@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
@@ -17,6 +17,7 @@ export default function Home() {
 	const navigate = useNavigate();
 	const queryField = useRef(null);
 	const timer = useRef(null);
+	const observer = useRef();
 	const { appState, updateAppState, appAction } = useAppContext();
 	const [ loaded, setLoaded ] = useState(false);
 	const [ successOpen, setSuccessOpen ] = useState(false);
@@ -29,6 +30,8 @@ export default function Home() {
 	const [ resultCount, setResultCount ] = useState('');
 	const [ importOpen, setImportOpen ] = useState(false);
 	const [ collections, setCollections ] = useState();
+	const [ page, setPage ] = useState(1);
+	const pageSize = 100;
 
 	// default collection of 'all media'
 	const allMedia = { id: 0, label: 'All Media' };
@@ -408,6 +411,7 @@ export default function Home() {
 
 		checkSideBar();
 		setCurrentCollection(col.id);
+		setPage(1);
 		setList(results);
 		setResultCount(results.length +' items in '+ col.label);
 
@@ -437,6 +441,61 @@ export default function Home() {
 			setSuccessOpen(false);
 		}
 	}
+
+	// load paginated list
+	const renderList = () => {
+		const items = [...list];
+
+		// clip to current page
+		if (pageSize * page > list.length) {
+			items.length = list.length;
+
+		} else {
+			items.length = pageSize * page;
+		}
+
+		const mediaItems = items.map(item => {
+			return (
+				<MediaItem
+					key={item.id}
+					item={item}
+					onClick={() => {
+						openRelease(item)
+					}}
+				/>
+			)
+		});
+
+		if (items.length < list.length) {
+			mediaItems.push(
+				<div
+					ref={loadMore}
+					id="load-more"
+					key="load-more"
+				>
+					Loading...
+				</div>
+			);
+		}
+
+		return mediaItems;
+	}
+
+	const loadMore = useCallback(node => {
+		if (observer.current) {
+			observer.current.disconnect();
+		}
+
+		observer.current = new IntersectionObserver(entries => {
+			if (entries[0].isIntersecting) {
+				setPage(prevPage => prevPage + 1);
+			}
+		});
+
+		if (node) {
+			observer.current.observe(node);
+		}
+	}, []);
 
 	return (
 		<div id="page-home" {...swipeHandlers}>
@@ -512,17 +571,7 @@ export default function Home() {
 
 				{ (list && list.length > 0) ?
 					<div className="media-list">
-						{ list.map(item => {
-							return (
-								<MediaItem
-									key={item.id}
-									item={item}
-									onClick={() => {
-										openRelease(item)
-									}}
-								/>
-							)
-						})}
+						{ renderList() }
 					</div>
 
 					:
