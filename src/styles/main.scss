@@ -123,6 +123,10 @@ header {
   }
 }
 
+label {
+  margin-right: 10px;
+}
+
 select {
   appearance: none;
   border: 1px solid $black;
@@ -579,13 +583,24 @@ audio {
   }
 }
 
-#result-count {
+#utility-bar {
+  position: sticky;
+  top: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 0 20px;
+  gap: 20px;
   font-size: 16px;
   font-weight: $reg;
+  text-align: left;
+  height: 50px;
+  padding: 0 20px;
+  z-index: 10;
+  background-color: $d-gray;
+}
+
+#result-count {
+  // padding: 20px 20px 0 20px;
 }
 
 .media-list {
@@ -717,4 +732,69 @@ audio {
 
 #load-more {
   width: 100%;
+}
+
+.dropdown {
+  @extend .no-select;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
+  z-index: 5;
+  min-width: 150px;
+
+  &.is-active {
+    z-index: 6;
+  }
+
+  .dropdown-trigger {
+    width: 100%;
+    height: $select-height;
+    line-height: $select-height;
+    border: 1px solid $black;
+    padding: 0 30px 0 6px;
+    background: url(../assets/img/icon-down.svg) center right 10px no-repeat $white;
+    background-size: 15px;
+    color: $black;
+  }
+
+  .dropdown-list {
+    position: absolute;
+    width: 100%;
+    top: $select-height;
+    left: 0;
+    border: 1px solid $black;
+    border-top: none;
+    color: $black;
+    background-color: $white;
+    max-height: 300px;
+    overflow-y: auto;
+
+    input {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid $gray;
+      margin: 0;
+    }
+
+    li {
+      height: $select-height;
+      line-height: $select-height;
+      padding: 0 6px;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+
+      &:hover {
+        background-color: $l-gray;
+      }
+
+      &.is-active {
+        background-color: $gray;
+        color: $white;
+      }
+    }
+  }
 }

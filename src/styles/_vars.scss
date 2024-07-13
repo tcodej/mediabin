@@ -34,6 +34,7 @@ $bold: 600;
 
 $header-height: 50px;
 $box-margin: 20px;
+$select-height: 30px;
 
 @mixin transform($transforms) {
 	-webkit-transform: $transforms;

@@ -3,14 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import * as api from '../utils/api';
-import { shuffle, delay, scrollTo, getItemByKey } from '../utils';
+import { shuffle, delay, scrollTo, getItemByKey, sort } from '../utils';
 import ErrorMessage from '../components/errorMessage';
-import Loading from '../components/loading';
-import Success from '../components/success';
-import MediaItem from '../components/mediaItem';
-import ReleaseModal from '../components/releaseModal';
-import ImportModal from '../components/importModal';
-import FilterToggle from '../components/filterToggle';
+import {
+	FilterToggle,
+	ImportModal,
+	Loading,
+	MediaItem,
+	ReleaseModal,
+	Success,
+	Select
+} from '../components';
 
 export default function Home() {
 	const { id, queryParam } = useParams();
@@ -31,6 +34,8 @@ export default function Home() {
 	const [ importOpen, setImportOpen ] = useState(false);
 	const [ collections, setCollections ] = useState();
 	const [ page, setPage ] = useState(1);
+	const [ currentSort, setCurrentSort ] = useState();
+
 	const pageSize = 100;
 
 	// default collection of 'all media'
@@ -497,6 +502,23 @@ export default function Home() {
 		}
 	}, []);
 
+	const sortBy = (option) => {
+		if (!option) {
+			if (currentSort) {
+				option = currentSort;
+
+			} else {
+				return;
+			}
+
+		} else {
+			setCurrentSort(option);
+		}
+
+		setList(prevVals => sort([...prevVals], option.value));
+	};
+
+
 	return (
 		<div id="page-home" {...swipeHandlers}>
 			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
@@ -564,8 +586,26 @@ export default function Home() {
 				}
 
 				{ resultCount &&
-					<div id="result-count">
-						{resultCount}
+					<div id="utility-bar">
+						<div id="result-count">
+							{resultCount}
+						</div>
+
+
+						<div className="sort-controls">
+							<label>Sort by</label>
+							<Select
+								placeholder="Sort by..."
+								onSelect={option => sortBy(option)}
+								options={[
+									{ label: 'Release Date', value: 'released' },
+									{ label: 'Title', value: 'title' },
+									{ label: 'Type', value: 'format' }
+								]}
+							/>
+						</div>
+
+
 					</div>
 				}
 
