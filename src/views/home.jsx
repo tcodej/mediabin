@@ -252,6 +252,9 @@ export default function Home() {
 
 		setQuery(q);
 
+		// reset sort
+		sortBy('reset');
+
 		timer.current = window.setTimeout(() => {
 			window.clearTimeout(timer.current);
 
@@ -358,6 +361,7 @@ export default function Home() {
 		setFilters([]);
 		setResultCount('');
 		navigate('/');
+		sortBy('reset');
 
 		if (reset === true) {
 			queryField.current.focus();
@@ -503,6 +507,11 @@ export default function Home() {
 	}, []);
 
 	const sortBy = (option) => {
+		if (option === 'reset') {
+			setCurrentSort(false);
+			return;
+		}
+
 		if (!option) {
 			if (currentSort) {
 				option = currentSort;
@@ -597,6 +606,7 @@ export default function Home() {
 							<Select
 								placeholder="Sort by..."
 								onSelect={option => sortBy(option)}
+								reset={currentSort === false}
 								options={[
 									{ label: 'Release Date', value: 'released' },
 									{ label: 'Title', value: 'title' },

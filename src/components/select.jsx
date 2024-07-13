@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect, useRef } from 'react';
-// import { useClickOutside } from 'use-events';
+import { useClickOutside } from 'use-events';
 
-export default function Select({ placeholder, options, onSelect, search, ...props }) {
+export default function Select({ placeholder, options, onSelect, search, reset, ...props }) {
 	if (!placeholder) {
 		placeholder = 'Select...';
 	}
@@ -46,7 +46,14 @@ export default function Select({ placeholder, options, onSelect, search, ...prop
 		}
 	}, []);
 
-	// useClickOutside([elt], () => toggleDropdown(false));
+	useEffect(() => {
+		console.log(reset);
+		if (reset === true) {
+			setSelected(defaultValue);
+		}
+	}, [reset]);
+
+	useClickOutside([elt], () => toggleDropdown(false));
 
 	const toggleDropdown = (force) => {
 		if (typeof force === 'boolean') {
