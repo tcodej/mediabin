@@ -632,11 +632,13 @@ audio {
     }
   }
 
-  .link-info {
+  .link-info, .link-import, .link-checked {
+    @extend .no-text;
     display: inline-block;
     cursor: pointer;
-    padding-right: 22px;
-    background-position: right center;
+    width: 25px;
+    height: 25px;
+    background-position: center;
     background-size: 20px;
     background-repeat: no-repeat;
     background-image: url('../assets/img/icon-link.svg');
@@ -644,6 +646,15 @@ audio {
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  .link-import {
+    background-image: url('../assets/img/icon-import.svg');
+    background-size: 18px;
+  }
+
+  .link-checked {
+    background-image: url('../assets/img/icon-success.svg');
   }
 
   img {
