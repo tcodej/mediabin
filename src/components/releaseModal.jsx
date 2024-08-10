@@ -74,7 +74,7 @@ export default function ReleaseModal({ item, collections, onClose }) {
 
 					{ item.source === 'discogs' &&
 						<div className="track-list">
-							{ item.tracklist.map((track, index) => {
+							{ item.tracklist?.map((track, index) => {
 								if (track.type_ === 'heading') {
 									return <div key={`heading-${index}`} className="track heading">{track.title}</div>
 								}

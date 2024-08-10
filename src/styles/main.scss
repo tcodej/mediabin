@@ -675,13 +675,14 @@ audio {
 }
 
 #error-message {
-  @extend .center;
+  @extend .center-x;
+  top: 50px;
   color: $black;
   width: 300px;
   background-color: $blue;
   padding: 30px;
   box-shadow: 0 10px 12px -6px $shadow, 0 -6px 6px 0 $shadow;
-  z-index: 10;
+  z-index: 30;
 }
 
 .button {

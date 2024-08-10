@@ -193,6 +193,13 @@ export default function Home() {
 				response.format = media.format;
 				response.collection_id = media.collection_id;
 
+				// discogs api is down
+				if (response.error === true) {
+					console.log(media);
+					response = {...response, ...media};
+					updateAppState({ error: response.message });
+				}
+
 				setCurrentMedia(response);
 			});
 		}

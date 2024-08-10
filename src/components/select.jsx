@@ -47,7 +47,6 @@ export default function Select({ placeholder, options, onSelect, search, reset, 
 	}, []);
 
 	useEffect(() => {
-		console.log(reset);
 		if (reset === true) {
 			setSelected(defaultValue);
 		}
