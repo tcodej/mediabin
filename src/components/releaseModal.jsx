@@ -19,7 +19,6 @@ export default function ReleaseModal({ item, collections, onClose }) {
 			window.scrollTo(0, scrollY);
 		}
 	// including scrollY below makes the page scroll to 0 which is unwanted
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [item]);
 
 	const openInfoPage = () => {

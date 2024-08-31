@@ -52,7 +52,6 @@ export default function Cover({ item, onClick }) {
 			newData.alt = item.album ? item.album : 'Media Cover';
 			setData(newData);
 		}
-	// eslint-disable-next-line
 	}, [item]);
 
 	const bgStyle = () => {

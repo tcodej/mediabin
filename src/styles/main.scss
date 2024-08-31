@@ -355,7 +355,7 @@ audio {
   position: absolute;
   bottom: 0;
   width: 100%;
-  box-shadow: 0 10px 12px -6px $black, 0 -6px 6px 0 $shadow;
+  box-shadow: 0 -6px 6px 0 $shadow;
 
   button {
     @extend .no-text;
@@ -595,12 +595,15 @@ audio {
   text-align: left;
   height: 50px;
   padding: 0 20px;
-  z-index: 10;
+  z-index: 9;
   background-color: $d-gray;
+  box-shadow: 0 10px 12px -6px $shadow
 }
 
 #result-count {
-  // padding: 20px 20px 0 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .media-list {
@@ -753,7 +756,7 @@ audio {
   cursor: pointer;
   white-space: nowrap;
   z-index: 5;
-  min-width: 150px;
+  min-width: 120px;
 
   &.is-active {
     z-index: 6;

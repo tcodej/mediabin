@@ -91,7 +91,6 @@ export default function Home() {
 				loadCollection(col);
 			}
 		}
-	// eslint-disable-next-line
 	}, [media, collections]);
 
 	useEffect(() => {
@@ -139,7 +138,6 @@ export default function Home() {
 				}
 			});
 		}
-	// eslint-disable-next-line
 	}, [media]);
 
 	useEffect(() => {
@@ -156,7 +154,6 @@ export default function Home() {
 		if (loaded) {
 			runQuery();
 		}
-	// eslint-disable-next-line
 	}, [filterMode]);
 
 	const sideToggle = (bool) => {
@@ -607,15 +604,13 @@ export default function Home() {
 							{resultCount}
 						</div>
 
-
 						<div className="sort-controls">
-							<label>Sort by</label>
 							<Select
 								placeholder="Sort by..."
 								onSelect={option => sortBy(option)}
 								reset={currentSort === false}
 								options={[
-									{ label: 'Release Date', value: 'released' },
+									{ label: 'Date', value: 'released' },
 									{ label: 'Title', value: 'title' },
 									{ label: 'Type', value: 'format' }
 								]}

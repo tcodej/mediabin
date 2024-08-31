@@ -60,8 +60,6 @@ export default function Carousel({ gallery }) {
 		} else {
 			slideTo(0);
 		}
-
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [total]);
 
 	useEffect(() => {
@@ -70,8 +68,6 @@ export default function Carousel({ gallery }) {
 		return () => {
 			document.removeEventListener('keydown', onKeyDown);
 		};
-
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [gridView]);
 
 	const updateMove = (newVals) => {

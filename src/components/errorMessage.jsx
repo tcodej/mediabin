@@ -10,7 +10,6 @@ export default function ErrorMessage() {
 
 	useEffect(() => {
 		updateAppState({ menuOpen: false });
-	// eslint-disable-next-line
 	}, [appState.error]);
 
 	return (
