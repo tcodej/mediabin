@@ -189,6 +189,7 @@ export default function Home() {
 				response.released = media.released;
 				response.format = media.format;
 				response.collection_id = media.collection_id;
+				response.wantlist = media.wantlist;
 
 				// discogs api is down
 				if (response.error === true) {
@@ -416,7 +417,7 @@ export default function Home() {
 
 		} else {
 			results = media.filter(item => {
-				if (item.collection_id === col.id) {
+				if (item.collection_id === col.id && item.wantlist !== '1') {
 					return item;
 				}
 			});
@@ -531,6 +532,22 @@ export default function Home() {
 		setList(prevVals => sort([...prevVals], option.value));
 	};
 
+	const loadWantlist = () => {
+		api.getWantlist().then(response => {
+			if (response.result) {
+				if (Array.isArray(response.result)) {
+					setList(response.result);
+
+				} else {
+					setList([response.result]);
+				}
+
+			} else {
+				setList(false);
+			}
+		});
+	}
+
 
 	return (
 		<div id="page-home" {...swipeHandlers}>
@@ -559,6 +576,7 @@ export default function Home() {
 							/>
 						)
 					})}
+					<div className="toggle wantlist" onClick={loadWantlist}>Wantlist</div>
 
 					<div className="heading">Media Formats</div>
 					{ formats.map(format => {

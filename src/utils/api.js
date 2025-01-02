@@ -69,3 +69,11 @@ export const getDupes = async () => {
 export const updateReleaseCollection = async (release_id, col_id) => {
 	return getResult(`updateReleaseCollection/${release_id}`, { collection_id: col_id });
 }
+
+export const getWantlist = async () => {
+	return getResult('feed/wantlist');
+}
+
+export const updateWantlist = async (id, val) => {
+	return getResult(`updateWantlist/${id}`, { wantlist: val });
+}

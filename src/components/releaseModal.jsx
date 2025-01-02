@@ -1,9 +1,10 @@
 import { Fragment, useState, useEffect } from 'react';
 import MediaItem from '../components/mediaItem';
-import { updateReleaseCollection } from '../utils/api';
+import { updateReleaseCollection, updateWantlist } from '../utils/api';
 
 export default function ReleaseModal({ item, collections, onClose }) {
 	const [scrollY, setScrollY] = useState(0);
+	const [wantlist, setWantlist] = useState('0');
 
 	useEffect(() => {
 		const root = document.getElementById('root');
@@ -13,6 +14,7 @@ export default function ReleaseModal({ item, collections, onClose }) {
 			root.style.top = `-${window.scrollY}px`;
 			root.classList.add('is-fixed');
 			window.scrollTo(0, 0);
+			setWantlist(item.wantlist);
 
 		} else {
 			root.classList.remove('is-fixed');
@@ -40,6 +42,12 @@ export default function ReleaseModal({ item, collections, onClose }) {
 		updateReleaseCollection(item.id, e.target.value);
 	}
 
+	const toggleWantlist = () => {
+		const newVal = wantlist === '1' ? '0' : '1';
+		setWantlist(newVal);
+		updateWantlist(item.id, newVal);
+	}
+
 	return (
 		<Fragment>
 		{ item &&
@@ -52,20 +60,27 @@ export default function ReleaseModal({ item, collections, onClose }) {
 						large
 					/>
 
-					{ collections &&
-						<select
-							defaultValue={item.collection_id}
-							onChange={saveItemCollection}
-						>
-							{collections.map(col => {
-								return (
-									<option key={col.id} value={col.id}>
-										{col.label}
-									</option>
-								)
-							})}
-						</select>
-					}
+					<div id="release-bar">
+						{ collections &&
+							<select
+								defaultValue={item.collection_id}
+								onChange={saveItemCollection}
+							>
+								{ collections.map(col => {
+									return (
+										<option key={col.id} value={col.id}>
+											{col.label}
+										</option>
+									)
+								})}
+							</select>
+						}
+
+						<div id="toggle-wantlist" className={wantlist === '1' ? 'is-active' : ''} onClick={toggleWantlist}>
+							{wantlist === '1' ? 'Remove from wantlist' : 'Add to wantlist'}
+						</div>
+					</div>
+
 
 					{ (item.notes) &&
 						<p>{item.notes}</p>
