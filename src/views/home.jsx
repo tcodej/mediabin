@@ -536,6 +536,7 @@ export default function Home() {
 		api.getWantlist().then(response => {
 			if (response.result) {
 				if (Array.isArray(response.result)) {
+					sort(response.result, 'artist', true);
 					setList(response.result);
 
 				} else {
@@ -547,7 +548,6 @@ export default function Home() {
 			}
 		});
 	}
-
 
 	return (
 		<div id="page-home" {...swipeHandlers}>
