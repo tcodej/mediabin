@@ -543,6 +543,8 @@ export default function Home() {
 					setList([response.result]);
 				}
 
+				checkSideBar();
+
 			} else {
 				setList(false);
 			}
