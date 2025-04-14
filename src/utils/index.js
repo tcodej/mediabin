@@ -1,7 +1,7 @@
 /**
  * Helper function to sort an array of objects by chosen key
  */
-export const sort = (arr, key, ignoreThe) => {
+export const sort = (arr, key, ignoreThe, order) => {
 	try {
 		arr.sort(function(a, b) {
 			if (key) {
@@ -14,12 +14,23 @@ export const sort = (arr, key, ignoreThe) => {
 				b = noThe(b);
 			}
 
-			if (a.toLowerCase() < b.toLowerCase()) {
-				return -1;
-			}
+			if (order === 'DESC') {
+				if (a.toLowerCase() < b.toLowerCase()) {
+					return 1;
+				}
 
-			if (a.toLowerCase() > b.toLowerCase()) {
-				return 1;
+				if (a.toLowerCase() > b.toLowerCase()) {
+					return -1;
+				}
+
+			} else {
+				if (a.toLowerCase() < b.toLowerCase()) {
+					return -1;
+				}
+
+				if (a.toLowerCase() > b.toLowerCase()) {
+					return 1;
+				}
 			}
 
 			return 0;

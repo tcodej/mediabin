@@ -529,7 +529,7 @@ export default function Home() {
 			setCurrentSort(option);
 		}
 
-		setList(prevVals => sort([...prevVals], option.value));
+		setList(prevVals => sort([...prevVals], option.value, false, option.order));
 	};
 
 	const loadWantlist = () => {
@@ -627,12 +627,14 @@ export default function Home() {
 						<div className="sort-controls">
 							<Select
 								placeholder="Sort by..."
-								onSelect={option => sortBy(option)}
+								onSelect={sortBy}
 								reset={currentSort === false}
 								options={[
+									{ label: 'Artist', value: 'artist' },
 									{ label: 'Date', value: 'released' },
 									{ label: 'Title', value: 'title' },
-									{ label: 'Type', value: 'format' }
+									{ label: 'Type', value: 'format' },
+									{ label: 'Date Added', value: 'date_created', order: 'DESC' }
 								]}
 							/>
 						</div>
