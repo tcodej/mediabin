@@ -1,19 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Sono:wght@200;600&display=swap');
+@use '_reset.scss';
+@use '_vars.scss';
+@use 'loading.scss';
 
-@import '_reset.scss';
-@import '_vars.scss';
-@import 'loading.scss';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Sono:wght@200;600&display=swap');
 
 html, body {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - $header-height);
-  background-color: $d-gray;
-  font-family: $font-body;
-  font-weight: $reg;
+  min-height: calc(100vh - vars.$header-height);
+  background-color: vars.$d-gray;
+  font-family: vars.$font-body;
+  font-weight: vars.$reg;
   font-size: 14px;
   text-align: left;
-  color: $l-gray;
+  color: vars.$l-gray;
 }
 
 #root {
@@ -35,17 +35,17 @@ html, body {
   height: 100%;
   padding: 0 30px;
   width: 100%;
-  max-width: $bp-large;
+  max-width: vars.$bp-large;
   margin: 0 auto;
 
-  @media screen and (max-width: $bp-mobile-sm) {
+  @media screen and (max-width: vars.$bp-mobile-sm) {
     padding: 0 10px;
   }
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-header;
-  font-weight: $light;
+  font-family: vars.$font-header;
+  font-weight: vars.$light;
   text-transform: uppercase;
 }
 
@@ -59,17 +59,17 @@ h2 {
   margin-top: -5px;
 
   span {
-    color: $gray;
-    font-weight: $light;
+    color: vars.$gray;
+    font-weight: vars.$light;
   }
 
-  @media screen and (max-width: $bp-mobile) {
+  @media screen and (max-width: vars.$bp-mobile) {
     font-size: 35px;
     line-height: 35px;
     margin-top: -2px;
   }
 
-  @media screen and (max-width: $bp-mobile-sm) {
+  @media screen and (max-width: vars.$bp-mobile-sm) {
     font-size: 25px;
     line-height: 25px;
     margin-top: -2px;
@@ -84,7 +84,7 @@ h3 {
 h4 {
   font-size: 20px;
   line-height: 24px;
-  color: $blue;
+  color: vars.$blue;
 }
 
 h5 {
@@ -100,21 +100,21 @@ header {
   position: sticky;
   top: 0;
   left: 0;
-  height: $header-height;
+  height: vars.$header-height;
   width: 100%;
-  color: $l-gray;
-  background-color: $black;
+  color: vars.$l-gray;
+  background-color: vars.$black;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   h1 {
-    color: $l-gray;
+    color: vars.$l-gray;
     font-size: 18px;
 
     span {
-      color: $blue;
+      color: vars.$blue;
     }
   }
 
@@ -129,7 +129,7 @@ label {
 
 select {
   appearance: none;
-  border: 1px solid $black;
+  border: 1px solid vars.$black;
   padding: 5px;
   margin: 0;
   font-family: inherit;
@@ -144,15 +144,15 @@ select {
   background-size: 10px;
 
   &:hover {
-    border: 1px solid $d-gray;
+    border: 1px solid vars.$d-gray;
   }
 }
 
 option {
-  color: $black;
+  color: vars.$black;
 
   &:hover {
-    background-color: $blue;
+    background-color: vars.$blue;
   }
 }
 
@@ -167,10 +167,10 @@ option {
     position: absolute;
     height: 2px;
     width: 20px;
-    background: $l-gray;
+    background: vars.$l-gray;
     left: 15px;
 
-    @include transform(rotate(0deg));
+    @include vars.transform(rotate(0deg));
     transition: 75ms ease-in-out;
 
     &:nth-child(1) {
@@ -199,13 +199,13 @@ option {
     }
 
     span:nth-child(2) {
-      @include transform(rotate(45deg));
+      @include vars.transform(rotate(45deg));
       width: 20px;
       left: 15px;
     }
 
     span:nth-child(3) {
-      @include transform(rotate(-45deg));
+      @include vars.transform(rotate(-45deg));
       top: 24px;
       width: 20px;
       left: 15px;
@@ -220,13 +220,13 @@ a {
 .flex {
   display: flex;
   flex-wrap: wrap;
-  gap: $box-margin;
+  gap: vars.$box-margin;
 }
 
 button {
   @extend .no-select;
   position: relative;
-  color: $l-gray;
+  color: vars.$l-gray;
   font-size: 16px;
   text-align: center;
   border: none;
@@ -235,13 +235,13 @@ button {
 
 p, pre, code {
   margin: 10px 0;
-  font-family: $font-body;
-  font-weight: $ex-light;
+  font-family: vars.$font-body;
+  font-weight: vars.$ex-light;
   font-size: 16px;
 }
 
 strong {
-  font-weight: $reg;
+  font-weight: vars.$reg;
 }
 
 .logo {
@@ -268,7 +268,7 @@ audio {
 }
 
 #container { 
-  // margin-top: $header-height;
+  // margin-top: vars.$header-height;
   min-width: 320px;
 }
 
@@ -300,35 +300,35 @@ audio {
 /* ----- HOME BROWSE VIEW ----- */
 
 #page-home {
-  // height: calc(100vh - $header-height);
+  // height: calc(100vh - vars.$header-height);
   // overflow: hidden;
 }
 
 #side-panel {
   @extend .no-select;
   position: fixed;
-  top: $header-height;
+  top: vars.$header-height;
   bottom: 0;
   left: -300px;
   width: 300px;
-  background-color: $d-gray;
+  background-color: vars.$d-gray;
   z-index: 10;
-  box-shadow: 0 10px 12px -6px $black, 0 -6px 6px 0 $shadow;
+  box-shadow: 0 10px 12px -6px vars.$black, 0 -6px 6px 0 vars.$shadow;
   transition: left 150ms ease-out;
 
   &.is-open {
-    @media screen and (max-width: $bp-mobile-sm) {
+    left: 0;
+
+    @media screen and (max-width: vars.$bp-mobile-sm) {
       width: 100%;
     }
-
-    left: 0;
   }
 
   .heading {
     margin: 5px;
     padding: 5px;
-    color: $blue;
-    border-bottom: 1px solid $blue;
+    color: vars.$blue;
+    border-bottom: 1px solid vars.$blue;
   }
 }
 
@@ -340,7 +340,7 @@ audio {
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: $m-gray;
+  background-color: vars.$m-gray;
   height: 50px;
 
   input {
@@ -355,7 +355,7 @@ audio {
   position: absolute;
   bottom: 0;
   width: 100%;
-  box-shadow: 0 -6px 6px 0 $shadow;
+  box-shadow: 0 -6px 6px 0 vars.$shadow;
 
   button {
     @extend .no-text;
@@ -411,13 +411,13 @@ audio {
 
   li {
     font-size: 20px;
-    font-weight: $light;
+    font-weight: vars.$light;
   }
 
   h4 {
     margin-top: 20px;
-    background-color: $black;
-    color: $white;
+    background-color: vars.$black;
+    color: vars.$white;
     padding-left: 10px;
     line-height: 34px;
     position: sticky;
@@ -438,7 +438,7 @@ audio {
       padding: 4px 10px;
 
       &.is-current {
-        color: $blue;
+        color: vars.$blue;
       }
     }
   }
@@ -449,12 +449,12 @@ audio {
   cursor: pointer;
 
   &.is-active {
-    background-color: $blue;
-    color: $black;
+    background-color: vars.$blue;
+    color: vars.$black;
   }
 }
 
-@media screen and (max-width: $bp-mobile) {
+@media screen and (max-width: vars.$bp-mobile) {
   #side-panel {
     .heading, .toggle {
       font-size: 22px;
@@ -478,7 +478,7 @@ audio {
 
 #main-panel {
   // position: fixed;
-  // top: $header-height;
+  // top: vars.$header-height;
   // right: 0;
   // bottom: 0;
   // left: 0;
@@ -493,7 +493,7 @@ audio {
     margin-left: 300px;
   }
 
-  @media screen and (max-width: $bp-mobile-sm) {
+  @media screen and (max-width: vars.$bp-mobile-sm) {
     &.is-open {
       margin-left: 0;
     }
@@ -505,7 +505,7 @@ audio {
 #modal {
   @extend .center;
   position: fixed;
-  background-color: $black;
+  background-color: vars.$black;
   padding: 30px;
   max-height: 80vh;
   min-width: 500px;
@@ -530,7 +530,7 @@ audio {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: $black80;
+  background-color: vars.$black80;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -545,20 +545,20 @@ audio {
   display: flex;
   gap: 10px;
   position: relative;
-  font-family: $font-mono;
+  font-family: vars.$font-mono;
   font-size: 16px;
-  color: $white;
+  color: vars.$white;
   letter-spacing: -1px;
-  // border-bottom: 1px solid $m-gray;
+  // border-bottom: 1px solid vars.$m-gray;
   padding: 5px;
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: 2px center;
 
   &.heading {
-    background-color: $blue;
-    color: $black;
-    font-weight: $bold;
+    background-color: vars.$blue;
+    color: vars.$black;
+    font-weight: vars.$bold;
     margin: 20px 0 10px 0;
   }
 }
@@ -579,7 +579,7 @@ audio {
   }
 
   &.small {
-    background-color: $black;
+    background-color: vars.$black;
     background-size: 50%;
   }
 }
@@ -611,13 +611,13 @@ audio {
   align-items: center;
   gap: 20px;
   font-size: 16px;
-  font-weight: $reg;
+  font-weight: vars.$reg;
   text-align: left;
   height: 50px;
   padding: 0 20px;
   z-index: 9;
-  background-color: $d-gray;
-  box-shadow: 0 10px 12px -6px $shadow
+  background-color: vars.$d-gray;
+  box-shadow: 0 10px 12px -6px vars.$shadow
 }
 
 #result-count {
@@ -628,7 +628,7 @@ audio {
 
 .media-list {
   @extend .flex;
-  max-width: $bp-xlarge;
+  max-width: vars.$bp-xlarge;
   padding: 20px 20px 0 20px;
 }
 
@@ -689,22 +689,22 @@ audio {
   }
 
   .artist {
-    color: $blue;
+    color: vars.$blue;
   }
 
-  @media screen and (max-width: $bp-mobile-sm) {
-    @include boxWidth(50);
+  @media screen and (max-width: vars.$bp-mobile-sm) {
+    @include vars.boxWidth(50);
   }
 }
 
 #error-message {
   @extend .center-x;
   top: 50px;
-  color: $black;
+  color: vars.$black;
   width: 300px;
-  background-color: $blue;
+  background-color: vars.$blue;
   padding: 30px;
-  box-shadow: 0 10px 12px -6px $shadow, 0 -6px 6px 0 $shadow;
+  box-shadow: 0 10px 12px -6px vars.$shadow, 0 -6px 6px 0 vars.$shadow;
   z-index: 30;
 }
 
@@ -758,7 +758,7 @@ audio {
 
 .import-modal {
   input {
-    background-color: $m-gray;
+    background-color: vars.$m-gray;
     padding: 10px;
     font-size: 18px;
     margin-right: 20px;
@@ -784,24 +784,24 @@ audio {
 
   .dropdown-trigger {
     width: 100%;
-    height: $select-height;
-    line-height: $select-height;
-    border: 1px solid $black;
+    height: vars.$select-height;
+    line-height: vars.$select-height;
+    border: 1px solid vars.$black;
     padding: 0 30px 0 6px;
-    background: url(../assets/img/icon-down.svg) center right 10px no-repeat $white;
+    background: url(../assets/img/icon-down.svg) center right 10px no-repeat vars.$white;
     background-size: 15px;
-    color: $black;
+    color: vars.$black;
   }
 
   .dropdown-list {
     position: absolute;
     width: 100%;
-    top: $select-height;
+    top: vars.$select-height;
     left: 0;
-    border: 1px solid $black;
+    border: 1px solid vars.$black;
     border-top: none;
-    color: $black;
-    background-color: $white;
+    color: vars.$black;
+    background-color: vars.$white;
     max-height: 300px;
     overflow-y: auto;
 
@@ -811,24 +811,24 @@ audio {
       left: 0;
       width: 100%;
       border: none;
-      border-bottom: 1px solid $gray;
+      border-bottom: 1px solid vars.$gray;
       margin: 0;
     }
 
     li {
-      height: $select-height;
-      line-height: $select-height;
+      height: vars.$select-height;
+      line-height: vars.$select-height;
       padding: 0 6px;
       overflow-x: hidden;
       text-overflow: ellipsis;
 
       &:hover {
-        background-color: $l-gray;
+        background-color: vars.$l-gray;
       }
 
       &.is-active {
-        background-color: $gray;
-        color: $white;
+        background-color: vars.$gray;
+        color: vars.$white;
       }
     }
   }
