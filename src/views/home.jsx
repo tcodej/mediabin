@@ -357,8 +357,9 @@ export default function Home() {
 			setResultCount(resultText);
 			setList(results);
 			navigate(`/${q.join(' ')}`);
+			checkSideBar();
 			scrollTo();
-		}, 500);
+		}, 750);
 	}
 
 	const clearQuery = (reset) => {
