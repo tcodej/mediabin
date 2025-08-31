@@ -371,8 +371,8 @@ export default function Home() {
 
 		if (reset === true) {
 			queryField.current.focus();
-			// setList(media);
-			loadCollection(allMedia);
+			setList(media);
+			// loadCollection(allMedia);
 		}
 	}
 

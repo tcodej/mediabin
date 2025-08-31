@@ -41,7 +41,6 @@ export default function MediaItem({ item, onClick, large }) {
 	const getImage = () => {
 		if (item?.id) {
 			importDiscogsRelease(item.id, true).then(resp => {
-				console.log(resp);
 				if (resp.ok) {
 					setImageSaved(true);
 				}
@@ -69,7 +68,7 @@ export default function MediaItem({ item, onClick, large }) {
 				}
 				{large &&
 					<div>
-						<div>Discogs ID: {item.id}</div>
+						<div>{item.source == 'book' ? 'GoodReads' : 'Discogs'} ID: {item.id}</div>
 						<div onClick={onClick} className="link-info" title="More on Discogs.com">More Info</div>
 						{imageSaved ?
 							<div className="link-checked" title="Image saved">Saved</div>
