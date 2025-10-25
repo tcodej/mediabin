@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { importDiscogsRelease } from '../utils/api';
 import Cover from './cover';
 
-export default function MediaItem({ item, onClick, large }) {
+export default function MediaItem({ item, onClick, large, onVerify }) {
 	const [ imageSaved, setImageSaved ] = useState(false);
+	const [ showContextMenu, setShowContextMenu ] = useState(false);
 
 	const getArtist = () => {
 		if (item.artists) {
@@ -48,14 +49,27 @@ export default function MediaItem({ item, onClick, large }) {
 		}
 	}
 
+	const toggleContextMenu = (e) => {
+		if (e.target.alt === 'Media Cover') {
+			e.preventDefault();
+			setShowContextMenu(!showContextMenu);
+		}
+	}
+
+	const verifyMedia = () => {
+		onVerify();
+		item.date_verified = true;
+		setShowContextMenu(false);
+	}
+
 	return (
-		<div className={'media'+ (large ? ' large' : '')}>
+		<div className={'media'+ (large ? ' large' : '')} onContextMenu={toggleContextMenu}>
 			<Cover item={item} onClick={onClick} />
 			<div className="details">
 				<div className="title">
 					{item.title}
 					{item.date_verified &&
-						<div className="verified">Verified</div>
+						<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
 					}
 					{item.dupes &&
 						<span> ({item.dupes})</span>
@@ -78,6 +92,12 @@ export default function MediaItem({ item, onClick, large }) {
 						:
 							<div onClick={getImage} className="link-import" title="Import Cover Image">Get Image</div>
 						}
+					</div>
+				}
+				{showContextMenu &&
+					<div className="context-menu">
+						<div onClick={verifyMedia}>Verify</div>
+						<div onClick={() => setShowContextMenu(false)}>X</div>
 					</div>
 				}
 			</div>

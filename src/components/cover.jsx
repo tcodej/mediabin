@@ -6,7 +6,7 @@ import discogsIcon from '../assets/img/icon-discogs.svg';
 import bookIcon from '../assets/img/icon-book.svg';
 import unknownIcon from '../assets/img/icon-unknown.svg';
 
-export default function Cover({ item, onClick }) {
+export default function Cover({ item, onClick, onContextMenu }) {
 	const defaultData = {
 		image: '',
 		gallery: false,
@@ -67,6 +67,7 @@ export default function Cover({ item, onClick }) {
 					className={`cover${data.className}`}
 					style={bgStyle()}
 					onClick={() => { !data.gallery && onClick() }}
+					onContextMenu={onContextMenu}
 				>
 					{
 						data.gallery ? <Carousel gallery={data.gallery} />

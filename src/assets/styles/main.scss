@@ -696,10 +696,22 @@ audio {
 
   .title {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 3px;
     margin-top: 10px;
+  }
+
+  .verified {
+    @extend .no-text;
+    display: inline-block;
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url('../img/icon-verified.svg');
+    background-position: center;
   }
 
   .artist {
@@ -712,22 +724,17 @@ audio {
 }
 
 .context-menu {
-  position: absolute;
-  top: 0;
-  left: 0;
+  @extend .center;
   background-color: vars.$black;
-  padding: 10px;
-}
 
-.verified {
-  @extend .no-text;
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url('../img/icon-verified.svg');
-  background-position: center;
+  div {
+    padding: 10px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: vars.$gray;
+    }
+  }
 }
 
 #error-message {

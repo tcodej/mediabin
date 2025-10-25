@@ -490,6 +490,9 @@ export default function Home() {
 					onClick={() => {
 						openRelease(item)
 					}}
+					onVerify={() => {
+						verifyMedia(item)
+					}}
 				/>
 			)
 		});
@@ -577,15 +580,20 @@ export default function Home() {
 		});
 	}
 
-	// useful when auditing media to verify that I still have it
-	const verifyMedia = () => {
-		const id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
+	// useful when auditing media to verify that I still have it - triggered from releaseModal or mediaItem
+	const verifyMedia = (item) => {
+		let id;
 
-		api.verifyMedia(id).then(response => {
-			if (response && response.ok) {
-				closeRelease();
-			}
-		});
+		if (item) {
+			id = item.id;
+
+		} else {
+			id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
+		}
+
+		api.verifyMedia(id);
+		// reload();
+		closeRelease();
 	}
 
 	return (
