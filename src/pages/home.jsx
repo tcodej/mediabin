@@ -230,13 +230,25 @@ export default function Home() {
 		triggerSuccess();
 	}
 
+	const reload = () => {
+		console.log('refreshing...');
+		setLoaded(false);
+
+		api.getMedia().then(response => {
+			if (response && response.ok) {
+				setMedia(response.result);
+				window.setTimeout(() => {
+					runQuery();
+					setLoaded(true)
+				}, 1000);
+			}
+		});
+	}
+
 	const clearCache = () => {
 		api.clearCache()
 			.then(() => {
-				// trigger a media reload
-				setList();
-				setMedia();
-				runQuery();
+				reload();
 				triggerSuccess();
 			});
 	}
@@ -449,7 +461,7 @@ export default function Home() {
 		if (resp) {
 			resp.source = 'discogs';
 			setCurrentMedia(resp);
-			clearCache();
+			reload();
 
 		} else {
 			setSuccessOpen(true);
@@ -556,7 +568,14 @@ export default function Home() {
 	const deleteMedia = () => {
 		// if currentMedia.media_id exists, it's a discogs item, otherwise it's a book
 		const id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
-		api.deleteMedia(id);
+
+		api.deleteMedia(id).then(response => {
+			if (response && response.ok) {
+				reload();
+				closeRelease();
+			}
+		});
+
 	}
 
 	return (
@@ -615,7 +634,8 @@ export default function Home() {
 				<div id="buttons">
 					<button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
 					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
-					<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
+					{/*<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>*/}
+					<button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
 					<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
 					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
 				</div>
