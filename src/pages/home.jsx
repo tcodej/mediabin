@@ -225,6 +225,7 @@ export default function Home() {
 		const total = 20;
 		const random = shuffle([...media]).splice(0, total);
 		clearQuery();
+		sort(random, 'artist', true);
 		setList(random);
 		setResultCount(`${total} random items`);
 		triggerSuccess();
@@ -368,6 +369,7 @@ export default function Home() {
 			}
 
 			setResultCount(resultText);
+			sort(results, 'artist', true);
 			setList(results);
 			navigate(`/${q.join(' ')}`);
 			checkSideBar();
@@ -546,7 +548,7 @@ export default function Home() {
 			setCurrentSort(option);
 		}
 
-		setList(prevVals => sort([...prevVals], option.value, false, option.order));
+		setList(prevVals => sort([...prevVals], option.value, false, option.order, option.dates));
 	};
 
 	const loadWantlist = () => {
@@ -680,7 +682,8 @@ export default function Home() {
 									{ label: 'Date', value: 'released' },
 									{ label: 'Title', value: 'title' },
 									{ label: 'Type', value: 'format' },
-									{ label: 'Date Added', value: 'date_created', order: 'DESC' }
+									{ label: 'Date Added', value: 'date_created', order: 'DESC', dates: true },
+									{ label: 'Verified', value: 'date_verified', order: 'DESC', dates: true }
 								]}
 							/>
 						</div>

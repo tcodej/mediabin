@@ -1,12 +1,20 @@
 /**
  * Helper function to sort an array of objects by chosen key
  */
-export const sort = (arr, key, ignoreThe, order) => {
+export const sort = (arr, key, ignoreThe, order, dates) => {
+	console.log(dates);
 	try {
 		arr.sort(function(a, b) {
+
 			if (key) {
-				a = a[key];
-				b = b[key];
+				if (dates) {
+					a = new Date(a[key]);
+					b = new Date(b[key]);
+
+				} else {
+					a = a[key].toLowerCase();
+					b = b[key].toLowerCase();
+				}
 			}
 
 			if (ignoreThe) {
@@ -15,20 +23,20 @@ export const sort = (arr, key, ignoreThe, order) => {
 			}
 
 			if (order === 'DESC') {
-				if (a.toLowerCase() < b.toLowerCase()) {
+				if (a < b) {
 					return 1;
 				}
 
-				if (a.toLowerCase() > b.toLowerCase()) {
+				if (a > b) {
 					return -1;
 				}
 
 			} else {
-				if (a.toLowerCase() < b.toLowerCase()) {
+				if (a < b) {
 					return -1;
 				}
 
-				if (a.toLowerCase() > b.toLowerCase()) {
+				if (a > b) {
 					return 1;
 				}
 			}
@@ -39,7 +47,8 @@ export const sort = (arr, key, ignoreThe, order) => {
 		return arr;
 
 	} catch (err) {
-		console.log('sort failed', arr, key);
+		console.log(err)
+		// console.log('sort failed', arr, key);
 	}
 }
 
