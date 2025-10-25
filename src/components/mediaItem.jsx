@@ -63,7 +63,7 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 	}
 
 	return (
-		<div className={'media'+ (large ? ' large' : '')} onContextMenu={toggleContextMenu}>
+		<div className={'media'+ (large ? ' large' : '') + (item.collection_id === 7 ? ' missing' : '')} onContextMenu={toggleContextMenu}>
 			<Cover item={item} onClick={onClick} />
 			<div className="details">
 				<div className="title">

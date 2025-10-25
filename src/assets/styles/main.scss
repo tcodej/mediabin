@@ -665,6 +665,10 @@ audio {
     }
   }
 
+  &.missing {
+    opacity: 0.25;
+  }
+
   .link-info, .link-import, .link-checked {
     @extend .no-text;
     display: inline-block;
