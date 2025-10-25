@@ -44,6 +44,7 @@ export default function Home() {
 
 	const formats = [
 		{ value: 'LP', label: 'LP' },
+		{ value: 'Vinyl', label: 'Vinyl' },
 		{ value: 'CD', label: 'CD' },
 		{ value: 'EP', label: 'EP' },
 		{ value: '7"', label: '7"' },
