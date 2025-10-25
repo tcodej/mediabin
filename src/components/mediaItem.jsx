@@ -54,6 +54,9 @@ export default function MediaItem({ item, onClick, large }) {
 			<div className="details">
 				<div className="title">
 					{item.title}
+					{item.date_verified &&
+						<div className="verified">Verified</div>
+					}
 					{item.dupes &&
 						<span> ({item.dupes})</span>
 					}

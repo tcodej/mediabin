@@ -2,9 +2,12 @@ import { Fragment, useState, useEffect } from 'react';
 import MediaItem from '../components/mediaItem';
 import { updateReleaseCollection, updateWantlist } from '../utils/api';
 
-export default function ReleaseModal({ item, collections, onClose, onDelete }) {
+export default function ReleaseModal({ item, collections, onClose, onDelete, onVerify }) {
 	const [scrollY, setScrollY] = useState(0);
 	const [wantlist, setWantlist] = useState('0');
+	const [deleteMessage, setDeleteMessage] = useState();
+
+	let timer;
 
 	useEffect(() => {
 		const root = document.getElementById('root');
@@ -48,12 +51,37 @@ export default function ReleaseModal({ item, collections, onClose, onDelete }) {
 		updateWantlist(item.id, newVal);
 	}
 
+	const confirmDelete = () => {
+		if (!deleteMessage) {
+			setDeleteMessage('Sure?');
+
+			timer = window.setTimeout(() =>{
+				clearTimer();
+			}, 5000);
+
+			return;
+		}
+
+		clearTimer()
+		onDelete();
+	}
+
+	const clearTimer = () => {
+		window.clearTimeout(timer);
+		setDeleteMessage();
+	}
+
+	const close = () => {
+		clearTimer();
+		onClose();
+	}
+
 	return (
 		<Fragment>
 		{ item &&
 			<Fragment>
 				<div id="modal">
-					<button type="button" className="btn-close" onClick={onClose}>X</button>
+					<button type="button" className="btn-close" onClick={close}>X</button>
 					<MediaItem
 						item={item}
 						onClick={openInfoPage}
@@ -96,10 +124,12 @@ export default function ReleaseModal({ item, collections, onClose, onDelete }) {
 							})}
 						</div>
 					}
-
-					<button type="button" className="btn-delete" onClick={onDelete}>Delete</button>
+					<div className="buttons">
+						<button type="button" className="btn-border" onClick={confirmDelete}>{deleteMessage || 'Delete'}</button>
+						<button type="button" className="btn-border" onClick={onVerify}>Verify</button>
+					</div>
 				</div>
-				<div id="modal-overlay" onClick={onClose} />
+				<div id="modal-overlay" onClick={close} />
 			</Fragment>
 		}
 		</Fragment>

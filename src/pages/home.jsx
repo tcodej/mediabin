@@ -575,7 +575,17 @@ export default function Home() {
 				closeRelease();
 			}
 		});
+	}
 
+	// useful when auditing media to verify that I still have it
+	const verifyMedia = () => {
+		const id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
+
+		api.verifyMedia(id).then(response => {
+			if (response && response.ok) {
+				closeRelease();
+			}
+		});
 	}
 
 	return (
@@ -685,6 +695,7 @@ export default function Home() {
 				collections={collections}
 				onClose={closeRelease}
 				onDelete={deleteMedia}
+				onVerify={verifyMedia}
 			/>
 
 			{importOpen &&

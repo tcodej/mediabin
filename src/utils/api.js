@@ -82,3 +82,6 @@ export const deleteMedia = async (id) => {
 	return getResult(`delete/${id}`, {});
 };
 
+export const verifyMedia = async (id) => {
+	return getResult(`verify/${id}`, {});
+};

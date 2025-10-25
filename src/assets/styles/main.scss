@@ -297,7 +297,7 @@ audio {
   background-image: url('../img/icon-close.svg');
 }
 
-.btn-delete {
+.btn-border {
   border: 1px solid vars.$gray;
   padding: 4px 8px;
 
@@ -695,6 +695,10 @@ audio {
   }
 
   .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
     margin-top: 10px;
   }
 
@@ -715,6 +719,17 @@ audio {
   padding: 10px;
 }
 
+.verified {
+  @extend .no-text;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../img/icon-verified.svg');
+  background-position: center;
+}
+
 #error-message {
   @extend .center-x;
   top: 50px;
@@ -729,6 +744,13 @@ audio {
 .button {
   @extend .no-select;
   cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 0;
 }
 
 #success {
