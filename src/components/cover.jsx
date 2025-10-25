@@ -56,7 +56,7 @@ export default function Cover({ item, onClick }) {
 
 	const bgStyle = () => {
 		// this fixes issues with perentheses in the url
-		const css = "url('"+ data.image +"')";
+		const css = `url('${data.image}')`;
 		return { backgroundImage: css };
 	};
 

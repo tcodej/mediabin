@@ -77,3 +77,8 @@ export const getWantlist = async () => {
 export const updateWantlist = async (id, val) => {
 	return getResult(`updateWantlist/${id}`, { wantlist: val });
 }
+
+export const deleteMedia = async (id) => {
+	return getResult(`delete/${id}`, {});
+};
+

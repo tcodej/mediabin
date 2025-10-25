@@ -138,7 +138,7 @@ select {
   line-height: inherit;
   cursor: pointer;
   background-color: transparent;
-  background-image: url('../assets/img/icon-down.svg');
+  background-image: url('../img/icon-down.svg');
   background-position: right 5px center;
   background-repeat: no-repeat;
   background-size: 10px;
@@ -249,7 +249,7 @@ strong {
   background-position: left center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('../assets/img/logo.png');
+  background-image: url('../img/logo.png');
 
   &.home {
     @extend .no-text;
@@ -287,14 +287,23 @@ audio {
 }
 
 .btn-clear {
-  background-image: url('../assets/img/icon-clear.svg');
+  background-image: url('../img/icon-clear.svg');
 }
 
 .btn-close {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-image: url('../assets/img/icon-close.svg');
+  background-image: url('../img/icon-close.svg');
+}
+
+.btn-delete {
+  border: 1px solid vars.$gray;
+  padding: 4px 8px;
+
+  &:hover {
+    background-color: vars.$d-gray;
+  }
 }
 
 /* ----- HOME BROWSE VIEW ----- */
@@ -373,19 +382,19 @@ audio {
   }
 
   .btn-import {
-    background-image: url('../assets/img/icon-import.svg');
+    background-image: url('../img/icon-import.svg');
   }
 
   .btn-random-media {
-    background-image: url('../assets/img/icon-random.svg');
+    background-image: url('../img/icon-random.svg');
   }
 
   .btn-clear-cache {
-    background-image: url('../assets/img/icon-refresh.svg');
+    background-image: url('../img/icon-refresh.svg');
   }
 
   .btn-dupes {
-    background-image: url('../assets/img/icon-dupes.svg');
+    background-image: url('../img/icon-dupes.svg');
     background-size: 18px;
   }
 
@@ -393,11 +402,11 @@ audio {
     // background-size: 18px;
 
     &.or {
-      background-image: url('../assets/img/icon-or.svg');
+      background-image: url('../img/icon-or.svg');
     }
 
     &.and {
-      background-image: url('../assets/img/icon-and.svg');
+      background-image: url('../img/icon-and.svg');
     }
   }
 }
@@ -595,11 +604,11 @@ audio {
   background-position: left center;
   background-size: 14px;
   background-repeat: no-repeat;
-  background-image: url('../assets/img/icon-checkbox-unchecked.svg');
+  background-image: url('../img/icon-checkbox-unchecked.svg');
   cursor: pointer;
 
   &.is-active {
-    background-image: url('../assets/img/icon-checkbox-checked.svg');
+    background-image: url('../img/icon-checkbox-checked.svg');
   }
 }
 
@@ -633,6 +642,7 @@ audio {
 }
 
 .media {
+  position: relative;
   width: 160px;
   font-size: 12px;
   text-align: center;
@@ -664,7 +674,7 @@ audio {
     background-position: center;
     background-size: 20px;
     background-repeat: no-repeat;
-    background-image: url('../assets/img/icon-link.svg');
+    background-image: url('../img/icon-link.svg');
 
     &:hover {
       text-decoration: underline;
@@ -672,12 +682,12 @@ audio {
   }
 
   .link-import {
-    background-image: url('../assets/img/icon-import.svg');
+    background-image: url('../img/icon-import.svg');
     background-size: 18px;
   }
 
   .link-checked {
-    background-image: url('../assets/img/icon-success.svg');
+    background-image: url('../img/icon-success.svg');
   }
 
   img {
@@ -695,6 +705,14 @@ audio {
   @media screen and (max-width: vars.$bp-mobile-sm) {
     @include vars.boxWidth(50);
   }
+}
+
+.context-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: vars.$black;
+  padding: 10px;
 }
 
 #error-message {
@@ -731,7 +749,7 @@ audio {
     height: 300px;
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: url('../assets/img/icon-success.svg');
+    background-image: url('../img/icon-success.svg');
     background-position: center;
     animation: zoom-in-zoom-out 750ms ease-out;
   }
@@ -788,7 +806,7 @@ audio {
     line-height: vars.$select-height;
     border: 1px solid vars.$black;
     padding: 0 30px 0 6px;
-    background: url(../assets/img/icon-down.svg) center right 10px no-repeat vars.$white;
+    background: url(../img/icon-down.svg) center right 10px no-repeat vars.$white;
     background-size: 15px;
     color: vars.$black;
   }

@@ -5,9 +5,9 @@ import {
 } from 'react-router-dom';
 import { ApplicationProvider } from './contexts/application';
 import Header from './components/header';
-import Home from './views/home';
-import './styles/main.scss';
-import './styles/carousel.scss';
+import Home from './pages/home';
+import './assets/styles/main.scss';
+import './assets/styles/carousel.scss';
 
 export default function App() {
 	return (

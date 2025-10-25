@@ -184,6 +184,7 @@ export default function Home() {
 		if (media.source === 'discogs') {
 			api.getDiscogsRelease(media.release_id).then(response => {
 				// tack on any relevant info from the media object
+				response.media_id = media.id;
 				response.notes = media.notes;
 				response.source = media.source;
 				response.released = media.released;
@@ -552,6 +553,12 @@ export default function Home() {
 		});
 	}
 
+	const deleteMedia = () => {
+		// if currentMedia.media_id exists, it's a discogs item, otherwise it's a book
+		const id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
+		api.deleteMedia(id);
+	}
+
 	return (
 		<div id="page-home" {...swipeHandlers}>
 			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
@@ -639,8 +646,6 @@ export default function Home() {
 								]}
 							/>
 						</div>
-
-
 					</div>
 				}
 
@@ -659,6 +664,7 @@ export default function Home() {
 				item={currentMedia}
 				collections={collections}
 				onClose={closeRelease}
+				onDelete={deleteMedia}
 			/>
 
 			{importOpen &&

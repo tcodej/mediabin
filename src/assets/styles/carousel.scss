@@ -126,11 +126,11 @@
 .btn-carousel {
   background: center no-repeat;
   background-size: 25px 14px;
-  background-image: url('../assets/img/icon-carousel.svg');
+  background-image: url('../img/icon-carousel.svg');
 
   &.is-active {
     background-size: 20px;
-    background-image: url('../assets/img/icon-grid.svg');
+    background-image: url('../img/icon-grid.svg');
   }
 }
 
@@ -145,12 +145,12 @@
 }
 
 .btn-prev {
-  background-image: url('../assets/img/icon-prev.svg');
+  background-image: url('../img/icon-prev.svg');
   margin-right: 12px;
 }
 
 .btn-next {
-  background-image: url('../assets/img/icon-next.svg');
+  background-image: url('../img/icon-next.svg');
   margin-left: 12px;
 }
 

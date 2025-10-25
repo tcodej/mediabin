@@ -2,7 +2,7 @@ import { Fragment, useState, useEffect } from 'react';
 import MediaItem from '../components/mediaItem';
 import { updateReleaseCollection, updateWantlist } from '../utils/api';
 
-export default function ReleaseModal({ item, collections, onClose }) {
+export default function ReleaseModal({ item, collections, onClose, onDelete }) {
 	const [scrollY, setScrollY] = useState(0);
 	const [wantlist, setWantlist] = useState('0');
 
@@ -81,7 +81,6 @@ export default function ReleaseModal({ item, collections, onClose }) {
 						</div>
 					</div>
 
-
 					{ (item.notes) &&
 						<p>{item.notes}</p>
 					}
@@ -98,6 +97,7 @@ export default function ReleaseModal({ item, collections, onClose }) {
 						</div>
 					}
 
+					<button type="button" className="btn-delete" onClick={onDelete}>Delete</button>
 				</div>
 				<div id="modal-overlay" onClick={onClose} />
 			</Fragment>
