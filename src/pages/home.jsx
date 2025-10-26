@@ -35,6 +35,7 @@ export default function Home() {
 	const [ collections, setCollections ] = useState();
 	const [ page, setPage ] = useState(1);
 	const [ currentSort, setCurrentSort ] = useState();
+	const [ showVerified, setShowVerified ] = useState(true);
 
 	const pageSize = 100;
 
@@ -486,18 +487,22 @@ export default function Home() {
 		}
 
 		const mediaItems = items.map(item => {
-			return (
-				<MediaItem
-					key={item.id}
-					item={item}
-					onClick={() => {
-						openRelease(item)
-					}}
-					onVerify={() => {
-						verifyMedia(item)
-					}}
-				/>
-			)
+			let show = (showVerified === false && item.date_verified) ? false : true;
+
+			if (show) {
+				return (
+					<MediaItem
+						key={item.id}
+						item={item}
+						onClick={() => {
+							openRelease(item)
+						}}
+						onVerify={() => {
+							verifyMedia(item)
+						}}
+					/>
+				)
+			}
 		});
 
 		if (items.length < list.length) {
@@ -599,6 +604,11 @@ export default function Home() {
 		closeRelease();
 	}
 
+	const toggleVerified = () => {
+		setShowVerified(!showVerified);
+		// reload();
+	}
+
 	return (
 		<div id="page-home" {...swipeHandlers}>
 			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
@@ -659,6 +669,7 @@ export default function Home() {
 					<button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
 					<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
 					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
+					<button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={toggleVerified}>Toggle Verified</button>
 				</div>
 			</div>
 

@@ -411,6 +411,14 @@ audio {
   }
 }
 
+.btn-verified {
+  background-image: url('../img/icon-verified.svg');
+
+  &.true {
+    opacity: 1 !important;
+  }
+}
+
 #filter-list {
   position: relative;
   top: 50px;

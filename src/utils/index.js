@@ -2,7 +2,6 @@
  * Helper function to sort an array of objects by chosen key
  */
 export const sort = (arr, key, ignoreThe, order, dates) => {
-	console.log(dates);
 	try {
 		arr.sort(function(a, b) {
 
