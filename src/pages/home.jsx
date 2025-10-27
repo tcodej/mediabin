@@ -234,7 +234,6 @@ export default function Home() {
 	}
 
 	const reload = () => {
-		console.log('refreshing...');
 		setLoaded(false);
 
 		api.getMedia().then(response => {

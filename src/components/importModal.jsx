@@ -8,10 +8,16 @@ export default function ImportModal({ onClose, onSuccess }) {
 		document.getElementById('discogs-id').focus();
 	}, []);
 
-	const importRelease = () => {
+	const importRelease = (type) => {
 		if (releaseID) {
-			importDiscogsRelease(releaseID).then((resp) => {
+			importDiscogsRelease(releaseID, type).then(resp => {
 				onSuccess(resp.response);
+
+				// later open a json preview modal
+				if (type === 'preview') {
+					console.log(resp.response);
+				}
+
 				onClose();
 			});
 		}
@@ -23,7 +29,10 @@ export default function ImportModal({ onClose, onSuccess }) {
 				<button type="button" className="btn-close" onClick={onClose}>X</button>
 				<p>Enter a Discogs release ID and click ok.</p>
 				<input id="discogs-id" type="tel" maxLength="10" value={releaseID} onChange={(e) => setReleaseID(e.target.value)} />
-				<button type="button" onClick={importRelease}>OK</button>
+				<div className="buttons">
+					<button type="button" className="btn-border" onClick={() => importRelease('preview')}>Preview</button>
+					<button type="button" className="btn-border" onClick={importRelease}>Import</button>
+				</div>
 			</div>
 			<div id="overlay" onClick={onClose} />
 		</Fragment>

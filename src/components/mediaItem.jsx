@@ -41,7 +41,7 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 
 	const getImage = () => {
 		if (item?.id) {
-			importDiscogsRelease(item.id, true).then(resp => {
+			importDiscogsRelease(item.id, 'image').then(resp => {
 				if (resp.ok) {
 					setImageSaved(true);
 				}

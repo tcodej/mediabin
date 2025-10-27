@@ -127,6 +127,7 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 					<div className="buttons">
 						<button type="button" className="btn-border" onClick={confirmDelete}>{deleteMessage || 'Delete'}</button>
 						<button type="button" className="btn-border" onClick={onVerify}>Verify</button>
+						<button type="button" className="btn-border" onClick={close}>Cancel</button>
 					</div>
 				</div>
 				<div id="modal-overlay" onClick={close} />

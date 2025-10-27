@@ -40,11 +40,15 @@ export const getDiscogsRelease = async (release_id) => {
 	return getResult(`discogs/releases/${release_id}`);
 };
 
-export const importDiscogsRelease = async (release_id, imageOnly) => {
+export const importDiscogsRelease = async (release_id, type) => {
 	let endpoint = `discogs/import/${release_id}`;
 
-	if (imageOnly === true) {
-		endpoint += '/true';
+	if (type === 'image') {
+		endpoint += '/image';
+	}
+
+	if (type === 'preview') {
+		endpoint += '/preview';
 	}
 
 	return getResult(endpoint);
