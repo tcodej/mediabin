@@ -677,6 +677,12 @@ audio {
     opacity: 0.25;
   }
 
+  &.purge {
+    opacity: 0.25;
+    filter: sepia(100%);
+    text-decoration: line-through;
+  }
+
   .link-info, .link-import, .link-checked {
     @extend .no-text;
     display: inline-block;

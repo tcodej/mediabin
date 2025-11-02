@@ -62,8 +62,26 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 		setShowContextMenu(false);
 	}
 
+	const getClassNames = () => {
+		const classes = ['media'];
+
+		if (large) {
+			classes.push('large');
+		}
+
+		if (item.collection_id === 7) {
+			classes.push('missing');
+		}
+
+		if (item.collection_id === 8) {
+			classes.push('purge');
+		}
+
+		return classes.join(' ');
+	}
+
 	return (
-		<div className={'media'+ (large ? ' large' : '') + (item.collection_id === 7 ? ' missing' : '')} onContextMenu={toggleContextMenu}>
+		<div className={getClassNames()} onContextMenu={toggleContextMenu}>
 			<Cover item={item} onClick={onClick} />
 			<div className="details">
 				<div className="title">
