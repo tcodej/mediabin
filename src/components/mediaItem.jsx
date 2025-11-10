@@ -77,6 +77,10 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 			classes.push('purge');
 		}
 
+		if (item.date_verified) {
+			classes.push('verified');
+		}
+
 		return classes.join(' ');
 	}
 
