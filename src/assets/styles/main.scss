@@ -683,15 +683,15 @@ audio {
     text-decoration: line-through;
   }
 
-  &.verified {
-    .cover {
-      opacity: 0.1;
-    }
+  // &.verified {
+  //   .cover {
+  //     opacity: 0.1;
+  //   }
 
-    .details {
-      opacity: 0.3;
-    }
-  }
+  //   .details {
+  //     opacity: 0.3;
+  //   }
+  // }
 
   .link-info, .link-import, .link-checked {
     @extend .no-text;
