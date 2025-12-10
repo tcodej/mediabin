@@ -370,7 +370,8 @@ export default function Home() {
 			}
 
 			setResultCount(resultText);
-			sort(results, 'artist', true);
+			// sort(results, 'artist', true);
+			sort(results, 'artist');
 			setList(results);
 			navigate(`/${q.join(' ')}`);
 			checkSideBar();
