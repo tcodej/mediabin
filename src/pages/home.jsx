@@ -193,6 +193,7 @@ export default function Home() {
 				response.format = media.format;
 				response.collection_id = media.collection_id;
 				response.wantlist = media.wantlist;
+				response.date_verified = media.date_verified;
 
 				// discogs api is down
 				if (response.error === true) {

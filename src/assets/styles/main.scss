@@ -666,6 +666,10 @@ audio {
       text-align: left;
       font-size: 16px;
       line-height: 24px;
+
+      .title {
+        justify-content: left;
+      }
     }
 
     @media screen and (max-width: 550px) {
