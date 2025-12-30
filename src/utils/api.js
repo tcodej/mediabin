@@ -71,7 +71,11 @@ export const getDupes = async () => {
 }
 
 export const updateReleaseCollection = async (release_id, col_id) => {
-	return getResult(`updateReleaseCollection/${release_id}`, { collection_id: col_id });
+	return getResult(`updateMedia/${release_id}`, { collection_id: col_id });
+}
+
+export const updateMediaDate = async (id, date) => {
+	return getResult(`updateMedia/${id}`, { date_created: date });
 }
 
 export const getWantlist = async () => {

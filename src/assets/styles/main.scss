@@ -313,6 +313,21 @@ audio {
   // overflow: hidden;
 }
 
+#page-admin {
+  padding: 20px;
+
+  tr {
+    border-bottom: 1px solid #aaa;
+  }
+
+  td {
+    font-family: vars.$font-mono;
+    font-size: 16px;
+    padding: 4px;
+    max-width: 500px;
+  }
+}
+
 #side-panel {
   @extend .no-select;
   position: fixed;
