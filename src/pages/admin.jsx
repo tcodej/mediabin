@@ -52,16 +52,19 @@ export default function Home() {
 	}, [data, media]);
 
 	const processItems = async () => {
-		console.log('click');
 		// loop through items and reset date_created and notes if needed
 		let count = 0;
 		for await (const item of list) {
 			count++;
 
 			if (item.id && item.date_added_csv !== item.date_added) {
-				console.log(item);
+				// update date_created - treated as date_added
 				api.updateMediaDate(item.release_id, item.date_added_csv);
 				await delay(500);
+
+			} else if (item.id && item.notes_csv && !item.notes) {
+				// add notes if empty
+				api.updateMediaNotes(item.release_id, item.notes_csv);
 
 			} else {
 				console.log('skipping', item);

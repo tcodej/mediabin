@@ -74,8 +74,14 @@ export const updateReleaseCollection = async (release_id, col_id) => {
 	return getResult(`updateMedia/${release_id}`, { collection_id: col_id });
 }
 
+// used for admin updates - rarely used
 export const updateMediaDate = async (id, date) => {
 	return getResult(`updateMedia/${id}`, { date_created: date });
+}
+
+// used for admin updates - rarely used
+export const updateMediaNotes = async (id, notes) => {
+	return getResult(`updateMedia/${id}`, { notes: notes });
 }
 
 export const getWantlist = async () => {
