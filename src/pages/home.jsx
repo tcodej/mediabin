@@ -249,13 +249,13 @@ export default function Home() {
 		});
 	}
 
-	const clearCache = () => {
-		api.clearCache()
-			.then(() => {
-				reload();
-				triggerSuccess();
-			});
-	}
+	// const clearCache = () => {
+	// 	api.clearCache()
+	// 		.then(() => {
+	// 			reload();
+	// 			triggerSuccess();
+	// 		});
+	// }
 
 	const getDupes = () => {
 		clearQuery();

@@ -53,10 +53,7 @@ export default function Home() {
 
 	const processItems = async () => {
 		// loop through items and reset date_created and notes if needed
-		let count = 0;
 		for await (const item of list) {
-			count++;
-
 			if (item.id && item.date_added_csv !== item.date_added) {
 				// update date_created - treated as date_added
 				api.updateMediaDate(item.release_id, item.date_added_csv);
