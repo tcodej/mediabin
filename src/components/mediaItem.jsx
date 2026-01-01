@@ -28,6 +28,10 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 		return date == '0' ? '' : date;
 	}
 
+	const getDateAdded = () => {
+		return new Date(item.date_created).toLocaleDateString('en-CA');
+	}
+
 	const getFormat = () => {
 		// option to return only the first item in the format list
 		const parts = item.format.split(', ');
@@ -107,7 +111,8 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 				}
 				{large &&
 					<div>
-						<div>{item.source == 'book' ? 'GoodReads' : 'Discogs'} ID: {item.id}</div>
+						<div>Added {getDateAdded()}</div>
+						<div>{item.source == 'book' ? 'GoodReads' : 'Discogs'} ID {item.id}</div>
 						<div onClick={onClick} className="link-info" title="More on Discogs.com">More Info</div>
 						{imageSaved ?
 							<div className="link-checked" title="Image saved">Saved</div>

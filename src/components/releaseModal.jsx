@@ -78,7 +78,7 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 
 	return (
 		<Fragment>
-		{ item &&
+		{item &&
 			<Fragment>
 				<div id="modal">
 					<button type="button" className="btn-close" onClick={close}>X</button>
@@ -94,7 +94,7 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 								defaultValue={item.collection_id}
 								onChange={saveItemCollection}
 							>
-								{ collections.map(col => {
+								{collections.map(col => {
 									return (
 										<option key={col.id} value={col.id}>
 											{col.label}
@@ -109,11 +109,11 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 						</div>
 					</div>
 
-					{ (item.notes) &&
+					{item.notes &&
 						<p>{item.notes}</p>
 					}
 
-					{ item.source === 'discogs' &&
+					{item.source === 'discogs' &&
 						<div className="track-list">
 							{ item.tracklist?.map((track, index) => {
 								if (track.type_ === 'heading') {
