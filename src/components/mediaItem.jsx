@@ -32,7 +32,7 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 		return new Date(item.date_created).toLocaleDateString('en-CA');
 	}
 
-	const getFormat = () => {
+	const GetFormat = () => {
 		// option to return only the first item in the format list
 		const parts = item.format.split(', ');
 
@@ -40,7 +40,7 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 			return item.format;
 		}
 
-		return parts[0];
+		return <div>{parts[0]}</div>;
 	}
 
 	const getImage = () => {
@@ -97,6 +97,9 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 					{item.date_verified &&
 						<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
 					}
+					{item.digital &&
+						<div className="digital" title="An mp3 version is available">Digital</div>
+					}
 					{item.dupes &&
 						<span> ({item.dupes})</span>
 					}
@@ -107,7 +110,7 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 					<div>{item.series[0].catno}</div>
 				}
 				{item.format &&
-					<div>{getFormat()}</div>
+					<GetFormat />
 				}
 				{large &&
 					<div>
@@ -124,6 +127,7 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 				{showContextMenu &&
 					<div className="context-menu">
 						<div onClick={verifyMedia}>Verify</div>
+						<div onClick={verifyMedia}>Vinyl</div>
 						<div onClick={() => setShowContextMenu(false)}>X</div>
 					</div>
 				}

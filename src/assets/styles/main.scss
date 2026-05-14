@@ -749,7 +749,7 @@ audio {
     margin-top: 10px;
   }
 
-  .verified {
+  .verified, .digital {
     @extend .no-text;
     display: inline-block;
     flex-shrink: 0;
@@ -757,8 +757,15 @@ audio {
     height: 14px;
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: url('../img/icon-verified.svg');
     background-position: center;
+  }
+
+  .verified {
+    background-image: url('../img/icon-verified.svg');
+  }
+
+  .digital {
+    background-image: url('../img/icon-digital.svg');
   }
 
   .artist {
