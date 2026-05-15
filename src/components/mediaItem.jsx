@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { importDiscogsRelease } from '../utils/api';
 import Cover from './cover';
 
-export default function MediaItem({ item, onClick, large, onVerify }) {
+export default function MediaItem({ item, onClick, large, onVerify, onToggleField }) {
 	const [ imageSaved, setImageSaved ] = useState(false);
 	const [ showContextMenu, setShowContextMenu ] = useState(false);
 
@@ -66,6 +66,26 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 		setShowContextMenu(false);
 	}
 
+	const toggleField = (fieldName) => {
+		let value = item[fieldName];
+
+		if (value) {
+			value = null;
+
+		} else {
+			value = 1;
+		}
+
+		item[fieldName] = value;
+
+		onToggleField(item, fieldName, value);
+		setShowContextMenu(false);
+	}
+
+	const toggleDigital = () => {
+		console.log('toggleDigital');
+	}
+
 	const getClassNames = () => {
 		const classes = ['media'];
 
@@ -126,9 +146,9 @@ export default function MediaItem({ item, onClick, large, onVerify }) {
 				}
 				{showContextMenu &&
 					<div className="context-menu">
-						<div onClick={verifyMedia}>Verify</div>
-						<div onClick={verifyMedia}>Vinyl</div>
-						<div onClick={() => setShowContextMenu(false)}>X</div>
+						<div onClick={verifyMedia}>{item.date_verified ? '☑' : '☐'} Verified</div>
+						<div onClick={() => toggleField('digital')}>{item.digital ? '☑' : '☐'} Digital</div>
+						<div onClick={() => setShowContextMenu(false)}>Cancel</div>
 					</div>
 				}
 			</div>

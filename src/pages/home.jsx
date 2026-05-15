@@ -502,6 +502,7 @@ export default function Home() {
 						onVerify={() => {
 							verifyMedia(item)
 						}}
+						onToggleField={toggleField}
 					/>
 				)
 			}
@@ -606,9 +607,15 @@ export default function Home() {
 		closeRelease();
 	}
 
+	// toggle visibilty of verified items
 	const toggleVerified = () => {
 		setShowVerified(!showVerified);
 		// reload();
+	}
+
+	const toggleField = (item, fieldName, value) => {
+		console.log(item, fieldName, value);
+		api.updateField(item.id, { [fieldName]: value });
 	}
 
 	return (

@@ -780,10 +780,13 @@ audio {
 .context-menu {
   @extend .center;
   display: flex;
+  flex-direction: column;
+  text-align: left;
   background-color: vars.$black;
 
   div {
-    padding: 10px;
+    padding: 10px 20px;
+    white-space: nowrap;
 
     &:hover {
       cursor: pointer;

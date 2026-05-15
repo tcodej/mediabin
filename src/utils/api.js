@@ -99,3 +99,7 @@ export const deleteMedia = async (id) => {
 export const verifyMedia = async (id) => {
 	return getResult(`verify/${id}`, {});
 };
+
+export const updateField = async (id, data) => {
+	return getResult(`updateMedia/${id}`, data);
+};
