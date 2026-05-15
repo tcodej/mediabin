@@ -101,5 +101,5 @@ export const verifyMedia = async (id) => {
 };
 
 export const updateField = async (id, data) => {
-	return getResult(`updateMedia/${id}`, data);
+	return getResult(`updateField/${id}`, data);
 };

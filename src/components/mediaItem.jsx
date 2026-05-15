@@ -1,10 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { importDiscogsRelease } from '../utils/api';
 import Cover from './cover';
 
 export default function MediaItem({ item, onClick, large, onVerify, onToggleField }) {
+	const menuRef = useRef(null);
 	const [ imageSaved, setImageSaved ] = useState(false);
 	const [ showContextMenu, setShowContextMenu ] = useState(false);
+
+	useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showContextMenu && menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowContextMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showContextMenu]);
 
 	const getArtist = () => {
 		if (item.artists) {
@@ -70,7 +85,7 @@ export default function MediaItem({ item, onClick, large, onVerify, onToggleFiel
 		let value = item[fieldName];
 
 		if (value) {
-			value = null;
+			value = 0;
 
 		} else {
 			value = 1;
@@ -80,10 +95,6 @@ export default function MediaItem({ item, onClick, large, onVerify, onToggleFiel
 
 		onToggleField(item, fieldName, value);
 		setShowContextMenu(false);
-	}
-
-	const toggleDigital = () => {
-		console.log('toggleDigital');
 	}
 
 	const getClassNames = () => {
@@ -108,6 +119,10 @@ export default function MediaItem({ item, onClick, large, onVerify, onToggleFiel
 		return classes.join(' ');
 	}
 
+	const CheckIcon = ({ value }) => {
+		return <span className="check-icon">{value ? '✔' : ''}</span>;
+	}
+
 	return (
 		<div className={getClassNames()} onContextMenu={toggleContextMenu}>
 			<Cover item={item} onClick={onClick} />
@@ -117,7 +132,7 @@ export default function MediaItem({ item, onClick, large, onVerify, onToggleFiel
 					{item.date_verified &&
 						<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
 					}
-					{item.digital &&
+					{item.digital === 1 &&
 						<div className="digital" title="An mp3 version is available">Digital</div>
 					}
 					{item.dupes &&
@@ -144,13 +159,15 @@ export default function MediaItem({ item, onClick, large, onVerify, onToggleFiel
 						}
 					</div>
 				}
-				{showContextMenu &&
-					<div className="context-menu">
-						<div onClick={verifyMedia}>{item.date_verified ? '☑' : '☐'} Verified</div>
-						<div onClick={() => toggleField('digital')}>{item.digital ? '☑' : '☐'} Digital</div>
+					<div
+						className="context-menu"
+						ref={menuRef}
+						style={{ display: `${showContextMenu ? 'block' : 'none'}`}}
+					>
+						<div onClick={verifyMedia}>Verified <CheckIcon value={item.date_verified} /></div>
+						<div onClick={() => toggleField('digital')}>Digital <CheckIcon value={item.digital} /></div>
 						<div onClick={() => setShowContextMenu(false)}>Cancel</div>
 					</div>
-				}
 			</div>
 		</div>
 	)

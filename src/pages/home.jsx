@@ -614,7 +614,7 @@ export default function Home() {
 	}
 
 	const toggleField = (item, fieldName, value) => {
-		console.log(item, fieldName, value);
+		console.log(fieldName, value);
 		api.updateField(item.id, { [fieldName]: value });
 	}
 
