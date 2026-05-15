@@ -56,14 +56,13 @@ export default function Cover({ item, onClick, onContextMenu }) {
 
 	const bgStyle = () => {
 		// this fixes issues with perentheses in the url
-		const css = `url('${data.image}')`;
-		return { backgroundImage: css };
+		return { backgroundImage: `url('${data.image}')` };
 	};
 
 	return (
 		<Fragment>
 				<div
-					title={item.id}
+					title={`ID ${item.id}`}
 					className={`cover${data.className}`}
 					style={bgStyle()}
 					onClick={() => { !data.gallery && onClick() }}

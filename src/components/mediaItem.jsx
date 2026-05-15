@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
+import { useAppContext } from '../contexts/application';
 import { importDiscogsRelease } from '../utils/api';
 import Cover from './cover';
 
-export default function MediaItem({ item, onClick, large, onVerify, onToggleField }) {
+export default function MediaItem({ item, onClick, large, onVerify, onUpdateField }) {
 	const menuRef = useRef(null);
 	const [ imageSaved, setImageSaved ] = useState(false);
 	const [ showContextMenu, setShowContextMenu ] = useState(false);
+	const { appState } = useAppContext();
 
 	useEffect(() => {
     const handleClickOutside = (event) => {
@@ -93,7 +95,7 @@ export default function MediaItem({ item, onClick, large, onVerify, onToggleFiel
 
 		item[fieldName] = value;
 
-		onToggleField(item, fieldName, value);
+		onUpdateField(item, fieldName, value);
 		setShowContextMenu(false);
 	}
 
@@ -129,7 +131,7 @@ export default function MediaItem({ item, onClick, large, onVerify, onToggleFiel
 			<div className="details">
 				<div className="title">
 					{item.title}
-					{item.date_verified &&
+					{(appState.showVerified || large) && item.date_verified &&
 						<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
 					}
 					{item.digital === 1 &&

@@ -5,7 +5,8 @@ const ApplicationContext = createContext(null);
 const ApplicationProvider = ({ children }) => {
     const defaultState = {
         menuOpen: false,
-        error: false
+        error: false,
+        showVerified: false
     };
 
     const [ appState, setAppState ] = useState(defaultState);

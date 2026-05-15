@@ -502,7 +502,7 @@ export default function Home() {
 						onVerify={() => {
 							verifyMedia(item)
 						}}
-						onToggleField={toggleField}
+						onUpdateField={updateField}
 					/>
 				)
 			}
@@ -613,8 +613,7 @@ export default function Home() {
 		// reload();
 	}
 
-	const toggleField = (item, fieldName, value) => {
-		console.log(fieldName, value);
+	const updateField = (item, fieldName, value) => {
 		api.updateField(item.id, { [fieldName]: value });
 	}
 
