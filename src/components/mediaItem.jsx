@@ -125,6 +125,10 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 		return <span className="check-icon">{value ? '✔' : ''}</span>;
 	}
 
+	const openDigital = () => {
+		window.open(`https://music.trentj.org/${encodeURI(item.artist)}`, 'music');
+	}
+
 	return (
 		<div className={getClassNames()} onContextMenu={toggleContextMenu}>
 			<Cover item={item} onClick={onClick} />
@@ -135,7 +139,13 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 						<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
 					}
 					{item.digital === 1 &&
-						<div className="digital" title="An mp3 version is available">Digital</div>
+						<div
+							className="digital"
+							title="An mp3 version is available"
+							onClick={openDigital}
+						>
+							Digital
+						</div>
 					}
 					{item.dupes &&
 						<span> ({item.dupes})</span>
