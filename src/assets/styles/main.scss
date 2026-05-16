@@ -434,6 +434,14 @@ audio {
   }
 }
 
+.btn-digital {
+  background-image: url('../img/icon-digital.svg');
+
+  &.true {
+    opacity: 1 !important;
+  }
+}
+
 #filter-list {
   position: relative;
   top: 50px;

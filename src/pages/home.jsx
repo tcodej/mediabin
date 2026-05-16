@@ -36,6 +36,7 @@ export default function Home() {
 	const [ page, setPage ] = useState(1);
 	const [ currentSort, setCurrentSort ] = useState();
 	const [ showVerified, setShowVerified ] = useState(true);
+	const [ showDigital, setShowDigital ] = useState(true);
 
 	const pageSize = 100;
 
@@ -489,9 +490,18 @@ export default function Home() {
 		}
 
 		const mediaItems = items.map(item => {
-			let show = (showVerified === false && item.date_verified) ? false : true;
+			// let show = (showVerified === false && item.date_verified) ? false : true;
+			let visible = true;
 
-			if (show) {
+			if (showVerified === false && item.date_verified) {
+				visible = false;
+			}
+
+			if (showDigital === false && item.digital) {
+				visible = false;
+			}
+
+			if (visible) {
 				return (
 					<MediaItem
 						key={item.id}
@@ -607,9 +617,17 @@ export default function Home() {
 		closeRelease();
 	}
 
-	// toggle visibilty of verified items
-	const toggleVerified = () => {
-		setShowVerified(!showVerified);
+	// toggle visibilty of specified items
+	const toggleVisible = (type) => {
+		switch (type) {
+			case 'verified':
+				setShowVerified(!showVerified);
+				break;
+
+			case 'digital':
+				setShowDigital(!showDigital);
+				break;
+		}
 		// reload();
 	}
 
@@ -677,7 +695,8 @@ export default function Home() {
 					<button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
 					<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
 					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
-					<button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={toggleVerified}>Toggle Verified</button>
+					<button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={() => toggleVisible('verified')}>Toggle Verified</button>
+					<button type="button" title="Toggle Digital" className={`btn-digital ${showDigital}`} onClick={() => toggleVisible('digital')}>Toggle Digital</button>
 				</div>
 			</div>
 

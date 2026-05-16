@@ -3,7 +3,7 @@ import { usePapaParse } from 'react-papaparse';
 import * as api from '../utils/api';
 import { delay } from '../utils';
 
-export default function Home() {
+export default function Admin() {
 	const { readRemoteFile } = usePapaParse();
 	const [ data, setData ] = useState(false);
 	const [ media, setMedia ] = useState(false);
