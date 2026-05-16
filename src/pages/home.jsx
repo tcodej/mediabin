@@ -187,6 +187,7 @@ export default function Home() {
 		if (media.source === 'discogs') {
 			api.getDiscogsRelease(media.release_id).then(response => {
 				// tack on any relevant info from the media object
+				response.artist = media.artist;
 				response.media_id = media.id;
 				response.notes = media.notes;
 				response.source = media.source;
