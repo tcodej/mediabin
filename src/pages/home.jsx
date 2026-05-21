@@ -37,6 +37,7 @@ export default function Home() {
 	const [ currentSort, setCurrentSort ] = useState();
 	const [ showVerified, setShowVerified ] = useState(true);
 	const [ showDigital, setShowDigital ] = useState(true);
+	const [ filteredTotal, setFilteredTotal ] = useState(true);
 
 	const pageSize = 100;
 
@@ -480,7 +481,11 @@ export default function Home() {
 	}
 
 	// load paginated list
-	const RenderList = () => {
+	const renderList = () => {
+		if (!list) {
+			return [];
+		}
+
 		const items = list.filter(item => {
 			if (showVerified === false && item.date_verified) {
 				return false;
@@ -493,8 +498,8 @@ export default function Home() {
 			return item;
 		});
 
-		// todo: tring to set a state value here crashes?
-		// console.log(items.length);
+		// console.log(items.length, list.length);
+		const filteredTotal = items.length;
 
 		// clip to current page
 		if (pageSize * page > list.length) {
@@ -504,19 +509,21 @@ export default function Home() {
 			items.length = pageSize * page;
 		}
 
-		const mediaItems = items.map(item => 
-			<MediaItem
-				key={item.id}
-				item={item}
-				onClick={() => {
-					openRelease(item)
-				}}
-				onVerify={() => {
-					verifyMedia(item)
-				}}
-				onUpdateField={updateField}
-			/>
-		);
+		const mediaItems = items.map(item => {
+			return (
+				<MediaItem
+					key={item.id}
+					item={item}
+					onClick={() => {
+						openRelease(item)
+					}}
+					onVerify={() => {
+						verifyMedia(item)
+					}}
+					onUpdateField={updateField}
+				/>
+			)
+		});
 
 		if (items.length < list.length) {
 			mediaItems.push(
@@ -530,7 +537,10 @@ export default function Home() {
 			);
 		}
 
-		return mediaItems;
+		return {
+			items: mediaItems,
+			total: filteredTotal < list.length ? filteredTotal : false
+		}
 	}
 
 	const loadMore = useCallback(node => {
@@ -635,6 +645,8 @@ export default function Home() {
 		api.updateField(item.id, { [fieldName]: value });
 	}
 
+	const mediaItems = renderList();
+
 	return (
 		<div id="page-home" {...swipeHandlers}>
 			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
@@ -708,7 +720,7 @@ export default function Home() {
 				{ resultCount &&
 					<div id="utility-bar">
 						<div id="result-count">
-							{resultCount}
+							{resultCount} {mediaItems.total !== false ? `(Filtered: ${mediaItems.total})` : ''}
 						</div>
 
 						<div className="sort-controls">
@@ -731,7 +743,7 @@ export default function Home() {
 
 				{ (list && list.length > 0) ?
 					<div className="media-list">
-						<RenderList />
+						{mediaItems.items}
 					</div>
 
 					:
