@@ -189,6 +189,7 @@ export default function Home() {
 				// tack on any relevant info from the media object
 				response.artist = media.artist;
 				response.media_id = media.id;
+				response.release_id = media.release_id;
 				response.notes = media.notes;
 				response.source = media.source;
 				response.released = media.released;
@@ -479,8 +480,21 @@ export default function Home() {
 	}
 
 	// load paginated list
-	const renderList = () => {
-		const items = [...list];
+	const RenderList = () => {
+		const items = list.filter(item => {
+			if (showVerified === false && item.date_verified) {
+				return false;
+			}
+
+			if (showDigital === false && item.digital) {
+				return false;
+			}
+
+			return item;
+		});
+
+		// todo: tring to set a state value here crashes?
+		// console.log(items.length);
 
 		// clip to current page
 		if (pageSize * page > list.length) {
@@ -490,34 +504,19 @@ export default function Home() {
 			items.length = pageSize * page;
 		}
 
-		const mediaItems = items.map(item => {
-			// let show = (showVerified === false && item.date_verified) ? false : true;
-			let visible = true;
-
-			if (showVerified === false && item.date_verified) {
-				visible = false;
-			}
-
-			if (showDigital === false && item.digital) {
-				visible = false;
-			}
-
-			if (visible) {
-				return (
-					<MediaItem
-						key={item.id}
-						item={item}
-						onClick={() => {
-							openRelease(item)
-						}}
-						onVerify={() => {
-							verifyMedia(item)
-						}}
-						onUpdateField={updateField}
-					/>
-				)
-			}
-		});
+		const mediaItems = items.map(item => 
+			<MediaItem
+				key={item.id}
+				item={item}
+				onClick={() => {
+					openRelease(item)
+				}}
+				onVerify={() => {
+					verifyMedia(item)
+				}}
+				onUpdateField={updateField}
+			/>
+		);
 
 		if (items.length < list.length) {
 			mediaItems.push(
@@ -732,7 +731,7 @@ export default function Home() {
 
 				{ (list && list.length > 0) ?
 					<div className="media-list">
-						{ renderList() }
+						<RenderList />
 					</div>
 
 					:

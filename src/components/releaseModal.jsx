@@ -27,7 +27,7 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 	}, [item]);
 
 	const openInfoPage = () => {
-		let url = `https://www.discogs.com/release/${item.id}`;
+		let url = `https://www.discogs.com/release/${item.release_id || item.id}`;
 
 		if (item.source === 'book') {
 			if (item.release_id) {

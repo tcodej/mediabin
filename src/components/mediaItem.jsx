@@ -162,7 +162,7 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 				{large &&
 					<div>
 						<div>Added {getDateAdded()}</div>
-						<div>{item.source == 'book' ? 'GoodReads' : 'Discogs'} ID {item.id}</div>
+						<div>{item.source == 'book' ? 'GoodReads' : 'Discogs'} ID {item.release_id || item.id}</div>
 						<div onClick={onClick} className="link-info" title="More on Discogs.com">More Info</div>
 						{imageSaved ?
 							<div className="link-checked" title="Image saved">Saved</div>
