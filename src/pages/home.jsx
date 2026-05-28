@@ -102,7 +102,11 @@ export default function Home() {
 			api.getMedia().then(response => {
 				if (response && response.ok) {
 					setLoaded(true);
-					setMedia(response.result);
+					// setMedia(response.result);
+
+					// remove items in the purge collection
+					const filteredResult = response.result.filter(item => item.collection_id !== 8);
+					setMedia(filteredResult);
 
 					if (!queryParam) {
 						sideToggle(true);
