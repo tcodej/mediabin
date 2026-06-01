@@ -107,11 +107,12 @@ export default function Home() {
 					// remove items in the purge collection
 					const filteredResult = response.result.filter(item => item.collection_id !== 8);
 					setMedia(filteredResult);
+					console.log(filteredResult.length);
 
 					if (!queryParam) {
 						sideToggle(true);
-						// setList(response.result);
-						// setResultCount(response.result.length +' total');
+						setList(filteredResult);
+						setResultCount(filteredResult.length +' total');
 					}
 
 					api.getCollections().then(respCol => {
