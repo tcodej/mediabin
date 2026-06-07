@@ -594,12 +594,19 @@ audio {
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: 2px center;
+  cursor: pointer;
 
   &.heading {
     background-color: vars.$blue;
     color: vars.$black;
     font-weight: vars.$bold;
     margin: 20px 0 10px 0;
+  }
+}
+
+.btn-copy {
+  &.copied {
+    background-color: vars.$white50;
   }
 }
 

@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from 'react';
 import MediaItem from '../components/mediaItem';
+import CopyButton from '../components/copyButton';
 import { updateReleaseCollection, updateWantlist } from '../utils/api';
 
 export default function ReleaseModal({ item, collections, onClose, onDelete, onVerify }) {
@@ -120,7 +121,11 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 									return <div key={`heading-${index}`} className="track heading">{track.title}</div>
 								}
 
-								return <div key={track.position+index} className="track">{track.position} {track.title}</div>
+								return (
+									<CopyButton key={track.position+index} text={`${track.position} ${track.title}`}>
+										<div className="track">{track.position} {track.title}</div>
+									</CopyButton>
+								)
 							})}
 						</div>
 					}
