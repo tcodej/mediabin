@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppContext } from '../contexts/application';
 import { importDiscogsRelease } from '../utils/api';
+import CopyButton from '../components/copyButton';
 import Cover from './cover';
 
 export default function MediaItem({ item, onClick, large, onVerify, onUpdateField }) {
@@ -133,25 +134,29 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 		<div className={getClassNames()} onContextMenu={toggleContextMenu}>
 			<Cover item={item} onClick={onClick} />
 			<div className="details">
-				<div className="title">
-					{item.title}
-					{(appState.showVerified || large) && item.date_verified &&
-						<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
-					}
-					{item.digital === 1 &&
-						<div
-							className="digital"
-							title="An mp3 version is available"
-							onClick={openDigital}
-						>
-							Digital
-						</div>
-					}
-					{item.dupes &&
-						<span> ({item.dupes})</span>
-					}
-				</div>
-				<div className="artist">{getArtist()}</div>
+				<CopyButton text={item.title}>
+					<div className="title">
+						{item.title}
+						{(appState.showVerified || large) && item.date_verified &&
+							<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
+						}
+						{item.digital === 1 &&
+							<div
+								className="digital"
+								title="An mp3 version is available"
+								onClick={openDigital}
+							>
+								Digital
+							</div>
+						}
+						{item.dupes &&
+							<span> ({item.dupes})</span>
+						}
+					</div>
+				</CopyButton>
+				<CopyButton text={getArtist()}>
+					<div className="artist">{getArtist()}</div>
+				</CopyButton>
 				<div className="year">{getReleaseDate()}</div>
 				{item.series && (item.series.length > 0) &&
 					<div>{item.series[0].catno}</div>

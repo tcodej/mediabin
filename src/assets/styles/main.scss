@@ -594,7 +594,6 @@ audio {
   background-repeat: no-repeat;
   background-size: 25px;
   background-position: 2px center;
-  cursor: pointer;
 
   &.heading {
     background-color: vars.$blue;
@@ -605,6 +604,8 @@ audio {
 }
 
 .btn-copy {
+  cursor: pointer;
+
   &.copied {
     background-color: vars.$white50;
   }
