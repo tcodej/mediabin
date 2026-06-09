@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { importDiscogsRelease } from '../utils/api';
+import { getDiscogsId } from '../utils';
 
 export default function ImportModal({ onClose, onSuccess }) {
 	const [ releaseID, setReleaseID ] = useState('');
@@ -23,12 +24,23 @@ export default function ImportModal({ onClose, onSuccess }) {
 		}
 	}
 
+	const setId = (e) => {
+		const id = getDiscogsId(e.target.value);
+
+		if (id?.length) {
+			setReleaseID(getDiscogsId(e.target.value));
+
+		} else {
+			setReleaseID('');
+		}
+	}
+
 	return (
 		<Fragment>
 			<div id="modal" className="import-modal">
 				<button type="button" className="btn-close" onClick={onClose}>X</button>
 				<p>Enter a Discogs release ID and click ok.</p>
-				<input id="discogs-id" type="tel" maxLength="10" value={releaseID} onChange={(e) => setReleaseID(e.target.value)} />
+				<input id="discogs-id" type="tel" maxLength="50" value={releaseID} onChange={setId} />
 				<div className="buttons">
 					<button type="button" className="btn-border" onClick={() => importRelease('preview')}>Preview</button>
 					<button type="button" className="btn-border" onClick={importRelease}>Import</button>

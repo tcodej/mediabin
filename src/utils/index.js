@@ -135,3 +135,8 @@ export const getItemByKey = (arr, value, key) => {
 
 	return false;
 }
+
+export const getDiscogsId = (str) => {
+  const pattern = /\d+/;
+  return str.match(pattern);
+}
