@@ -122,7 +122,7 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 								}
 
 								return (
-									<CopyButton key={track.position+index} text={`${track.position} ${track.title}`}>
+									<CopyButton key={track.position+index} text={`${(index + 1).toString().padStart(2, '0')} - ${track.title}`}>
 										<div className="track">{track.position} {track.title}</div>
 									</CopyButton>
 								)
