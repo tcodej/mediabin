@@ -8,7 +8,7 @@ export default function CopyButton(props) {
       await navigator.clipboard.writeText(props.text);
       setIsCopied(true);
       
-      setTimeout(() => setIsCopied(false), 2000);
+      setTimeout(() => setIsCopied(false), 5000);
 
     } catch (error) {
       console.error(`Failed to copy text: ${props.text}`, error);
