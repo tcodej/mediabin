@@ -84,14 +84,20 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 		setShowContextMenu(false);
 	}
 
-	const toggleField = (fieldName) => {
+	const toggleField = (fieldName, setValue) => {
 		let value = item[fieldName];
 
-		if (value) {
-			value = 0;
+		// digital can be set to 2 which means "won't digitize"
+		if (setValue) {
+			value = setValue;
 
 		} else {
-			value = 1;
+			if (value) {
+				value = 0;
+
+			} else {
+				value = 1;
+			}
 		}
 
 		item[fieldName] = value;
@@ -182,7 +188,12 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 						style={{ display: `${showContextMenu ? 'block' : 'none'}`}}
 					>
 						<div onClick={verifyMedia}>Verified <CheckIcon value={item.date_verified} /></div>
-						<div onClick={() => toggleField('digital')}>Digital <CheckIcon value={item.digital} /></div>
+						{item.digital !== 2 &&
+							<div onClick={() => toggleField('digital')}>Digital <CheckIcon value={item.digital} /></div>
+						}
+						{item.digital !== 1 &&
+							<div onClick={() => toggleField('digital', item.digital === 2 ? 0 : 2)}>Non-Digital <CheckIcon value={item.digital} /></div>
+						}
 						<div onClick={() => setShowContextMenu(false)}>Cancel</div>
 					</div>
 			</div>
