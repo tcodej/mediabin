@@ -121,6 +121,22 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 									return <div key={`heading-${index}`} className="track heading">{track.title}</div>
 								}
 
+								if (track.sub_tracks) {
+									return (
+										<div key={`heading-${index}`}>
+											<div className="track heading">{track.title}</div>
+
+											{track.sub_tracks.map(subtrack => {
+												return (
+													<CopyButton key={subtrack.position} text={`${subtrack.position} - ${subtrack.title}`}>
+														<div className="track subtrack">{subtrack.position} {subtrack.title}</div>
+													</CopyButton>
+												)
+											})}
+										</div>
+									);
+								}
+
 								return (
 									<CopyButton key={track.position+index} text={`${(index + 1).toString().padStart(2, '0')} - ${track.title}`}>
 										<div className="track">{track.position} {track.title}</div>
