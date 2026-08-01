@@ -37,7 +37,6 @@ export default function Home() {
 	const [ currentSort, setCurrentSort ] = useState();
 	const [ showVerified, setShowVerified ] = useState(true);
 	const [ showDigital, setShowDigital ] = useState(true);
-	const [ filteredTotal, setFilteredTotal ] = useState(true);
 
 	const pageSize = 100;
 
@@ -105,7 +104,7 @@ export default function Home() {
 					// setMedia(response.result);
 
 					// remove items in the purge collection
-					const filteredResult = response.result.filter(item => item.collection_id !== 8);
+					const filteredResult = id === '8' ? response.result : response.result.filter(item => item.collection_id !== 8);
 					setMedia(filteredResult);
 
 					if (!queryParam) {
@@ -146,7 +145,7 @@ export default function Home() {
 				}
 			});
 		}
-	}, [media]);
+	}, [media, id]);
 
 	useEffect(() => {
 		if (appState.menuOpen && window.innerWidth >= 700) {
