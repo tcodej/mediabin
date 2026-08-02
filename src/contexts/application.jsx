@@ -6,7 +6,7 @@ const ApplicationProvider = ({ children }) => {
     const defaultState = {
         menuOpen: false,
         error: false,
-        showVerified: false
+        showVerified: true
     };
 
     const [ appState, setAppState ] = useState(defaultState);
