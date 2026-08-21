@@ -616,6 +616,7 @@ export default function Home() {
 
 	// useful when auditing media to verify that I still have it - triggered from releaseModal or mediaItem
 	const verifyMedia = (item) => {
+		console.log(item);
 		let id;
 
 		if (item) {
@@ -704,14 +705,18 @@ export default function Home() {
 					})}
 				</div>
 				<div id="buttons">
-					<button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
+					{appState.isAdmin &&
+						<>
+							<button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
+							<button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={() => toggleVisible('verified')}>Toggle Verified</button>
+							<button type="button" title="Toggle Digital" className={`btn-digital ${showDigital}`} onClick={() => toggleVisible('digital')}>Toggle Digital</button>
+							{/*<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>*/}
+							<button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
+							<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
+						</>
+					}
 					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
-					{/*<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>*/}
-					<button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
-					<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
 					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
-					<button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={() => toggleVisible('verified')}>Toggle Verified</button>
-					<button type="button" title="Toggle Digital" className={`btn-digital ${showDigital}`} onClick={() => toggleVisible('digital')}>Toggle Digital</button>
 				</div>
 			</div>
 

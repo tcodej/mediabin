@@ -1,9 +1,11 @@
 import { Fragment, useState, useEffect } from 'react';
+import { useAppContext } from '../contexts/application';
 import MediaItem from '../components/mediaItem';
 import CopyButton from '../components/copyButton';
 import { updateReleaseCollection, updateWantlist } from '../utils/api';
 
 export default function ReleaseModal({ item, collections, onClose, onDelete, onVerify }) {
+	const { appState } = useAppContext();
 	const [scrollY, setScrollY] = useState(0);
 	const [wantlist, setWantlist] = useState('0');
 	const [deleteMessage, setDeleteMessage] = useState();
@@ -77,6 +79,12 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 		onClose();
 	}
 
+	let itemCollection;
+
+	if (item?.collection_id) {
+		itemCollection = collections.find(col => col.id === item.collection_id);
+	}
+
 	return (
 		<Fragment>
 		{item &&
@@ -91,23 +99,31 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 
 					<div id="release-bar">
 						{ collections &&
-							<select
-								defaultValue={item.collection_id}
-								onChange={saveItemCollection}
-							>
-								{collections.map(col => {
-									return (
-										<option key={col.id} value={col.id}>
-											{col.label}
-										</option>
-									)
-								})}
-							</select>
+							<>
+								{appState.isAdmin ?
+									<select
+										defaultValue={item.collection_id}
+										onChange={saveItemCollection}
+									>
+										{collections.map(col => {
+											return (
+												<option key={col.id} value={col.id}>
+													{col.label}
+												</option>
+											)
+										})}
+									</select>
+									:
+									<>{itemCollection ? itemCollection.label : 'Uncategorized' }</>
+								}
+							</>
 						}
 
-						<div id="toggle-wantlist" className={wantlist === '1' ? 'is-active' : ''} onClick={toggleWantlist}>
-							{wantlist === '1' ? 'Remove from wantlist' : 'Add to wantlist'}
-						</div>
+						{appState.isAdmin &&
+							<div id="toggle-wantlist" className={wantlist === '1' ? 'is-active' : ''} onClick={toggleWantlist}>
+								{wantlist === '1' ? 'Remove from wantlist' : 'Add to wantlist'}
+							</div>
+						}
 					</div>
 
 					{item.notes &&
@@ -146,8 +162,9 @@ export default function ReleaseModal({ item, collections, onClose, onDelete, onV
 						</div>
 					}
 					<div className="buttons">
-						<button type="button" className="btn-border" onClick={confirmDelete}>{deleteMessage || 'Delete'}</button>
-						<button type="button" className="btn-border" onClick={onVerify}>Verify</button>
+						{appState.isAdmin &&
+							<button type="button" className="btn-border" onClick={confirmDelete}>{deleteMessage || 'Delete'}</button>
+						}
 						<button type="button" className="btn-border" onClick={close}>Cancel</button>
 					</div>
 				</div>

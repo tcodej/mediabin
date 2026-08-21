@@ -143,20 +143,24 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 				<CopyButton text={item.title}>
 					<div className="title">
 						{item.title}
-						{(appState.showVerified || large) && item.date_verified &&
-							<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
-						}
-						{item.digital === 1 &&
-							<div
-								className="digital"
-								title="An mp3 version is available"
-								onClick={openDigital}
-							>
-								Digital
-							</div>
-						}
-						{item.dupes &&
-							<span> ({item.dupes})</span>
+						{appState.isAdmin &&
+							<>
+								{(appState.showVerified || large) && item.date_verified &&
+									<div className="verified" title={`Verified ${item.date_verified}`}>Verified</div>
+								}
+								{item.digital === 1 &&
+									<div
+										className="digital"
+										title="An mp3 version is available"
+										onClick={openDigital}
+									>
+										Digital
+									</div>
+								}
+								{item.dupes &&
+									<span> ({item.dupes})</span>
+								}
+							</>
 						}
 					</div>
 				</CopyButton>
@@ -175,13 +179,18 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 						<div>Added {getDateAdded()}</div>
 						<div>{item.source == 'book' ? 'GoodReads' : 'Discogs'} ID {item.release_id || item.id}</div>
 						<div onClick={onClick} className="link-info" title="More on Discogs.com">More Info</div>
-						{imageSaved ?
-							<div className="link-checked" title="Image saved">Saved</div>
-						:
-							<div onClick={getImage} className="link-import" title="Import Cover Image">Get Image</div>
+						{appState.isAdmin &&
+							<>
+								{imageSaved ?
+									<div className="link-checked" title="Image saved">Saved</div>
+								:
+									<div onClick={getImage} className="link-import" title="Import Cover Image">Get Image</div>
+								}
+							</>
 						}
 					</div>
 				}
+				{appState.isAdmin &&
 					<div
 						className="context-menu"
 						ref={menuRef}
@@ -196,6 +205,7 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
 						}
 						<div onClick={() => setShowContextMenu(false)}>Cancel</div>
 					</div>
+				}
 			</div>
 		</div>
 	)
