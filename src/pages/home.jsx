@@ -629,9 +629,8 @@ export default function Home() {
 		});
 	}
 
-	// useful when auditing media to verify that I still have it - triggered from releaseModal or mediaItem
+	// useful when auditing media to verify that I still have it
 	const verifyMedia = (item) => {
-		console.log(item);
 		let id;
 
 		if (item) {
