@@ -737,7 +737,7 @@ export default function Home() {
 					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
 					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
 					{!appState.isAdmin &&
-						<button type="button" title="Authenticate" className="btn-dupes" onClick={() => setShowAuth(true)}>Authenticate</button>
+						<button type="button" title="Authenticate" className="btn-login" onClick={() => setShowAuth(true)}>Authenticate</button>
 					}
 				</div>
 			</div>
