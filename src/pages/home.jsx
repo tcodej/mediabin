@@ -4,6 +4,7 @@ import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import * as api from '../utils/api';
 import { shuffle, delay, scrollTo, getItemByKey, sort } from '../utils';
+import Passcode from '../components/passcode';
 import ErrorMessage from '../components/errorMessage';
 import {
 	FilterToggle,
@@ -37,6 +38,7 @@ export default function Home() {
 	const [ currentSort, setCurrentSort ] = useState();
 	const [ showVerified, setShowVerified ] = useState(true);
 	const [ showDigital, setShowDigital ] = useState(true);
+	const [ showAuth, setShowAuth ] = useState(false);
 
 	const pageSize = 100;
 
@@ -162,6 +164,19 @@ export default function Home() {
 			runQuery();
 		}
 	}, [filterMode]);
+
+	useEffect(() => {
+		if (!appState.isAdmin) {
+			if (sessionStorage.getItem('authenticated')) {
+				updateAppState({ isAdmin: true });
+			}
+		}
+	}, [appState.isAdmin]);
+
+	const unlock = () => {
+		setShowAuth(false);
+		updateAppState({ isAdmin: true });
+	}
 
 	const sideToggle = (bool) => {
 		appAction.toggleMenu(bool);
@@ -651,6 +666,10 @@ export default function Home() {
 
 	const mediaItems = renderList();
 
+	if (showAuth) {
+		return <Passcode onUnlock={unlock} />;
+	}
+
 	return (
 		<div id="page-home" {...swipeHandlers}>
 			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
@@ -717,6 +736,9 @@ export default function Home() {
 					}
 					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
 					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
+					{!appState.isAdmin &&
+						<button type="button" title="Authenticate" className="btn-dupes" onClick={() => setShowAuth(true)}>Authenticate</button>
+					}
 				</div>
 			</div>
 
