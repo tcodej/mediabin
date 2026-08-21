@@ -4,7 +4,7 @@ const ApplicationContext = createContext(null);
 
 const ApplicationProvider = ({ children }) => {
     const defaultState = {
-        isAdmin: true,
+        isAdmin: false,
         menuOpen: false,
         error: false,
         showVerified: true
