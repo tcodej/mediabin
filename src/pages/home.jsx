@@ -469,7 +469,7 @@ export default function Home() {
 		setCurrentCollection(col.id);
 		setPage(1);
 		setList(results);
-		setResultCount(results.length +' items in '+ col.label);
+		setResultCount(results.length.toLocaleString() +' items in '+ col.label);
 
 		if (col.id) {
 			navigate(`/collection/${col.id}`);
