@@ -112,7 +112,7 @@ export default function Home() {
 					if (!queryParam) {
 						sideToggle(true);
 						setList(filteredResult);
-						setResultCount(filteredResult.length +' total');
+						setResultCount(filteredResult.length.toLocaleString() +' total');
 					}
 
 					api.getCollections().then(respCol => {
@@ -380,7 +380,7 @@ export default function Home() {
 			let resultText = '';
 
 			if (results.length) {
-				resultText = `${results.length} matches`;
+				resultText = `${results.length.toLocaleString()} matches`;
 
 			} else {
 				resultText = 'No matches';
