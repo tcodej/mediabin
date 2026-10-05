@@ -47,13 +47,13 @@ export default function Home() {
 	const [ currentCollection, setCurrentCollection ] = useState(allMedia);
 
 	const formats = [
-		{ value: 'LP', label: 'LP' },
-		{ value: 'Vinyl', label: 'Vinyl' },
 		{ value: 'CD', label: 'CD' },
+		{ value: 'Vinyl', label: 'Vinyl' },
+		{ value: 'LP', label: 'LP' },
 		{ value: 'EP', label: 'EP' },
-		{ value: '7"', label: '7"' },
-		{ value: '10"', label: '10"' },
 		{ value: '12"', label: '12"' },
+		{ value: '10"', label: '10"' },
+		{ value: '7"', label: '7"' },
 		{ value: 'Cass', label: 'Cassette' },
 		{ value: '8-Trk', label: '8 Track' },
 		{ value: 'DVD', label: 'DVD' },
