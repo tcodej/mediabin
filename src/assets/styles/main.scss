@@ -680,13 +680,13 @@ audio {
 
 .media-list {
   @extend .flex;
-  max-width: vars.$bp-xlarge;
+  // max-width: vars.$bp-xlarge;
   padding: 20px 20px 0 20px;
 }
 
 .media {
   position: relative;
-  width: 160px;
+  width: 240px;
   font-size: 12px;
   text-align: center;
 
@@ -793,6 +793,10 @@ audio {
 
   .artist {
     color: vars.$blue;
+  }
+
+  @media screen and (max-width: vars.$bp-mobile) {
+    width: 160px;
   }
 
   @media screen and (max-width: vars.$bp-mobile-sm) {

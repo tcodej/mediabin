@@ -72,6 +72,7 @@ export default function Admin() {
 	return (
 		<div id="page-admin">
 			<h2>Admin panel</h2>
+			<p>This is used to import a Discogs export CSV, but only to update existing items' date added and notes.</p>
 			<button type="button" className="button" onClick={processItems}>Process</button>
 			<table>
 				<tbody>
