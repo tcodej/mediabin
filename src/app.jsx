@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { BrowserRouter,	Routes,	Route } from 'react-router-dom';
 import { ApplicationProvider } from './contexts/application';
 import Header from './components/header';

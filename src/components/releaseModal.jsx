@@ -4,7 +4,7 @@ import MediaItem from '../components/mediaItem';
 import CopyButton from '../components/copyButton';
 import { updateReleaseCollection, updateWantlist } from '../utils/api';
 
-export default function ReleaseModal({ item, collections, onClose, onDelete, onVerify }) {
+export default function ReleaseModal({ item, collections, onClose, onDelete }) {
 	const { appState } = useAppContext();
 	const [scrollY, setScrollY] = useState(0);
 	const [wantlist, setWantlist] = useState('0');

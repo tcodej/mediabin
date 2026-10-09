@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { usePapaParse } from 'react-papaparse';
 import * as api from '../utils/api';
 import { delay } from '../utils';
@@ -10,8 +11,14 @@ export default function Admin() {
 	const [ list, setList ] = useState(false);
 	const [ message, setMessage ] = useState(false);
 	const [ startIndex, setStartIndex ] = useState(0);
+	const navigate = useNavigate();
 
 	useEffect(() => {
+		if (!sessionStorage.getItem('authenticated')) {
+			navigate('/');
+			return;
+		}
+
 		readRemoteFile('/import.csv', {
 			complete: (response) => {
 				setData(response.data);
