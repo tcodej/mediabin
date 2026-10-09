@@ -73,7 +73,7 @@ export default function Admin() {
 	const getImages = async () => {
 		for await (const item of media) {
 			setMessage(`Getting image for ${item.title}`);
-console.log(item);
+
 			api.importDiscogsRelease(item.release_id, 'image').then(resp => {
 				if (resp.ok) {
 					setMessage(`Saved image for ${item.title}`);
