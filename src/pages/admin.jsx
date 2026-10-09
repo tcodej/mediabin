@@ -80,7 +80,7 @@ export default function Admin() {
 				}
 			});
 
-			await delay(500);
+			await delay(1000);
 		}
 	};
 
