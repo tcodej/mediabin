@@ -8,6 +8,7 @@ export default function Admin() {
 	const [ data, setData ] = useState(false);
 	const [ media, setMedia ] = useState(false);
 	const [ list, setList ] = useState(false);
+	const [ message, setMessage ] = useState(false);
 
 	useEffect(() => {
 		readRemoteFile('/import.csv', {
@@ -69,11 +70,30 @@ export default function Admin() {
 		}
 	};
 
+	const getImages = async () => {
+		for await (const item of media) {
+			setMessage(`Getting image for ${item.title}`);
+console.log(item);
+			api.importDiscogsRelease(item.release_id, 'image').then(resp => {
+				if (resp.ok) {
+					setMessage(`Saved image for ${item.title}`);
+				}
+			});
+
+			await delay(500);
+		}
+	};
+
 	return (
 		<div id="page-admin">
 			<h2>Admin panel</h2>
-			<p>This is used to import a Discogs export CSV, but only to update existing items' date added and notes.</p>
-			<button type="button" className="button" onClick={processItems}>Process</button>
+			{message &&
+				<p>{message}</p>
+			}
+			<div className="buttons">
+				<button type="button" onClick={processItems}>Sync Date/Notes</button>
+				<button type="button" onClick={getImages}>Download Images</button>
+			</div>
 			<table>
 				<tbody>
 					{list && list.map((item, i) => {
