@@ -9,6 +9,7 @@ export default function Admin() {
 	const [ media, setMedia ] = useState(false);
 	const [ list, setList ] = useState(false);
 	const [ message, setMessage ] = useState(false);
+	const [ startIndex, setStartIndex ] = useState(0);
 
 	useEffect(() => {
 		readRemoteFile('/import.csv', {
@@ -47,7 +48,6 @@ export default function Admin() {
 				items.push(newRow);
 			});
 
-			console.log(items);
 			setList(items);
 		}
 	}, [data, media]);
@@ -71,12 +71,24 @@ export default function Admin() {
 	};
 
 	const getImages = async () => {
+		let count = 0;
+
 		for await (const item of media) {
-			setMessage(`Getting image for ${item.title}`);
+			count++;
+
+			if (count < startIndex) {
+				setMessage(`${count} Skipping ${item.title}`);
+				continue;
+			}
+
+			setMessage(`${count} Getting image for ${item.title}`);
 
 			api.importDiscogsRelease(item.release_id, 'image').then(resp => {
 				if (resp.ok) {
-					setMessage(`Saved image for ${item.title}`);
+					setMessage(`${count} Saved image for ${item.title}`);
+
+				} else {
+					setMessage(`${count} Failed to get image for ${item.title}`);
 				}
 			});
 
@@ -90,6 +102,7 @@ export default function Admin() {
 			{message &&
 				<p>{message}</p>
 			}
+			<input type="text" value={startIndex} onChange={(e) => setStartIndex(e.target.value)} />
 			<div className="buttons">
 				<button type="button" onClick={processItems}>Sync Date/Notes</button>
 				<button type="button" onClick={getImages}>Download Images</button>
