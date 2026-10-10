@@ -107,6 +107,7 @@ export default function Home() {
 
 					// remove items in the purge collection
 					const filteredResult = id === '8' ? response.result : response.result.filter(item => item.collection_id !== 8);
+					sort(filteredResult, 'artist', true);
 					setMedia(filteredResult);
 
 					if (!queryParam) {
