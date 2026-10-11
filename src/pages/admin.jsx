@@ -5,131 +5,131 @@ import * as api from '../utils/api';
 import { delay } from '../utils';
 
 export default function Admin() {
-	const { readRemoteFile } = usePapaParse();
-	const [ data, setData ] = useState(false);
-	const [ media, setMedia ] = useState(false);
-	const [ list, setList ] = useState(false);
-	const [ message, setMessage ] = useState(false);
-	const [ startIndex, setStartIndex ] = useState(0);
-	const navigate = useNavigate();
+  const { readRemoteFile } = usePapaParse();
+  const [ data, setData ] = useState(false);
+  const [ media, setMedia ] = useState(false);
+  const [ list, setList ] = useState(false);
+  const [ message, setMessage ] = useState(false);
+  const [ startIndex, setStartIndex ] = useState(0);
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		if (!sessionStorage.getItem('authenticated')) {
-			navigate('/');
-			return;
-		}
+  useEffect(() => {
+    if (!sessionStorage.getItem('authenticated')) {
+      navigate('/');
+      return;
+    }
 
-		readRemoteFile('/import.csv', {
-			complete: (response) => {
-				setData(response.data);
-			}
-		});
+    readRemoteFile('/import.csv', {
+      complete: (response) => {
+        setData(response.data);
+      }
+    });
 
-		api.getMedia().then(response => {
-			if (response && response.ok) {
-				setMedia(response.result);
-			}
-		});
-	}, []);
+    api.getMedia().then(response => {
+      if (response && response.ok) {
+        setMedia(response.result);
+      }
+    });
+  }, []);
 
-	useEffect(() => {
-		const items = [];
+  useEffect(() => {
+    const items = [];
 
-		if (data && media) {
-			data.forEach(row => {
-				const newRow = {
-					release_id: row[0],
-					name: row[1] +' - '+ row[2],
-					date_added_csv: row[5],
-					notes_csv: row[6]
-				};
+    if (data && media) {
+      data.forEach(row => {
+        const newRow = {
+          release_id: row[0],
+          name: row[1] +' - '+ row[2],
+          date_added_csv: row[5],
+          notes_csv: row[6]
+        };
 
-				const match = media.find(item => item.release_id === row[0]);
+        const match = media.find(item => item.release_id === row[0]);
 
-				if (match) {
-					newRow.id = match.id;
-					newRow.date_added = match.date_created;
-					newRow.notes = match.notes;
-				}
+        if (match) {
+          newRow.id = match.id;
+          newRow.date_added = match.date_created;
+          newRow.notes = match.notes;
+        }
 
-				items.push(newRow);
-			});
+        items.push(newRow);
+      });
 
-			setList(items);
-		}
-	}, [data, media]);
+      setList(items);
+    }
+  }, [data, media]);
 
-	const processItems = async () => {
-		// loop through items and reset date_created and notes if needed
-		for await (const item of list) {
-			if (item.id && item.date_added_csv !== item.date_added) {
-				// update date_created - treated as date_added
-				api.updateMediaDate(item.release_id, item.date_added_csv);
-				await delay(500);
+  const processItems = async () => {
+    // loop through items and reset date_created and notes if needed
+    for await (const item of list) {
+      if (item.id && item.date_added_csv !== item.date_added) {
+        // update date_created - treated as date_added
+        api.updateMediaDate(item.release_id, item.date_added_csv);
+        await delay(500);
 
-			} else if (item.id && item.notes_csv && !item.notes) {
-				// add notes if empty
-				api.updateMediaNotes(item.release_id, item.notes_csv);
+      } else if (item.id && item.notes_csv && !item.notes) {
+        // add notes if empty
+        api.updateMediaNotes(item.release_id, item.notes_csv);
 
-			} else {
-				console.log('skipping', item);
-			}
-		}
-	};
+      } else {
+        console.log('skipping', item);
+      }
+    }
+  };
 
-	const getImages = async () => {
-		let count = 0;
+  const getImages = async () => {
+    let count = 0;
 
-		for await (const item of media) {
-			count++;
+    for await (const item of media) {
+      count++;
 
-			if (count < startIndex) {
-				setMessage(`${count} Skipping ${item.title}`);
-				continue;
-			}
+      if (count < startIndex) {
+        setMessage(`${count} Skipping ${item.title}`);
+        continue;
+      }
 
-			setMessage(`${count} Getting image for ${item.title}`);
+      setMessage(`${count} Getting image for ${item.title}`);
 
-			api.importDiscogsRelease(item.release_id, 'image').then(resp => {
-				if (resp.ok) {
-					setMessage(`${count} Saved image for ${item.title}`);
+      api.importDiscogsRelease(item.release_id, 'image').then(resp => {
+        if (resp.ok) {
+          setMessage(`${count} Saved image for ${item.title}`);
 
-				} else {
-					setMessage(`${count} Failed to get image for ${item.title}`);
-				}
-			});
+        } else {
+          setMessage(`${count} Failed to get image for ${item.title}`);
+        }
+      });
 
-			await delay(1000);
-		}
-	};
+      await delay(1000);
+    }
+  };
 
-	return (
-		<div id="page-admin">
-			<h2>Admin panel</h2>
-			{message &&
-				<p>{message}</p>
-			}
-			<input type="text" value={startIndex} onChange={(e) => setStartIndex(e.target.value)} />
-			<div className="buttons">
-				<button type="button" onClick={processItems}>Sync Date/Notes</button>
-				<button type="button" onClick={getImages}>Download Images</button>
-			</div>
-			<table>
-				<tbody>
-					{list && list.map((item, i) => {
-						return (
-							<tr key={`${item.release_id}-${i}`}>
-								<td>{item.release_id}</td>
-								<td>{item.name}</td>
-								<td>{item.date_added_csv}</td>
-								<td>{item.date_added}</td>
-								<td>{item.notes_csv}</td>
-								<td>{item.notes}</td>
-							</tr>
-						)
-					})}
-				</tbody>
-			</table>
-		</div>
-	);
+  return (
+    <div id="page-admin">
+      <h2>Admin panel</h2>
+      {message &&
+        <p>{message}</p>
+      }
+      <input type="text" value={startIndex} onChange={(e) => setStartIndex(e.target.value)} />
+      <div className="buttons">
+        <button type="button" onClick={processItems}>Sync Date/Notes</button>
+        <button type="button" onClick={getImages}>Download Images</button>
+      </div>
+      <table>
+        <tbody>
+          {list && list.map((item, i) => {
+            return (
+              <tr key={`${item.release_id}-${i}`}>
+                <td>{item.release_id}</td>
+                <td>{item.name}</td>
+                <td>{item.date_added_csv}</td>
+                <td>{item.date_added}</td>
+                <td>{item.notes_csv}</td>
+                <td>{item.notes}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }

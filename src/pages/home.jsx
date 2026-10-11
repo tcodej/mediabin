@@ -7,754 +7,754 @@ import { shuffle, delay, scrollTo, getItemByKey, sort } from '../utils';
 import Passcode from '../components/passcode';
 import ErrorMessage from '../components/errorMessage';
 import {
-	FilterToggle,
-	ImportModal,
-	Loading,
-	MediaItem,
-	ReleaseModal,
-	Success,
-	Select
+  FilterToggle,
+  ImportModal,
+  Loading,
+  MediaItem,
+  ReleaseModal,
+  Success,
+  Select
 } from '../components';
 
 export default function Home() {
-	const { id, queryParam } = useParams();
-	const navigate = useNavigate();
-	const queryField = useRef(null);
-	const timer = useRef(null);
-	const observer = useRef();
-	const { appState, updateAppState, appAction } = useAppContext();
-	const [ loaded, setLoaded ] = useState(false);
-	const [ successOpen, setSuccessOpen ] = useState(false);
-	const [ media, setMedia ] = useState();
-	const [ list, setList ] = useState();
-	const [ currentMedia, setCurrentMedia ] = useState();
-	const [ query, setQuery ] = useState('');
-	const [ filters, setFilters ] = useState([]);
-	const [ filterMode, setFilterMode ] = useState('or');
-	const [ resultCount, setResultCount ] = useState('');
-	const [ importOpen, setImportOpen ] = useState(false);
-	const [ collections, setCollections ] = useState();
-	const [ page, setPage ] = useState(1);
-	const [ currentSort, setCurrentSort ] = useState();
-	const [ showVerified, setShowVerified ] = useState(true);
-	const [ showDigital, setShowDigital ] = useState(true);
-	const [ showAuth, setShowAuth ] = useState(false);
+  const { id, queryParam } = useParams();
+  const navigate = useNavigate();
+  const queryField = useRef(null);
+  const timer = useRef(null);
+  const observer = useRef();
+  const { appState, updateAppState, appAction } = useAppContext();
+  const [ loaded, setLoaded ] = useState(false);
+  const [ successOpen, setSuccessOpen ] = useState(false);
+  const [ media, setMedia ] = useState();
+  const [ list, setList ] = useState();
+  const [ currentMedia, setCurrentMedia ] = useState();
+  const [ query, setQuery ] = useState('');
+  const [ filters, setFilters ] = useState([]);
+  const [ filterMode, setFilterMode ] = useState('or');
+  const [ resultCount, setResultCount ] = useState('');
+  const [ importOpen, setImportOpen ] = useState(false);
+  const [ collections, setCollections ] = useState();
+  const [ page, setPage ] = useState(1);
+  const [ currentSort, setCurrentSort ] = useState();
+  const [ showVerified, setShowVerified ] = useState(true);
+  const [ showDigital, setShowDigital ] = useState(true);
+  const [ showAuth, setShowAuth ] = useState(false);
 
-	const pageSize = 100;
+  const pageSize = 100;
 
-	// default collection of 'all media'
-	const allMedia = { id: 0, label: 'All Media' };
-	const [ currentCollection, setCurrentCollection ] = useState(allMedia);
+  // default collection of 'all media'
+  const allMedia = { id: 0, label: 'All Media' };
+  const [ currentCollection, setCurrentCollection ] = useState(allMedia);
 
-	const formats = [
-		{ value: 'CD', label: 'CD' },
-		{ value: 'Vinyl', label: 'Vinyl' },
-		{ value: 'LP', label: 'LP' },
-		{ value: 'EP', label: 'EP' },
-		{ value: '12"', label: '12"' },
-		{ value: '10"', label: '10"' },
-		{ value: '7"', label: '7"' },
-		{ value: 'Cass', label: 'Cassette' },
-		{ value: '8-Trk', label: '8 Track' },
-		{ value: 'DVD', label: 'DVD' },
-		{ value: 'VHS', label: 'VHS' },
-		{ value: 'CDr', label: 'CDR' }
-	];
+  const formats = [
+    { value: 'CD', label: 'CD' },
+    { value: 'Vinyl', label: 'Vinyl' },
+    { value: 'LP', label: 'LP' },
+    { value: 'EP', label: 'EP' },
+    { value: '12"', label: '12"' },
+    { value: '10"', label: '10"' },
+    { value: '7"', label: '7"' },
+    { value: 'Cass', label: 'Cassette' },
+    { value: '8-Trk', label: '8 Track' },
+    { value: 'DVD', label: 'DVD' },
+    { value: 'VHS', label: 'VHS' },
+    { value: 'CDr', label: 'CDR' }
+  ];
 
-	const types = [
-		{ value: 'Autograph', label: 'Autographed' },
-		{ value: 'Unofficial', label: 'Bootleg' },
-		{ value: 'Box', label: 'Box' },
-		{ value: 'Color', label: 'Colored Vinyl' },
-		{ value: 'Enh', label: 'Enhanced' },
-		{ value: 'File', label: 'Digital' },
-		{ value: 'Gat', label: 'Gatefold' },
-		{ value: 'Mono', label: 'Mono' },
-		{ value: 'Pic', label: 'Picture Disc' },
-		{ value: 'Promo', label: 'Promo' },
-		{ value: 'Single', label: 'Single' },
-		{ value: 'Ltd', label: 'Limited Edition' },
-		{ value: 'Num', label: 'Numbered' },
-		{ value: 'Book', label: 'Book' },
-		{ value: 'Hardcover', label: 'Hardcover' },
-		{ value: 'Paperback', label: 'Paperback' }
-	];
+  const types = [
+    { value: 'Autograph', label: 'Autographed' },
+    { value: 'Unofficial', label: 'Bootleg' },
+    { value: 'Box', label: 'Box' },
+    { value: 'Color', label: 'Colored Vinyl' },
+    { value: 'Enh', label: 'Enhanced' },
+    { value: 'File', label: 'Digital' },
+    { value: 'Gat', label: 'Gatefold' },
+    { value: 'Mono', label: 'Mono' },
+    { value: 'Pic', label: 'Picture Disc' },
+    { value: 'Promo', label: 'Promo' },
+    { value: 'Single', label: 'Single' },
+    { value: 'Ltd', label: 'Limited Edition' },
+    { value: 'Num', label: 'Numbered' },
+    { value: 'Book', label: 'Book' },
+    { value: 'Hardcover', label: 'Hardcover' },
+    { value: 'Paperback', label: 'Paperback' }
+  ];
 
-	useEffect(() => {
-		if (media) {
-			if (queryParam) {
-				queryField.current.value = queryParam;
-				updateAppState({ menuOpen: true });
-				runQuery();
-			}
-		}
+  useEffect(() => {
+    if (media) {
+      if (queryParam) {
+        queryField.current.value = queryParam;
+        updateAppState({ menuOpen: true });
+        runQuery();
+      }
+    }
 
-			// collection id
-		if (collections) {
-			if (id) {
-				const col = getItemByKey(collections, id);
-				loadCollection(col);
-			}
-		}
-	}, [media, collections]);
+      // collection id
+    if (collections) {
+      if (id) {
+        const col = getItemByKey(collections, id);
+        loadCollection(col);
+      }
+    }
+  }, [media, collections]);
 
-	useEffect(() => {
-		if (!media) {
-			api.getMedia().then(response => {
-				if (response && response.ok) {
-					setLoaded(true);
-					// setMedia(response.result);
+  useEffect(() => {
+    if (!media) {
+      api.getMedia().then(response => {
+        if (response && response.ok) {
+          setLoaded(true);
+          // setMedia(response.result);
 
-					// remove items in the purge collection
-					const filteredResult = id === '8' ? response.result : response.result.filter(item => item.collection_id !== 8);
-					sort(filteredResult, 'artist', true);
-					setMedia(filteredResult);
+          // remove items in the purge collection
+          const filteredResult = id === '8' ? response.result : response.result.filter(item => item.collection_id !== 8);
+          sort(filteredResult, 'artist', true);
+          setMedia(filteredResult);
 
-					if (!queryParam) {
-						sideToggle(true);
-						setList(filteredResult);
-						setResultCount(filteredResult.length.toLocaleString() +' total');
-					}
+          if (!queryParam) {
+            sideToggle(true);
+            setList(filteredResult);
+            setResultCount(filteredResult.length.toLocaleString() +' total');
+          }
 
-					api.getCollections().then(respCol => {
-						setCollections([ allMedia, ...respCol.result ]);
-					});
-/*					
-					// use this async loop to populate data from each discogs api release call
-					(async () => {
-						let count = 0;
-						for await (const item of response.result) {
-							count++;
+          api.getCollections().then(respCol => {
+            setCollections([ allMedia, ...respCol.result ]);
+          });
+/*          
+          // use this async loop to populate data from each discogs api release call
+          (async () => {
+            let count = 0;
+            for await (const item of response.result) {
+              count++;
 
-							if (!item.cover) {
-								api.getDiscogsRelease(item.release_id).then(response => {
-									console.log(`item ${count}: ${item.release_id}`);
-									item.cover = item.release_id +'.jpg';
-								});
-								await delay(1000);
+              if (!item.cover) {
+                api.getDiscogsRelease(item.release_id).then(response => {
+                  console.log(`item ${count}: ${item.release_id}`);
+                  item.cover = item.release_id +'.jpg';
+                });
+                await delay(1000);
 
-							} else {
-								console.log(`item ${count}: skipping`);
-							}
-						}
+              } else {
+                console.log(`item ${count}: skipping`);
+              }
+            }
 
-						setLoaded(true);
-						setMedia(response.result);
-					})();
+            setLoaded(true);
+            setMedia(response.result);
+          })();
 */
-				} else {
-					setLoaded(true);
-					updateAppState({ error: 'Sorry, there has been an error. Failed to load media.'});
-				}
-			});
-		}
-	}, [media, id]);
+        } else {
+          setLoaded(true);
+          updateAppState({ error: 'Sorry, there has been an error. Failed to load media.'});
+        }
+      });
+    }
+  }, [media, id]);
 
-	useEffect(() => {
-		if (appState.menuOpen && window.innerWidth >= 700) {
-			queryField.current.focus();
+  useEffect(() => {
+    if (appState.menuOpen && window.innerWidth >= 700) {
+      queryField.current.focus();
 
-		} else {
-			queryField.current.blur();
-		}
-	}, [appState.menuOpen]);
+    } else {
+      queryField.current.blur();
+    }
+  }, [appState.menuOpen]);
 
-	// trigger query refresh if filter mode changes
-	useEffect(() => {
-		if (loaded) {
-			runQuery();
-		}
-	}, [filterMode]);
+  // trigger query refresh if filter mode changes
+  useEffect(() => {
+    if (loaded) {
+      runQuery();
+    }
+  }, [filterMode]);
 
-	useEffect(() => {
-		if (!appState.isAdmin) {
-			if (sessionStorage.getItem('authenticated')) {
-				updateAppState({ isAdmin: true });
-			}
-		}
-	}, [appState.isAdmin]);
+  useEffect(() => {
+    if (!appState.isAdmin) {
+      if (sessionStorage.getItem('authenticated')) {
+        updateAppState({ isAdmin: true });
+      }
+    }
+  }, [appState.isAdmin]);
 
-	const unlock = () => {
-		setShowAuth(false);
-		updateAppState({ isAdmin: true });
-	}
+  const unlock = () => {
+    setShowAuth(false);
+    updateAppState({ isAdmin: true });
+  }
 
   const logout = () => {
     sessionStorage.removeItem('authenticated');
     updateAppState({ isAdmin: false });
   }
 
-	const sideToggle = (bool) => {
-		appAction.toggleMenu(bool);
-	}
+  const sideToggle = (bool) => {
+    appAction.toggleMenu(bool);
+  }
 
-	const swipeHandlers = useSwipeable({
-		delta: 100,
-		swipeDuration: 500,
+  const swipeHandlers = useSwipeable({
+    delta: 100,
+    swipeDuration: 500,
 
-		onSwipedLeft: () => {
-			sideToggle(false);
-		},
+    onSwipedLeft: () => {
+      sideToggle(false);
+    },
 
-		onSwipedRight: () => {
-			sideToggle(true);
-		}
-	});
+    onSwipedRight: () => {
+      sideToggle(true);
+    }
+  });
 
-	const checkSideBar = () => {
-		// below desktop breakpoint, close sidebar
-		if (window.innerWidth < 700) {
-			appAction.toggleMenu(false);
-		}
-	}
+  const checkSideBar = () => {
+    // below desktop breakpoint, close sidebar
+    if (window.innerWidth < 700) {
+      appAction.toggleMenu(false);
+    }
+  }
 
-	const openRelease = (media) => {
-		if (media.source === 'discogs') {
-			api.getDiscogsRelease(media.release_id).then(response => {
-				// tack on any relevant info from the media object
-				response.artist = media.artist;
-				response.media_id = media.id;
-				response.release_id = media.release_id;
-				response.notes = media.notes;
-				response.source = media.source;
-				response.released = media.released;
-				response.format = media.format;
-				response.collection_id = media.collection_id;
-				response.wantlist = media.wantlist;
-				response.digital = media.digital;
-				response.date_created = media.date_created;
-				response.date_verified = media.date_verified;
+  const openRelease = (media) => {
+    if (media.source === 'discogs') {
+      api.getDiscogsRelease(media.release_id).then(response => {
+        // tack on any relevant info from the media object
+        response.artist = media.artist;
+        response.media_id = media.id;
+        response.release_id = media.release_id;
+        response.notes = media.notes;
+        response.source = media.source;
+        response.released = media.released;
+        response.format = media.format;
+        response.collection_id = media.collection_id;
+        response.wantlist = media.wantlist;
+        response.digital = media.digital;
+        response.date_created = media.date_created;
+        response.date_verified = media.date_verified;
 
-				// discogs api is down
-				if (response.error === true) {
-					console.log(media);
-					response = {...response, ...media};
-					updateAppState({ error: response.message });
-				}
+        // discogs api is down
+        if (response.error === true) {
+          console.log(media);
+          response = {...response, ...media};
+          updateAppState({ error: response.message });
+        }
 
-				setCurrentMedia(response);
-			});
-		}
+        setCurrentMedia(response);
+      });
+    }
 
-		if (media.source === 'book') {
-			// book/goodreads
-			setCurrentMedia(media);
-		}
-	}
+    if (media.source === 'book') {
+      // book/goodreads
+      setCurrentMedia(media);
+    }
+  }
 
-	const closeRelease = () => {
-		setCurrentMedia(false);
-	}
+  const closeRelease = () => {
+    setCurrentMedia(false);
+  }
 
-	const openImport = () => {
-		setImportOpen(true);
-	}
+  const openImport = () => {
+    setImportOpen(true);
+  }
 
-	const closeImport = () => {
-		setImportOpen(false);
-	}
+  const closeImport = () => {
+    setImportOpen(false);
+  }
 
-	const randomMedia = () => {
-		const total = 20;
-		const random = shuffle([...media]).splice(0, total);
-		clearQuery();
-		sort(random, 'artist', true);
-		setList(random);
-		setResultCount(`${total} random items`);
-		triggerSuccess();
-	}
+  const randomMedia = () => {
+    const total = 20;
+    const random = shuffle([...media]).splice(0, total);
+    clearQuery();
+    sort(random, 'artist', true);
+    setList(random);
+    setResultCount(`${total} random items`);
+    triggerSuccess();
+  }
 
-	const reload = () => {
-		setLoaded(false);
+  const reload = () => {
+    setLoaded(false);
 
-		api.getMedia().then(response => {
-			if (response && response.ok) {
-				setMedia(response.result);
-				window.setTimeout(() => {
-					runQuery();
-					setLoaded(true)
-				}, 1000);
-			}
-		});
-	}
+    api.getMedia().then(response => {
+      if (response && response.ok) {
+        setMedia(response.result);
+        window.setTimeout(() => {
+          runQuery();
+          setLoaded(true)
+        }, 1000);
+      }
+    });
+  }
 
-	// const clearCache = () => {
-	// 	api.clearCache()
-	// 		.then(() => {
-	// 			reload();
-	// 			triggerSuccess();
-	// 		});
-	// }
+  // const clearCache = () => {
+  //  api.clearCache()
+  //    .then(() => {
+  //      reload();
+  //      triggerSuccess();
+  //    });
+  // }
 
-	const getDupes = () => {
-		clearQuery();
-		api.getDupes()
-			.then(response => {
-				setList(response.result);
-				triggerSuccess();
-			});
-	}
+  const getDupes = () => {
+    clearQuery();
+    api.getDupes()
+      .then(response => {
+        setList(response.result);
+        triggerSuccess();
+      });
+  }
 
-	const runQuery = () => {
-		window.clearTimeout(timer.current);
-		let q = queryField.current.value.trimStart();
-		let qText = q.trim();
-		let match = false;
+  const runQuery = () => {
+    window.clearTimeout(timer.current);
+    let q = queryField.current.value.trimStart();
+    let qText = q.trim();
+    let match = false;
 
-		setQuery(q);
+    setQuery(q);
 
-		// reset sort
-		sortBy('reset');
+    // reset sort
+    sortBy('reset');
 
-		timer.current = window.setTimeout(() => {
-			window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => {
+      window.clearTimeout(timer.current);
 
-			q = q.trim().toLowerCase().split(' ');
+      q = q.trim().toLowerCase().split(' ');
 
-			if (filters.length === 0 && q[0].length === 0) {
-				loadCollection(allMedia);
-				return;
-			}
+      if (filters.length === 0 && q[0].length === 0) {
+        loadCollection(allMedia);
+        return;
+      }
 
-			if (q[0].length < 3) {
-				setList();
-				setResultCount('Searching...');
+      if (q[0].length < 3) {
+        setList();
+        setResultCount('Searching...');
 
-				if (filters.length < 1) {
-					return;
-				}
+        if (filters.length < 1) {
+          return;
+        }
 
-			} else {
-				setCurrentCollection(allMedia);
-			}
+      } else {
+        setCurrentCollection(allMedia);
+      }
 
-			let results = media.filter(item => {
-				let match = 0;
+      let results = media.filter(item => {
+        let match = 0;
 
-				if (queryParam === 'noyear') {
-					if (!item.released || item.released == '0') {
-						return item;
-					}
+        if (queryParam === 'noyear') {
+          if (!item.released || item.released == '0') {
+            return item;
+          }
 
-				} else {
-					q.forEach(word => {
-						if (item.artist.toLowerCase().indexOf(word) > -1 || item.title.toLowerCase().indexOf(word) > -1) {
-							match++;
-						}
-					});
+        } else {
+          q.forEach(word => {
+            if (item.artist.toLowerCase().indexOf(word) > -1 || item.title.toLowerCase().indexOf(word) > -1) {
+              match++;
+            }
+          });
 
-					if (match === q.length) {
-						return item;
-					}
-				}
-			});
+          if (match === q.length) {
+            return item;
+          }
+        }
+      });
 
-			if (filters.length > 0) {
-				results = results.filter(item => {
-					match = 0;
-					let i=0;
+      if (filters.length > 0) {
+        results = results.filter(item => {
+          match = 0;
+          let i=0;
 
-					if (filterMode === 'or') {
-						for (i=0; i<filters.length; i++) {
-							if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
-								match = 1;
-								break;
-							}
-						}
+          if (filterMode === 'or') {
+            for (i=0; i<filters.length; i++) {
+              if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
+                match = 1;
+                break;
+              }
+            }
 
-						if (match === 1) {
-							return item;
-						}
+            if (match === 1) {
+              return item;
+            }
 
-					} else {
-						// and
-						for (i=0; i<filters.length; i++) {
-							if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
-								match++;
-							}
-						}
+          } else {
+            // and
+            for (i=0; i<filters.length; i++) {
+              if (item.format.toLowerCase().includes(filters[i].toLowerCase())) {
+                match++;
+              }
+            }
 
-						if (match === filters.length) {
-							return item;
-						}
-					}
-				});
+            if (match === filters.length) {
+              return item;
+            }
+          }
+        });
 
-				checkSideBar();
-			}
+        checkSideBar();
+      }
 
-			let resultText = '';
+      let resultText = '';
 
-			if (results.length) {
-				resultText = `${results.length.toLocaleString()} matches`;
+      if (results.length) {
+        resultText = `${results.length.toLocaleString()} matches`;
 
-			} else {
-				resultText = 'No matches';
-			}
+      } else {
+        resultText = 'No matches';
+      }
 
-			if (qText) {
-				resultText += ` for '${qText}'`;
-			}
+      if (qText) {
+        resultText += ` for '${qText}'`;
+      }
 
-			if (filters.length) {
-				resultText += ` with filters ${filters.join(' '+ filterMode +' ')}`;
-			}
+      if (filters.length) {
+        resultText += ` with filters ${filters.join(' '+ filterMode +' ')}`;
+      }
 
-			setResultCount(resultText);
-			sort(results, 'artist', true);
-			setList(results);
-			navigate(`/${q.join(' ')}`);
-			checkSideBar();
-			scrollTo();
-		}, 750);
-	}
+      setResultCount(resultText);
+      sort(results, 'artist', true);
+      setList(results);
+      navigate(`/${q.join(' ')}`);
+      checkSideBar();
+      scrollTo();
+    }, 750);
+  }
 
-	const clearQuery = (reset) => {
-		setQuery('');
-		setFilters([]);
-		setResultCount('');
-		navigate('/');
-		sortBy('reset');
+  const clearQuery = (reset) => {
+    setQuery('');
+    setFilters([]);
+    setResultCount('');
+    navigate('/');
+    sortBy('reset');
 
-		if (reset === true) {
-			queryField.current.focus();
-			setList(media);
-			// loadCollection(allMedia);
-		}
-	}
+    if (reset === true) {
+      queryField.current.focus();
+      setList(media);
+      // loadCollection(allMedia);
+    }
+  }
 
-	const toggleFilter = (filter) => {
-		let list = filters;
-		const index = list.indexOf(filter.value);
+  const toggleFilter = (filter) => {
+    let list = filters;
+    const index = list.indexOf(filter.value);
 
-		if (currentCollection && currentCollection.id !== 0) {
-			loadCollection(allMedia);
-		}
+    if (currentCollection && currentCollection.id !== 0) {
+      loadCollection(allMedia);
+    }
 
-		if (index > -1) {
-			list.splice(index, 1);
+    if (index > -1) {
+      list.splice(index, 1);
 
-		} else {
-			list.push(filter.value);
-		}
+    } else {
+      list.push(filter.value);
+    }
 
-		setFilters(list);
-		runQuery();
-	}
+    setFilters(list);
+    runQuery();
+  }
 
-	const toggleFilterMode = () => {
-		if (filterMode === 'or') {
-			setFilterMode('and');
+  const toggleFilterMode = () => {
+    if (filterMode === 'or') {
+      setFilterMode('and');
 
-		} else {
-			setFilterMode('or');
-		}
-	}
+    } else {
+      setFilterMode('or');
+    }
+  }
 
-	const loadCollection = (col) => {
-		if (!media) {
-			return;
-		}
+  const loadCollection = (col) => {
+    if (!media) {
+      return;
+    }
 
-		let results;
-		clearQuery();
+    let results;
+    clearQuery();
 
-		if (col.id === 0) {
-			// show all
-			results = media;
+    if (col.id === 0) {
+      // show all
+      results = media;
 
-		} else {
-			results = media.filter(item => {
-				if (item.collection_id === col.id && item.wantlist !== '1') {
-					return item;
-				}
-			});
-		}
+    } else {
+      results = media.filter(item => {
+        if (item.collection_id === col.id && item.wantlist !== '1') {
+          return item;
+        }
+      });
+    }
 
-		checkSideBar();
-		setCurrentCollection(col.id);
-		setPage(1);
-		setList(results);
-		setResultCount(results.length.toLocaleString() +' items in '+ col.label);
+    checkSideBar();
+    setCurrentCollection(col.id);
+    setPage(1);
+    setList(results);
+    setResultCount(results.length.toLocaleString() +' items in '+ col.label);
 
-		if (col.id) {
-			navigate(`/collection/${col.id}`);
-		}
+    if (col.id) {
+      navigate(`/collection/${col.id}`);
+    }
 
-		scrollTo();
+    scrollTo();
 /*
-		// alternate back-end query
-		api.getCollection(col.id).then(response => {
-			setList(response.result);
-			setResultCount(response.result.length +' items in '+ col.label);
-		});
+    // alternate back-end query
+    api.getCollection(col.id).then(response => {
+      setList(response.result);
+      setResultCount(response.result.length +' items in '+ col.label);
+    });
 */
-	}
+  }
 
-	const triggerSuccess = async (resp) => {
-		if (resp) {
-			resp.source = 'discogs';
-			setCurrentMedia(resp);
-			reload();
+  const triggerSuccess = async (resp) => {
+    if (resp) {
+      resp.source = 'discogs';
+      setCurrentMedia(resp);
+      reload();
 
-		} else {
-			setSuccessOpen(true);
-			await delay(1000);
-			setSuccessOpen(false);
-		}
-	}
+    } else {
+      setSuccessOpen(true);
+      await delay(1000);
+      setSuccessOpen(false);
+    }
+  }
 
-	// load paginated list
-	const renderList = () => {
-		if (!list) {
-			return [];
-		}
+  // load paginated list
+  const renderList = () => {
+    if (!list) {
+      return [];
+    }
 
-		const items = list.filter(item => {
-			if (showVerified === false && item.date_verified) {
-				return false;
-			}
+    const items = list.filter(item => {
+      if (showVerified === false && item.date_verified) {
+        return false;
+      }
 
-			if (showDigital === false && item.digital) {
-				return false;
-			}
+      if (showDigital === false && item.digital) {
+        return false;
+      }
 
-			return item;
-		});
+      return item;
+    });
 
-		// console.log(items.length, list.length);
-		const filteredTotal = items.length;
+    // console.log(items.length, list.length);
+    const filteredTotal = items.length;
 
-		// clip to current page
-		if (pageSize * page > list.length) {
-			items.length = list.length;
+    // clip to current page
+    if (pageSize * page > list.length) {
+      items.length = list.length;
 
-		} else {
-			items.length = pageSize * page;
-		}
+    } else {
+      items.length = pageSize * page;
+    }
 
-		const mediaItems = items.map(item => {
-			return (
-				<MediaItem
-					key={item.id}
-					item={item}
-					onClick={() => {
-						openRelease(item)
-					}}
-					onVerify={() => {
-						verifyMedia(item)
-					}}
-					onUpdateField={updateField}
-				/>
-			)
-		});
+    const mediaItems = items.map(item => {
+      return (
+        <MediaItem
+          key={item.id}
+          item={item}
+          onClick={() => {
+            openRelease(item)
+          }}
+          onVerify={() => {
+            verifyMedia(item)
+          }}
+          onUpdateField={updateField}
+        />
+      )
+    });
 
-		if (items.length < list.length) {
-			mediaItems.push(
-				<div
-					ref={loadMore}
-					id="load-more"
-					key="load-more"
-				>
-					Loading...
-				</div>
-			);
-		}
+    if (items.length < list.length) {
+      mediaItems.push(
+        <div
+          ref={loadMore}
+          id="load-more"
+          key="load-more"
+        >
+          Loading...
+        </div>
+      );
+    }
 
-		return {
-			items: mediaItems,
-			total: filteredTotal < list.length ? filteredTotal : false
-		}
-	}
+    return {
+      items: mediaItems,
+      total: filteredTotal < list.length ? filteredTotal : false
+    }
+  }
 
-	const loadMore = useCallback(node => {
-		if (observer.current) {
-			observer.current.disconnect();
-		}
+  const loadMore = useCallback(node => {
+    if (observer.current) {
+      observer.current.disconnect();
+    }
 
-		observer.current = new IntersectionObserver(entries => {
-			if (entries[0].isIntersecting) {
-				setPage(prevPage => prevPage + 1);
-			}
-		});
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setPage(prevPage => prevPage + 1);
+      }
+    });
 
-		if (node) {
-			observer.current.observe(node);
-		}
-	}, []);
+    if (node) {
+      observer.current.observe(node);
+    }
+  }, []);
 
-	const sortBy = (option) => {
-		if (option === 'reset') {
-			setCurrentSort(false);
-			return;
-		}
+  const sortBy = (option) => {
+    if (option === 'reset') {
+      setCurrentSort(false);
+      return;
+    }
 
-		if (!option) {
-			if (currentSort) {
-				option = currentSort;
+    if (!option) {
+      if (currentSort) {
+        option = currentSort;
 
-			} else {
-				return;
-			}
+      } else {
+        return;
+      }
 
-		} else {
-			setCurrentSort(option);
-		}
+    } else {
+      setCurrentSort(option);
+    }
 
-		setList(prevVals => sort([...prevVals], option.value, false, option.order, option.dates));
-	};
+    setList(prevVals => sort([...prevVals], option.value, false, option.order, option.dates));
+  };
 
-	const loadWantlist = () => {
-		api.getWantlist().then(response => {
-			if (response.result) {
-				if (Array.isArray(response.result)) {
-					sort(response.result, 'artist', true);
-					setList(response.result);
+  const loadWantlist = () => {
+    api.getWantlist().then(response => {
+      if (response.result) {
+        if (Array.isArray(response.result)) {
+          sort(response.result, 'artist', true);
+          setList(response.result);
 
-				} else {
-					setList([response.result]);
-				}
+        } else {
+          setList([response.result]);
+        }
 
-				checkSideBar();
+        checkSideBar();
 
-			} else {
-				setList(false);
-			}
-		});
-	}
+      } else {
+        setList(false);
+      }
+    });
+  }
 
-	const deleteMedia = () => {
-		// if currentMedia.media_id exists, it's a discogs item, otherwise it's a book
-		const id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
+  const deleteMedia = () => {
+    // if currentMedia.media_id exists, it's a discogs item, otherwise it's a book
+    const id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
 
-		api.deleteMedia(id).then(response => {
-			if (response && response.ok) {
-				reload();
-				closeRelease();
-			}
-		});
-	}
+    api.deleteMedia(id).then(response => {
+      if (response && response.ok) {
+        reload();
+        closeRelease();
+      }
+    });
+  }
 
-	// useful when auditing media to verify that I still have it
-	const verifyMedia = (item) => {
-		let id;
+  // useful when auditing media to verify that I still have it
+  const verifyMedia = (item) => {
+    let id;
 
-		if (item) {
-			id = item.id;
+    if (item) {
+      id = item.id;
 
-		} else {
-			id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
-		}
+    } else {
+      id = currentMedia.media_id ? currentMedia.media_id : currentMedia.id;
+    }
 
-		api.verifyMedia(id);
-		// reload();
-		closeRelease();
-	}
+    api.verifyMedia(id);
+    // reload();
+    closeRelease();
+  }
 
-	// toggle visibilty of specified items
-	const toggleVisible = (type) => {
-		switch (type) {
-			case 'verified':
-				setShowVerified(!showVerified);
-				break;
+  // toggle visibilty of specified items
+  const toggleVisible = (type) => {
+    switch (type) {
+      case 'verified':
+        setShowVerified(!showVerified);
+        break;
 
-			case 'digital':
-				setShowDigital(!showDigital);
-				break;
-		}
-		// reload();
-	}
+      case 'digital':
+        setShowDigital(!showDigital);
+        break;
+    }
+    // reload();
+  }
 
-	const updateField = (item, fieldName, value) => {
-		api.updateField(item.id, { [fieldName]: value });
-	}
+  const updateField = (item, fieldName, value) => {
+    api.updateField(item.id, { [fieldName]: value });
+  }
 
-	const mediaItems = renderList();
+  const mediaItems = renderList();
 
-	if (showAuth) {
-		return <Passcode onUnlock={unlock} />;
-	}
+  if (showAuth) {
+    return <Passcode onUnlock={unlock} />;
+  }
 
-	return (
-		<div id="page-home" {...swipeHandlers}>
-			<div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
-				<div id="query">
-					<input
-						type="text"
-						id="field-query"
-						ref={queryField}
-						value={query}
-						maxLength="30"
-						onChange={runQuery}
-						placeholder="Find in Media"
-					/>
-					<button type="button" className="btn-clear" onClick={() => clearQuery(true)}>Clear</button>
-				</div>
-				<div id="filter-list">
-					<div className="heading">Collections</div>
-					{ collections && collections.map(col => {
-						return (
-							<FilterToggle
-								key={col.id}
-								filter={col}
-								isActive={currentCollection === col.id}
-								onClick={() => loadCollection(col)}
-							/>
-						)
-					})}
-					<div className="toggle wantlist" onClick={loadWantlist}>Wantlist</div>
+  return (
+    <div id="page-home" {...swipeHandlers}>
+      <div id="side-panel" className={appState.menuOpen ? 'is-open' : ''}>
+        <div id="query">
+          <input
+            type="text"
+            id="field-query"
+            ref={queryField}
+            value={query}
+            maxLength="30"
+            onChange={runQuery}
+            placeholder="Find in Media"
+          />
+          <button type="button" className="btn-clear" onClick={() => clearQuery(true)}>Clear</button>
+        </div>
+        <div id="filter-list">
+          <div className="heading">Collections</div>
+          { collections && collections.map(col => {
+            return (
+              <FilterToggle
+                key={col.id}
+                filter={col}
+                isActive={currentCollection === col.id}
+                onClick={() => loadCollection(col)}
+              />
+            )
+          })}
+          <div className="toggle wantlist" onClick={loadWantlist}>Wantlist</div>
 
-					<div className="heading">Media Formats</div>
-					{ formats.map(format => {
-						return (
-							<FilterToggle
-								key={format.value}
-								filter={format}
-								isActive={filters.includes(format.value)}
-								onClick={() => toggleFilter(format)}
-							/>
-						)
-					})}
+          <div className="heading">Media Formats</div>
+          { formats.map(format => {
+            return (
+              <FilterToggle
+                key={format.value}
+                filter={format}
+                isActive={filters.includes(format.value)}
+                onClick={() => toggleFilter(format)}
+              />
+            )
+          })}
 
-					<div className="heading">Media Types</div>
-					{ types.map(type => {
-						return (
-							<FilterToggle
-								key={type.value}
-								filter={type}
-								isActive={filters.includes(type.value)}
-								onClick={() => toggleFilter(type)}
-							/>
-						)
-					})}
-				</div>
-				<div id="buttons">
-					{appState.isAdmin &&
-						<>
-							<button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
-							<button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={() => toggleVisible('verified')}>Toggle Verified</button>
-							<button type="button" title="Toggle Digital" className={`btn-digital ${showDigital}`} onClick={() => toggleVisible('digital')}>Toggle Digital</button>
+          <div className="heading">Media Types</div>
+          { types.map(type => {
+            return (
+              <FilterToggle
+                key={type.value}
+                filter={type}
+                isActive={filters.includes(type.value)}
+                onClick={() => toggleFilter(type)}
+              />
+            )
+          })}
+        </div>
+        <div id="buttons">
+          {appState.isAdmin &&
+            <>
+              <button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
+              <button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={() => toggleVisible('verified')}>Toggle Verified</button>
+              <button type="button" title="Toggle Digital" className={`btn-digital ${showDigital}`} onClick={() => toggleVisible('digital')}>Toggle Digital</button>
 {/*
-							<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
+              <button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
 */}
-							<button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
-							<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
-						</>
-					}
+              <button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
+              <button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
+            </>
+          }
 {/*
-					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
+          <button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
 */}
-					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
-					{!appState.isAdmin &&
-						<button
-							type="button"
-							title="Authenticate"
-							className="btn-login"
-							onClick={() => setShowAuth(true)}
-						>
-							Authenticate
-						</button>
-					}
+          <button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
+          {!appState.isAdmin &&
+            <button
+              type="button"
+              title="Authenticate"
+              className="btn-login"
+              onClick={() => setShowAuth(true)}
+            >
+              Authenticate
+            </button>
+          }
           {appState.isAdmin &&
             <button
               type="button"
@@ -765,65 +765,65 @@ export default function Home() {
               Authenticate
             </button>
           }
-				</div>
-			</div>
+        </div>
+      </div>
 
-			<div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
-				{ !loaded &&
-					<Loading />
-				}
+      <div id="main-panel" className={appState.menuOpen ? 'is-open' : ''}>
+        { !loaded &&
+          <Loading />
+        }
 
-				{ resultCount &&
-					<div id="utility-bar">
-						<div id="result-count">
-							{resultCount} {mediaItems.total !== false ? `(Filtered: ${mediaItems.total})` : ''}
-						</div>
+        { resultCount &&
+          <div id="utility-bar">
+            <div id="result-count">
+              {resultCount} {mediaItems.total !== false ? `(Filtered: ${mediaItems.total})` : ''}
+            </div>
 
-						<div className="sort-controls">
-							<Select
-								placeholder="Sort by..."
-								onSelect={sortBy}
-								reset={currentSort === false}
-								options={[
-									{ label: 'Artist', value: 'artist' },
-									{ label: 'Date', value: 'released' },
-									{ label: 'Title', value: 'title' },
-									{ label: 'Type', value: 'format' },
-									{ label: 'Date Added', value: 'date_created', order: 'DESC', dates: true },
-									{ label: 'Verified', value: 'date_verified', order: 'DESC', dates: true }
-								]}
-							/>
-						</div>
-					</div>
-				}
+            <div className="sort-controls">
+              <Select
+                placeholder="Sort by..."
+                onSelect={sortBy}
+                reset={currentSort === false}
+                options={[
+                  { label: 'Artist', value: 'artist' },
+                  { label: 'Date', value: 'released' },
+                  { label: 'Title', value: 'title' },
+                  { label: 'Type', value: 'format' },
+                  { label: 'Date Added', value: 'date_created', order: 'DESC', dates: true },
+                  { label: 'Verified', value: 'date_verified', order: 'DESC', dates: true }
+                ]}
+              />
+            </div>
+          </div>
+        }
 
-				{ (list && list.length > 0) ?
-					<div className="media-list">
-						{mediaItems.items}
-					</div>
+        { (list && list.length > 0) ?
+          <div className="media-list">
+            {mediaItems.items}
+          </div>
 
-					:
+          :
 
-					<div className="logo home">MediaBin</div>
-				}
-			</div>
+          <div className="logo home">MediaBin</div>
+        }
+      </div>
 
-			<ReleaseModal
-				item={currentMedia}
-				collections={collections}
-				onClose={closeRelease}
-				onDelete={deleteMedia}
-				onVerify={verifyMedia}
-			/>
+      <ReleaseModal
+        item={currentMedia}
+        collections={collections}
+        onClose={closeRelease}
+        onDelete={deleteMedia}
+        onVerify={verifyMedia}
+      />
 
-			{importOpen &&
-				<ImportModal
-					onClose={closeImport}
-					onSuccess={triggerSuccess}
-				/>
-			}
-			<ErrorMessage />
-			<Success open={successOpen} />
-		</div>
-	);
+      {importOpen &&
+        <ImportModal
+          onClose={closeImport}
+          onSuccess={triggerSuccess}
+        />
+      }
+      <ErrorMessage />
+      <Success open={successOpen} />
+    </div>
+  );
 }

@@ -1,105 +1,105 @@
 export const apiURL = import.meta.env.VITE_API_URL;
 
 const getResult = async (endpoint, postData) => {
-	let data = {
-		method: 'GET'
-	};
+  let data = {
+    method: 'GET'
+  };
 
-	if (postData) {
-		data.method = 'POST';
-		data.headers = {
-			'Content-Type': 'application/json'
-		};
-		data.body = JSON.stringify(postData);
-	}
+  if (postData) {
+    data.method = 'POST';
+    data.headers = {
+      'Content-Type': 'application/json'
+    };
+    data.body = JSON.stringify(postData);
+  }
 
-	try {
-		const response = await fetch(`${apiURL}${endpoint}`, data);
-		const result = await response.json();
-		result.ok = response.ok;
-		return result;
+  try {
+    const response = await fetch(`${apiURL}${endpoint}`, data);
+    const result = await response.json();
+    result.ok = response.ok;
+    return result;
 
-	} catch(err) {
-		console.log(err);
-		return {
-			ok: false,
-			error: 'Server exception'
-		}
-	}
+  } catch(err) {
+    console.log(err);
+    return {
+      ok: false,
+      error: 'Server exception'
+    }
+  }
 }
 
 export const getMedia = async () => {
-	return getResult(`feed/media`);
+  return getResult(`feed/media`);
 };
 
 export const getRelease = async (id) => {
-	return getResult(`feed/release?id=${id}`);
+  return getResult(`feed/release?id=${id}`);
 };
 
 export const getDiscogsRelease = async (release_id) => {
-	return getResult(`discogs/releases/${release_id}`);
+  return getResult(`discogs/releases/${release_id}`);
 };
 
 export const importDiscogsRelease = async (release_id, type) => {
-	let endpoint = `discogs/import/${release_id}`;
+  let endpoint = `discogs/import/${release_id}`;
 
-	if (type === 'image') {
-		endpoint += '/image';
-	}
+  if (type === 'image') {
+    endpoint += '/image';
+  }
 
-	if (type === 'preview') {
-		endpoint += '/preview';
-	}
+  if (type === 'preview') {
+    endpoint += '/preview';
+  }
 
-	return getResult(endpoint);
+  return getResult(endpoint);
 };
 
 export const getCollections = async () => {
-	return getResult(`feed/collections`);
+  return getResult(`feed/collections`);
 };
 
 export const getCollection = async (collection_id) => {
-	return getResult(`feed/collection/${collection_id}`);
+  return getResult(`feed/collection/${collection_id}`);
 };
 
 export const clearCache = async () => {
-	return getResult('clearcache');
+  return getResult('clearcache');
 };
 
 export const getDupes = async () => {
-	return getResult('feed/dupes');
+  return getResult('feed/dupes');
 }
 
 export const updateReleaseCollection = async (release_id, col_id) => {
-	return getResult(`updateMedia/${release_id}`, { collection_id: col_id });
+  return getResult(`updateMedia/${release_id}`, { collection_id: col_id });
 }
 
 // used for admin updates - rarely used
 export const updateMediaDate = async (id, date) => {
-	return getResult(`updateMedia/${id}`, { date_created: date });
+  return getResult(`updateMedia/${id}`, { date_created: date });
 }
 
 // used for admin updates - rarely used
 export const updateMediaNotes = async (id, notes) => {
-	return getResult(`updateMedia/${id}`, { notes: notes });
+  return getResult(`updateMedia/${id}`, { notes: notes });
 }
 
 export const getWantlist = async () => {
-	return getResult('feed/wantlist');
+  return getResult('feed/wantlist');
 }
 
 export const updateWantlist = async (id, val) => {
-	return getResult(`updateWantlist/${id}`, { wantlist: val });
+  return getResult(`updateWantlist/${id}`, { wantlist: val });
 }
 
 export const deleteMedia = async (id) => {
-	return getResult(`delete/${id}`, {});
+  return getResult(`delete/${id}`, {});
 };
 
 export const verifyMedia = async (id) => {
-	return getResult(`verify/${id}`, {});
+  return getResult(`verify/${id}`, {});
 };
 
 export const updateField = async (id, data) => {
-	return getResult(`updateField/${id}`, data);
+  return getResult(`updateField/${id}`, data);
 };

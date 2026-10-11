@@ -7,75 +7,75 @@ import bookIcon from '../assets/img/icon-book.svg';
 import unknownIcon from '../assets/img/icon-unknown.svg';
 
 export default function Cover({ item, onClick, onContextMenu }) {
-	const defaultData = {
-		image: '',
-		gallery: false,
-		alt: 'Loading...',
-		className: ''
-	};
+  const defaultData = {
+    image: '',
+    gallery: false,
+    alt: 'Loading...',
+    className: ''
+  };
 
-	const [ data, setData ] = useState({ ...defaultData });
+  const [ data, setData ] = useState({ ...defaultData });
 
-	useEffect(() => {
-		if (item) {
-			const newData = {...defaultData};
+  useEffect(() => {
+    if (item) {
+      const newData = {...defaultData};
 
-			if (item.cover) {
-				newData.image = `${apiURL}covers/${item.cover}`;
+      if (item.cover) {
+        newData.image = `${apiURL}covers/${item.cover}`;
 
-			} else {
-				if (item.images) {
-					// newData.image = item.images[0].uri;
-					newData.gallery = {
-						images: item.images
-					};
+      } else {
+        if (item.images) {
+          // newData.image = item.images[0].uri;
+          newData.gallery = {
+            images: item.images
+          };
 
-				} else {
-					newData.className = ' small';
-					
-					switch (item.source) {
-						case 'discogs':
-							newData.image = discogsIcon;
-						break;
+        } else {
+          newData.className = ' small';
+          
+          switch (item.source) {
+            case 'discogs':
+              newData.image = discogsIcon;
+            break;
 
-						case 'book':
-							newData.image = bookIcon;
-						break;
+            case 'book':
+              newData.image = bookIcon;
+            break;
 
-						default:
-							newData.image = unknownIcon;
-						break;
-					}
-				}
-			}
+            default:
+              newData.image = unknownIcon;
+            break;
+          }
+        }
+      }
 
-			newData.alt = item.album ? item.album : 'Media Cover';
-			setData(newData);
-		}
-	}, [item]);
+      newData.alt = item.album ? item.album : 'Media Cover';
+      setData(newData);
+    }
+  }, [item]);
 
-	const bgStyle = () => {
-		// this fixes issues with perentheses in the url
-		return { backgroundImage: `url('${data.image}')` };
-	};
+  const bgStyle = () => {
+    // this fixes issues with perentheses in the url
+    return { backgroundImage: `url('${data.image}')` };
+  };
 
-	return (
-		<Fragment>
-				<div
-					title={`ID ${item.id}`}
-					className={`cover${data.className}`}
-					style={bgStyle()}
-					onClick={() => { !data.gallery && onClick() }}
-					onContextMenu={onContextMenu}
-				>
-					{
-						data.gallery ? <Carousel gallery={data.gallery} />
+  return (
+    <Fragment>
+        <div
+          title={`ID ${item.id}`}
+          className={`cover${data.className}`}
+          style={bgStyle()}
+          onClick={() => { !data.gallery && onClick() }}
+          onContextMenu={onContextMenu}
+        >
+          {
+            data.gallery ? <Carousel gallery={data.gallery} />
 
-						:
+            :
 
-						<img src={square} alt={data.alt} draggable="false" />
-					}
-				</div>
-		</Fragment>
-	)
+            <img src={square} alt={data.alt} draggable="false" />
+          }
+        </div>
+    </Fragment>
+  )
 }

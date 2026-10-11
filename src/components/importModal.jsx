@@ -3,50 +3,50 @@ import { importDiscogsRelease } from '../utils/api';
 import { getDiscogsId } from '../utils';
 
 export default function ImportModal({ onClose, onSuccess }) {
-	const [ releaseID, setReleaseID ] = useState('');
+  const [ releaseID, setReleaseID ] = useState('');
 
-	useEffect(() => {
-		document.getElementById('discogs-id').focus();
-	}, []);
+  useEffect(() => {
+    document.getElementById('discogs-id').focus();
+  }, []);
 
-	const importRelease = (type) => {
-		if (releaseID) {
-			importDiscogsRelease(releaseID, type).then(resp => {
-				onSuccess(resp.response);
+  const importRelease = (type) => {
+    if (releaseID) {
+      importDiscogsRelease(releaseID, type).then(resp => {
+        onSuccess(resp.response);
 
-				// later open a json preview modal
-				if (type === 'preview') {
-					console.log(resp.response);
-				}
+        // later open a json preview modal
+        if (type === 'preview') {
+          console.log(resp.response);
+        }
 
-				onClose();
-			});
-		}
-	}
+        onClose();
+      });
+    }
+  }
 
-	const setId = (e) => {
-		const id = getDiscogsId(e.target.value);
+  const setId = (e) => {
+    const id = getDiscogsId(e.target.value);
 
-		if (id?.length) {
-			setReleaseID(getDiscogsId(e.target.value));
+    if (id?.length) {
+      setReleaseID(getDiscogsId(e.target.value));
 
-		} else {
-			setReleaseID('');
-		}
-	}
+    } else {
+      setReleaseID('');
+    }
+  }
 
-	return (
-		<Fragment>
-			<div id="modal" className="import-modal">
-				<button type="button" className="btn-close" onClick={onClose}>X</button>
-				<p>Enter a Discogs release ID and click ok.</p>
-				<input id="discogs-id" type="tel" maxLength="50" value={releaseID} onChange={setId} />
-				<div className="buttons">
-					<button type="button" className="btn-border" onClick={() => importRelease('preview')}>Preview</button>
-					<button type="button" className="btn-border" onClick={importRelease}>Import</button>
-				</div>
-			</div>
-			<div id="overlay" onClick={onClose} />
-		</Fragment>
-	);
+  return (
+    <Fragment>
+      <div id="modal" className="import-modal">
+        <button type="button" className="btn-close" onClick={onClose}>X</button>
+        <p>Enter a Discogs release ID and click ok.</p>
+        <input id="discogs-id" type="tel" maxLength="50" value={releaseID} onChange={setId} />
+        <div className="buttons">
+          <button type="button" className="btn-border" onClick={() => importRelease('preview')}>Preview</button>
+          <button type="button" className="btn-border" onClick={importRelease}>Import</button>
+        </div>
+      </div>
+      <div id="overlay" onClick={onClose} />
+    </Fragment>
+  );
 }
