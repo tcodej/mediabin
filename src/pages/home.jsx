@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/application';
 import { useSwipeable } from 'react-swipeable';
 import * as api from '../utils/api';
-import { shuffle, delay, scrollTo, getItemByKey, sort } from '../utils';
+import { /*shuffle,*/ delay, scrollTo, getItemByKey, sort } from '../utils';
 import Passcode from '../components/passcode';
 import ErrorMessage from '../components/errorMessage';
 import {
@@ -254,15 +254,15 @@ export default function Home() {
     setImportOpen(false);
   }
 
-  const randomMedia = () => {
-    const total = 20;
-    const random = shuffle([...media]).splice(0, total);
-    clearQuery();
-    sort(random, 'artist', true);
-    setList(random);
-    setResultCount(`${total} random items`);
-    triggerSuccess();
-  }
+  // const randomMedia = () => {
+  //   const total = 20;
+  //   const random = shuffle([...media]).splice(0, total);
+  //   clearQuery();
+  //   sort(random, 'artist', true);
+  //   setList(random);
+  //   setResultCount(`${total} random items`);
+  //   triggerSuccess();
+  // }
 
   const reload = () => {
     setLoaded(false);
