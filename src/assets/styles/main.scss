@@ -446,6 +446,10 @@ audio {
   background-image: url('../img/icon-login.svg');
 }
 
+.btn-logout {
+  background-image: url('../img/icon-logout.svg');
+}
+
 #filter-list {
   position: relative;
   top: 50px;
@@ -1045,7 +1049,7 @@ audio {
     border-radius: 50%;
     font-size: 24px;
 
-    &:hover {
+    &:hover, &.active {
       background-color: rgba(255, 255, 255, 0.4);
     }
   }

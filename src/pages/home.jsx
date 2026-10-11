@@ -179,6 +179,11 @@ export default function Home() {
 		updateAppState({ isAdmin: true });
 	}
 
+  const logout = () => {
+    sessionStorage.removeItem('authenticated');
+    updateAppState({ isAdmin: false });
+  }
+
 	const sideToggle = (bool) => {
 		appAction.toggleMenu(bool);
 	}
@@ -729,16 +734,37 @@ export default function Home() {
 							<button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
 							<button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={() => toggleVisible('verified')}>Toggle Verified</button>
 							<button type="button" title="Toggle Digital" className={`btn-digital ${showDigital}`} onClick={() => toggleVisible('digital')}>Toggle Digital</button>
-							{/*<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>*/}
+{/*
+							<button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
+*/}
 							<button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
 							<button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
 						</>
 					}
+{/*
 					<button type="button" title="Random Media" className="btn-random-media" onClick={randomMedia}>Random Media</button>
+*/}
 					<button type="button" title={`Filter Mode ${filterMode.toUpperCase()}`} className={`btn-filter-mode ${filterMode}`} onClick={toggleFilterMode}>Filter Mode</button>
 					{!appState.isAdmin &&
-						<button type="button" title="Authenticate" className="btn-login" onClick={() => setShowAuth(true)}>Authenticate</button>
+						<button
+							type="button"
+							title="Authenticate"
+							className="btn-login"
+							onClick={() => setShowAuth(true)}
+						>
+							Authenticate
+						</button>
 					}
+          {appState.isAdmin &&
+            <button
+              type="button"
+              title="Log Out"
+              className="btn-logout"
+              onClick={logout}
+            >
+              Authenticate
+            </button>
+          }
 				</div>
 			</div>
 
