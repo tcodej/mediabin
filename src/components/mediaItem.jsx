@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppContext } from '../contexts/application';
-import { importDiscogsRelease } from '../utils/api';
+import { importDiscogsRelease, updateField } from '../utils/api';
 import CopyButton from '../components/copyButton';
 import Cover from './cover';
 
 export default function MediaItem({ item, onClick, large, onVerify, onUpdateField }) {
   const menuRef = useRef(null);
+  const fieldRef = useRef(null);
+
   const [ imageSaved, setImageSaved ] = useState(false);
   const [ showContextMenu, setShowContextMenu ] = useState(false);
+  const [ buttonLabel, setButtonLabel ] = useState('OK');
   const { appState } = useAppContext();
 
   useEffect(() => {
@@ -55,10 +58,29 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
     const parts = item.format.split(', ');
 
     if (large) {
+      if (appState.isAdmin) {
+        return (
+          <div className="edit format">
+            <input ref={fieldRef} type="text" defaultValue={item.format} />
+            <button type="button" className="btn-border" onClick={saveFormat}>{buttonLabel}</button>
+          </div>
+        )
+      }
+
       return item.format;
     }
 
     return <div>{parts[0]}</div>;
+  }
+
+  const saveFormat = () => {
+    if (fieldRef.current) {
+      updateField(item.media_id, { format: fieldRef.current.value }).then(resp => {
+        if (resp.ok) {
+          setButtonLabel('✓');
+        }
+      });
+    }
   }
 
   const getImage = () => {

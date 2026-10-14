@@ -1,13 +1,15 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../contexts/application';
 import MediaItem from '../components/mediaItem';
 import CopyButton from '../components/copyButton';
-import { updateReleaseCollection, updateWantlist } from '../utils/api';
+import { updateReleaseCollection, updateWantlist, updateField } from '../utils/api';
 
 export default function ReleaseModal({ item, collections, onClose, onDelete }) {
   const { appState } = useAppContext();
+  const fieldRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [wantlist, setWantlist] = useState('0');
+  const [buttonLabel, setButtonLabel] = useState('OK');
   const [deleteMessage, setDeleteMessage] = useState();
 
   let timer;
@@ -46,6 +48,16 @@ export default function ReleaseModal({ item, collections, onClose, onDelete }) {
 
   const saveItemCollection = (e) => {
     updateReleaseCollection(item.id, e.target.value);
+  }
+
+  const saveNotes = () => {
+    if (fieldRef.current) {
+      updateField(item.media_id, { notes: fieldRef.current.value }).then(resp => {
+        if (resp.ok) {
+          setButtonLabel('✓');
+        }
+      });
+    }
   }
 
   const toggleWantlist = () => {
@@ -127,7 +139,16 @@ export default function ReleaseModal({ item, collections, onClose, onDelete }) {
           </div>
 
           {item.notes &&
-            <p>{item.notes}</p>
+            <>
+              {appState.isAdmin ?
+                <div className="edit notes">
+                  <textarea ref={fieldRef} className="field-notes" defaultValue={item.notes} />
+                  <button type="button" className="btn-border" onClick={saveNotes}>{buttonLabel}</button>
+                </div>
+              :
+                <p>{item.notes}</p>
+              }
+            </>
           }
 
           {item.source === 'discogs' &&

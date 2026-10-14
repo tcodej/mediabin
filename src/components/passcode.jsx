@@ -9,22 +9,10 @@ export default function Passcode({ onUnlock }) {
   const isTouchDevice = navigator.maxTouchPoints > 0;
   const numbers = isTouchDevice ? ['1','2','3','4','5','6','7','8','9','0'] : ['7','8','9','4','5','6','1','2','3','0'];
 
-  useEffect(() => {
-    if (code == 'xxxx') {
-      unlock();
-      return;
-    }
-
-    if (window) {
-      window.addEventListener('keyup', handleKeyUp);
-    }
-
-    return () => {
-      if (window) {
-        window.removeEventListener('keyup', handleKeyUp);
-      }
-    }
-  }, []);
+  const unlock = () => {
+    sessionStorage.setItem('authenticated', true);
+    setTimeout(onUnlock, 500);
+  }
 
   const handleKeyUp = (e) => {
     if (numbers.includes(e.key)) {
@@ -53,17 +41,30 @@ export default function Passcode({ onUnlock }) {
     });
   }
 
+  useEffect(() => {
+    if (code == 'xxxx') {
+      unlock();
+      return;
+    }
+
+    if (window) {
+      window.addEventListener('keyup', handleKeyUp);
+    }
+
+    return () => {
+      if (window) {
+        window.removeEventListener('keyup', handleKeyUp);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const fail = () => {
     setFailed(true);
     setTimeout(() => {
       setEntered('');
       setFailed(false);
     }, 750);
-  }
-
-  const unlock = () => {
-    sessionStorage.setItem('authenticated', true);
-    setTimeout(onUnlock, 500);
   }
 
   const dot = () => {

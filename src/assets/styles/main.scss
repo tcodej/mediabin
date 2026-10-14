@@ -808,6 +808,28 @@ audio {
   }
 }
 
+.edit {
+  margin: 8px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+
+  &.notes {
+    textarea {
+      border: 1px solid vars.$d-gray;
+      padding: 6px;
+      width: 500px;
+      height: 100px;
+    }
+  }
+
+  &.format {
+    input {
+      border: 1px solid vars.$d-gray;
+    }
+  }
+}
+
 .context-menu {
   position: absolute;
   top: 10px;
