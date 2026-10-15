@@ -138,14 +138,14 @@ export default function ReleaseModal({ item, collections, onClose, onDelete }) {
             }
           </div>
 
-          {item.notes &&
+          {appState.isAdmin ?
+            <div className="edit notes">
+              <textarea ref={fieldRef} className="field-notes" placeholder="Add a note..." defaultValue={item.notes} />
+              <button type="button" className="btn-border" onClick={saveNotes}>{buttonLabel}</button>
+            </div>
+          :
             <>
-              {appState.isAdmin ?
-                <div className="edit notes">
-                  <textarea ref={fieldRef} className="field-notes" defaultValue={item.notes} />
-                  <button type="button" className="btn-border" onClick={saveNotes}>{buttonLabel}</button>
-                </div>
-              :
+              {item.notes &&
                 <p>{item.notes}</p>
               }
             </>
