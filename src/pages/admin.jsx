@@ -14,7 +14,7 @@ export default function Admin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!sessionStorage.getItem('authenticated')) {
+    if (!localStorage.getItem('authenticated')) {
       navigate('/');
       return;
     }

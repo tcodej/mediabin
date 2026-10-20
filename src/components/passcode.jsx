@@ -10,7 +10,7 @@ export default function Passcode({ onUnlock }) {
   const numbers = isTouchDevice ? ['1','2','3','4','5','6','7','8','9','0'] : ['7','8','9','4','5','6','1','2','3','0'];
 
   const unlock = () => {
-    sessionStorage.setItem('authenticated', true);
+    localStorage.setItem('authenticated', true);
     setTimeout(onUnlock, 500);
   }
 

@@ -168,7 +168,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!appState.isAdmin) {
-      if (sessionStorage.getItem('authenticated')) {
+      if (localStorage.getItem('authenticated')) {
         updateAppState({ isAdmin: true });
       }
     }
@@ -180,7 +180,7 @@ export default function Home() {
   }
 
   const logout = () => {
-    sessionStorage.removeItem('authenticated');
+    localStorage.removeItem('authenticated');
     updateAppState({ isAdmin: false });
   }
 
