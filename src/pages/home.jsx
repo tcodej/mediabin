@@ -38,7 +38,7 @@ export default function Home() {
   const [ currentSort, setCurrentSort ] = useState();
   const [ showVerified, setShowVerified ] = useState(true);
   const [ showDigital, setShowDigital ] = useState(true);
-  const [ showDigitized, setShowDigitized ] = useState(true);
+  const [ showDigitized, setShowDigitized ] = useState(false);
   const [ showAuth, setShowAuth ] = useState(false);
 
   const pageSize = 100;
