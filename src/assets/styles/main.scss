@@ -442,6 +442,14 @@ audio {
   }
 }
 
+.btn-digitized {
+  background-image: url('../img/icon-digitized.svg');
+
+  &.true {
+    opacity: 1 !important;
+  }
+}
+
 .btn-login {
   background-image: url('../img/icon-login.svg');
 }

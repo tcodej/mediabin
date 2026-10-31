@@ -38,6 +38,7 @@ export default function Home() {
   const [ currentSort, setCurrentSort ] = useState();
   const [ showVerified, setShowVerified ] = useState(true);
   const [ showDigital, setShowDigital ] = useState(true);
+  const [ showDigitized, setShowDigitized ] = useState(true);
   const [ showAuth, setShowAuth ] = useState(false);
 
   const pageSize = 100;
@@ -510,7 +511,7 @@ export default function Home() {
       return [];
     }
 
-    const items = list.filter(item => {
+    let items = list.filter(item => {
       if (showVerified === false && item.date_verified) {
         return false;
       }
@@ -521,6 +522,13 @@ export default function Home() {
 
       return item;
     });
+
+    // digitized overrides all other toggles
+    if (showDigitized === true) {
+      items = list.filter(item => {
+        return item.digitized;
+      });
+    }
 
     // console.log(items.length, list.length);
     const filteredTotal = items.length;
@@ -656,10 +664,16 @@ export default function Home() {
     switch (type) {
       case 'verified':
         setShowVerified(!showVerified);
+        setShowDigitized(false);
         break;
 
       case 'digital':
         setShowDigital(!showDigital);
+        setShowDigitized(false);
+        break;
+
+      case 'digitized':
+        setShowDigitized(!showDigitized);
         break;
     }
     // reload();
@@ -734,11 +748,12 @@ export default function Home() {
               <button type="button" title="Import Discogs Release" className="btn-import" onClick={openImport}>Import Discogs Release</button>
               <button type="button" title="Toggle Verified" className={`btn-verified ${showVerified}`} onClick={() => toggleVisible('verified')}>Toggle Verified</button>
               <button type="button" title="Toggle Digital" className={`btn-digital ${showDigital}`} onClick={() => toggleVisible('digital')}>Toggle Digital</button>
+              <button type="button" title="Toggle Digitized" className={`btn-digitized ${showDigitized}`} onClick={() => toggleVisible('digitized')}>Toggle Digitized</button>
 {/*
               <button type="button" title="Clear the Cache" className="btn-clear-cache" onClick={clearCache}>Clear the Cache</button>
+              <button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
 */}
               <button type="button" title="Reload Media" className="btn-clear-cache" onClick={reload}>Reload</button>
-              <button type="button" title="Check for Dupe Titles" className="btn-dupes" onClick={getDupes}>Check for Dupe Titles</button>
             </>
           }
 {/*

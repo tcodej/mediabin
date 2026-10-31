@@ -219,6 +219,7 @@ export default function MediaItem({ item, onClick, large, onVerify, onUpdateFiel
             style={{ display: `${showContextMenu ? 'block' : 'none'}`}}
           >
             <div onClick={verifyMedia}>Verified <CheckIcon value={item.date_verified} /></div>
+            <div onClick={() => toggleField('digitized')}>Digitized <CheckIcon value={item.digitized} /></div>
             {item.digital !== 2 &&
               <div onClick={() => toggleField('digital')}>Digital <CheckIcon value={item.digital} /></div>
             }
